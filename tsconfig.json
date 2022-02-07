@@ -1,0 +1,12 @@
+{
+  "extends": "../../config/tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist/js",
+    "declarationDir": "./dist/types"
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
