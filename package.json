@@ -21,7 +21,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "dwfeFs rmForce dist && tsc -b src/tsconfig.json",
+    "clean": "dwfeFs cleanDir . --noConfirm --fileNames=\"dist;node_modules;package-lock.json\"",
+    "build": "dwfeFs rmForce dist --noConfirm && tsc -b src/tsconfig.json",
     "types": "tsc -b config/tsconfig.types.json",
     "test": "jest",
     "version": "npm run build && npm run types && npm run test",
