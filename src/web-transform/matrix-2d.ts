@@ -47,7 +47,7 @@ class M { // exported as WebMatrix
   toObject = (): IWebMatrix => M.toObject(this.m);
   toString = (): string => M.toString(this.m);
   toStyleValue = (): string => M.toStyleValue(this.m);
-  isEqual = (anotherM: M): boolean => M.isEqual(this.m, anotherM.m);
+  equals = (anotherM: M): boolean => M.isEqual(this.m, anotherM.m);
 
 
   /*
