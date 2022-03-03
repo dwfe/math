@@ -12,7 +12,7 @@ class P {
   add = (p: TPoint): P => P.of(P.add(this.p, p))
   middle = (p: TPoint): P => P.of(P.middle(this.p, p))
   distance = (p: TPoint): number => P.distance(this.p, p)
-  isEqual = (p: TPoint): boolean => P.isEqual(this.p, p);
+  equals = (p: TPoint): boolean => P.isEqual(this.p, p);
 
 
   static k = (kx: number, ky = kx) =>

@@ -65,14 +65,14 @@ describe(`matrix-2d`, () => {
 
   test(`apply to point #1`, () => {
     const p = Point.of(WebMatrix.of([1, 2, 3, 4, 4, 5]).apply([20, 30]))
-    expect(p.isEqual([114, 165])).toBeTruthy()
-    expect(p.isEqual([0, 0])).toBeFalsy()
+    expect(p.equals([114, 165])).toBeTruthy()
+    expect(p.equals([0, 0])).toBeFalsy()
   })
 
   test(`apply to point #2`, () => {
     const p = Point.of(WebMatrix.of([0.9, -0.05, -0.375, 1.375, 220, 20]).apply([200, 80]))
-    expect(p.isEqual([370, 120])).toBeTruthy()
-    expect(p.isEqual([0, 0])).toBeFalsy()
+    expect(p.equals([370, 120])).toBeTruthy()
+    expect(p.equals([0, 0])).toBeFalsy()
   })
 
   test(`scaleAtPoint`, () => {
