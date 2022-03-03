@@ -35,13 +35,15 @@ class M { // exported as WebMatrix
   skewX = (angle: number, angleType?: AngleType): M => M.of(M.skewX(this.m, angle, angleType));
   skewY = (angle: number, angleType?: AngleType): M => M.of(M.skewY(this.m, angle, angleType));
 
-//endregion
+//endregion Matrix transformations
+
 
 //region Data transformations
 
   apply = (point: TPoint): TPoint => M.apply(this.m, point);
 
 //endregion
+
 
   toJSON = (): TWebMatrix => [...this.m];
   toObject = (): IWebMatrix => M.toObject(this.m);
@@ -250,7 +252,7 @@ class M { // exported as WebMatrix
     return M.multiply(M.multiply(m1, m2), m3); // by (1.1)
   }
 
-//endregion
+//endregion Multiplication of a sequence of matrices
 
 
 //region Complex transforms
@@ -291,7 +293,7 @@ class M { // exported as WebMatrix
       [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],      // (3) Translate the "World-From" back such that fromPoint is at its initial location (EQUIVALENT point from "World-To" toPoint)
     );
 
-//endregion
+//endregion Complex transforms
 
 }
 
