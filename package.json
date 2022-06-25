@@ -29,9 +29,7 @@
   "dependencies": {},
   "devDependencies": {
     "@do-while-for-each/tsconfig": "1.x.x",
-    "@types/jest": "27.x.x",
-    "jest": "27.x.x",
-    "ts-jest": "27.x.x"
+    "@do-while-for-each/test": "1.x.x"
   },
   "scripts": {
     "clean": "dwfeFs cleanDir . --fileNames=\"dist;node_modules;package-lock.json\"",
