@@ -8,12 +8,16 @@ import {TPoint} from '../geometry'
  *                    0 0 1     e f     - translation to apply
  */
 export type TWebMatrix = [number, number, number, number, number, number];
+export type TLinearMatrix = [number, number, number, number];
 
-export interface IWebMatrix {
+export interface ILinearMatrix {
   a: number;
   b: number;
   c: number;
   d: number;
+}
+
+export interface IWebMatrix extends ILinearMatrix {
   e: number;
   f: number;
 }
@@ -27,4 +31,10 @@ export interface ISegmentChanging {
 export interface IPointTransition {
   fromPoint: TPoint;
   toPoint: TPoint;
+}
+
+export interface IBasis {
+  o: TPoint;
+  ox: TPoint;
+  oy: TPoint;
 }

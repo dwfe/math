@@ -1,4 +1,4 @@
-import {IPointTransition, ISegmentChanging, IWebMatrix, TWebMatrix} from './contract'
+import {IBasis, IPointTransition, ISegmentChanging, IWebMatrix, TWebMatrix} from './contract'
 import {Angle, AngleType, TPoint} from '../geometry'
 
 const identity: TWebMatrix = [1, 0, 0, 1, 0, 0];
@@ -292,6 +292,33 @@ class M { // exported as WebMatrix
       M.toNewCoordinateSystemSimple(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
       [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],      // (3) Translate the "World-From" back such that fromPoint is at its initial location (EQUIVALENT point from "World-To" toPoint)
     );
+
+  static changeOfBasisMatrix = (fromBasis: IBasis, toBasis: IBasis): TWebMatrix => {
+    const fromMatrix = [fromBasis.ox[0], fromBasis.oy[0], fromBasis.ox[1], fromBasis.oy[1]];
+    const toMatrix = [toBasis.ox[0], toBasis.oy[0], toBasis.ox[1], toBasis.oy[1]];
+
+    const detFr = 1 / (fromMatrix[0] * fromMatrix[3] - fromMatrix[1] * fromMatrix[2]);
+    const fromMatrixInverted = [
+      detFr * fromMatrix[3],
+      detFr * fromMatrix[1] * (-1),
+      detFr * fromMatrix[2] * (-1),
+      detFr * fromMatrix[0],
+    ];
+
+    /*
+     * Multiply two matrix:
+     *   a1 c1   a2 c2     a1*a2+c1*b2  a1*c2+c1*d2
+     *   b1 d1   b2 d2  =  b1*a2+d1*b2  b1*c2+d1*d2
+     */
+    return [
+      toMatrix[0] * fromMatrixInverted[0] + toMatrix[2] * fromMatrixInverted[1], // a
+      toMatrix[1] * fromMatrixInverted[0] + toMatrix[3] * fromMatrixInverted[1], // b
+      toMatrix[0] * fromMatrixInverted[2] + toMatrix[2] * fromMatrixInverted[3], // c
+      toMatrix[1] * fromMatrixInverted[2] + toMatrix[3] * fromMatrixInverted[3], // d
+      0, // e
+      0, // f
+    ];
+  };
 
 //endregion Complex transforms
 

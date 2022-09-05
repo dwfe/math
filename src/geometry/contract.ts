@@ -1,5 +1,10 @@
 export type TPoint = [number, number]
 
+export interface IPoint {
+  x: number;
+  y: number;
+}
+
 export interface IDiff {
   dX: number;
   dY: number;
