@@ -294,7 +294,13 @@ class M { // exported as WebMatrix
     );
 
   static changeOfBasisMatrix = (fromBasis: IBasis, toBasis: IBasis): TWebMatrix => {
+    // const fromBasisDX = Point.subtract(fromBasis.ox, fromBasis.o)
+    // const fromBasisDY = Point.subtract(fromBasis.oy, fromBasis.o)
+    // const fromMatrix = [fromBasisDX[0], fromBasisDY[0], fromBasisDX[1], fromBasisDY[1]];
     const fromMatrix = [fromBasis.ox[0], fromBasis.oy[0], fromBasis.ox[1], fromBasis.oy[1]];
+    // const toBasisDX = Point.subtract(toBasis.ox, toBasis.o)
+    // const toBasisDY = Point.subtract(toBasis.oy, toBasis.o)
+    // const toMatrix = [toBasisDX[0], toBasisDY[0], toBasisDX[1], toBasisDY[1]];
     const toMatrix = [toBasis.ox[0], toBasis.oy[0], toBasis.ox[1], toBasis.oy[1]];
 
     const detFr = 1 / (fromMatrix[0] * fromMatrix[3] - fromMatrix[1] * fromMatrix[2]);
@@ -310,7 +316,7 @@ class M { // exported as WebMatrix
      *   a1 c1   a2 c2     a1*a2+c1*b2  a1*c2+c1*d2
      *   b1 d1   b2 d2  =  b1*a2+d1*b2  b1*c2+d1*d2
      */
-    return [
+    const m: TWebMatrix = [
       toMatrix[0] * fromMatrixInverted[0] + toMatrix[2] * fromMatrixInverted[1], // a
       toMatrix[1] * fromMatrixInverted[0] + toMatrix[3] * fromMatrixInverted[1], // b
       toMatrix[0] * fromMatrixInverted[2] + toMatrix[2] * fromMatrixInverted[3], // c
@@ -318,6 +324,18 @@ class M { // exported as WebMatrix
       0, // e
       0, // f
     ];
+
+
+    // let translationPart = M.apply(M.invert(m), [1,-2])//Point.subtract(M.apply(M.invert(m), fromBasis.o),toBasis.o);
+    //
+    // return [
+    //   m[0], // a
+    //   m[1], // b
+    //   m[2], // c
+    //   m[3], // d
+    //   ...translationPart, // e, f
+    // ];
+    return m;
   };
 
 //endregion Complex transforms
