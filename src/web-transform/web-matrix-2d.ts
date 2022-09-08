@@ -304,11 +304,11 @@ class M { // exported as WebMatrix
   static changeOfBasisMatrix = (u: IBasis, w: IBasis): TWebMatrix => {
     // const U: M2x2 = [...u.ox, ...u.oy];
     // const W: M2x2 = [...w.ox, ...w.oy];
-    const U: M2x2 = [...Point.subtract(u.ox, u.o), ...Point.subtract(u.oy, u.o)];
-    const W: M2x2 = [...Point.subtract(w.ox, w.o), ...Point.subtract(w.oy, w.o)];
+    const U: M2x2 = [...Point.subtract(u.ox, u.o), ...Point.subtract(u.oy, u.o)]; // change of basis matrix from u basis -> to standard basis
+    const W: M2x2 = [...Point.subtract(w.ox, w.o), ...Point.subtract(w.oy, w.o)]; // change of basis matrix from w basis -> to standard basis
 
-    const m: M2x2 = [...Matrix2x2.multiply(Matrix2x2.invert(W), U)]; // converts to W
-    const shift = Point.subtract(u.o, Matrix2x2.apply(m, w.o)); // w.o is expressed in U coordinates
+    const m: M2x2 = [...Matrix2x2.multiply(Matrix2x2.invert(W), U)]; // change of basis matrix from u basis -> to w basis
+    const shift = Point.subtract(u.o, Matrix2x2.apply(m, w.o)); // point w.o is expressed by u basis
     return [...m, ...shift]; // changeOfBasisMatrix * vu => vw
   };
 
