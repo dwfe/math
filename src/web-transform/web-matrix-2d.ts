@@ -304,7 +304,7 @@ class M { // exported as WebMatrix
     const U: M2x2 = [...Point.subtract(u.ox, u.o), ...Point.subtract(u.oy, u.o)];
     const W: M2x2 = [...Point.subtract(w.ox, w.o), ...Point.subtract(w.oy, w.o)];
 
-    const m: M2x2 = [...Matrix2x2.multiply(Matrix2x2.invert(W), U)];
+    const m: M2x2 = [...Matrix2x2.multiply(Matrix2x2.invert(W), U)]; // m converts to W
     const shift = Point.subtract(u.o, Matrix2x2.apply(m, w.o));
     return [...m, ...shift]; // vw = M * vu
   };
