@@ -2,7 +2,7 @@ import {describe, expect} from '@jest/globals'
 import {TWebMatrix, WebMatrix} from '../../web-transform'
 import {AngleType, Point} from '../../geometry'
 
-describe(`matrix-2d`, () => {
+describe(`web-matrix-2d`, () => {
 
   test(`1*2 !== 2*1`, () => { // matrix multiplication is not commutative
     const m1 = WebMatrix.of([1, 2, 3, 4, 5, 6])

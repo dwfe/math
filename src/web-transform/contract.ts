@@ -8,16 +8,13 @@ import {TPoint} from '../geometry'
  *                    0 0 1     e f     - translation to apply
  */
 export type TWebMatrix = [number, number, number, number, number, number];
-export type TLinearMatrix = [number, number, number, number];
+export type M2x2 = [number, number, number, number];
 
-export interface ILinearMatrix {
+export interface IWebMatrix {
   a: number;
   b: number;
   c: number;
   d: number;
-}
-
-export interface IWebMatrix extends ILinearMatrix {
   e: number;
   f: number;
 }

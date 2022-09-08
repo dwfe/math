@@ -1,5 +1,6 @@
-import {IBasis, IPointTransition, ISegmentChanging, IWebMatrix, TWebMatrix} from './contract'
-import {Angle, AngleType, TPoint} from '../geometry'
+import {IBasis, IPointTransition, ISegmentChanging, IWebMatrix, M2x2, TWebMatrix} from './contract'
+import {Angle, AngleType, Point, TPoint} from '../geometry'
+import {Matrix2x2} from './matrix-2x2'
 
 const identity: TWebMatrix = [1, 0, 0, 1, 0, 0];
 
@@ -293,49 +294,19 @@ class M { // exported as WebMatrix
       [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],      // (3) Translate the "World-From" back such that fromPoint is at its initial location (EQUIVALENT point from "World-To" toPoint)
     );
 
-  static changeOfBasisMatrix = (fromBasis: IBasis, toBasis: IBasis): TWebMatrix => {
-    // const fromBasisDX = Point.subtract(fromBasis.ox, fromBasis.o)
-    // const fromBasisDY = Point.subtract(fromBasis.oy, fromBasis.o)
-    // const fromMatrix = [fromBasisDX[0], fromBasisDY[0], fromBasisDX[1], fromBasisDY[1]];
-    const fromMatrix = [fromBasis.ox[0], fromBasis.oy[0], fromBasis.ox[1], fromBasis.oy[1]];
-    // const toBasisDX = Point.subtract(toBasis.ox, toBasis.o)
-    // const toBasisDY = Point.subtract(toBasis.oy, toBasis.o)
-    // const toMatrix = [toBasisDX[0], toBasisDY[0], toBasisDX[1], toBasisDY[1]];
-    const toMatrix = [toBasis.ox[0], toBasis.oy[0], toBasis.ox[1], toBasis.oy[1]];
+  /**
+   * Change of Basis (Professor Dave Explains):
+   *   https://youtu.be/HZa1RwFHgwU?t=496
+   */
+  static changeOfBasisMatrix = (u: IBasis, w: IBasis): TWebMatrix => {
+    // const U: M2x2 = [...u.ox, ...u.oy];
+    // const W: M2x2 = [...w.ox, ...w.oy];
+    const U: M2x2 = [...Point.subtract(u.ox, u.o), ...Point.subtract(u.oy, u.o)];
+    const W: M2x2 = [...Point.subtract(w.ox, w.o), ...Point.subtract(w.oy, w.o)];
 
-    const detFr = 1 / (fromMatrix[0] * fromMatrix[3] - fromMatrix[1] * fromMatrix[2]);
-    const fromMatrixInverted = [
-      detFr * fromMatrix[3],
-      detFr * fromMatrix[1] * (-1),
-      detFr * fromMatrix[2] * (-1),
-      detFr * fromMatrix[0],
-    ];
-
-    /*
-     * Multiply two matrix:
-     *   a1 c1   a2 c2     a1*a2+c1*b2  a1*c2+c1*d2
-     *   b1 d1   b2 d2  =  b1*a2+d1*b2  b1*c2+d1*d2
-     */
-    const m: TWebMatrix = [
-      toMatrix[0] * fromMatrixInverted[0] + toMatrix[2] * fromMatrixInverted[1], // a
-      toMatrix[1] * fromMatrixInverted[0] + toMatrix[3] * fromMatrixInverted[1], // b
-      toMatrix[0] * fromMatrixInverted[2] + toMatrix[2] * fromMatrixInverted[3], // c
-      toMatrix[1] * fromMatrixInverted[2] + toMatrix[3] * fromMatrixInverted[3], // d
-      0, // e
-      0, // f
-    ];
-
-
-    // let translationPart = M.apply(M.invert(m), [1,-2])//Point.subtract(M.apply(M.invert(m), fromBasis.o),toBasis.o);
-    //
-    // return [
-    //   m[0], // a
-    //   m[1], // b
-    //   m[2], // c
-    //   m[3], // d
-    //   ...translationPart, // e, f
-    // ];
-    return m;
+    const m: M2x2 = [...Matrix2x2.multiply(Matrix2x2.invert(W), U)];
+    const shift = Point.subtract(u.o, Matrix2x2.apply(m, w.o));
+    return [...m, ...shift]; // vw = M * vu
   };
 
 //endregion Complex transforms
