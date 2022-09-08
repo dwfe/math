@@ -21,6 +21,36 @@ describe('change of basis', () => {
         [[-1, 1], [1, 2]]
       ]);
 
+    check( // базис u1-u2 из https://www.youtube.com/watch?v=HZa1RwFHgwU
+      {
+        o: [0, 0],
+        ox: [1, 0],
+        oy: [0, 1],
+      },
+      {
+        o: [0, 0],
+        ox: [1, 2],
+        oy: [3, 3],
+      },
+      [
+        [[3, 2], [-1, 1.333333333333333]]
+      ]);
+
+    check( // базис w1-w2 из https://www.youtube.com/watch?v=HZa1RwFHgwU
+      {
+        o: [0, 0],
+        ox: [1, 0],
+        oy: [0, 1],
+      },
+      {
+        o: [0, 0],
+        ox: [-1, -1],
+        oy: [3, 0],
+      },
+      [
+        [[3, 2], [-2, 0.333333333333333]]
+      ]);
+
   });
 
   test('non-standard basis', () => {
