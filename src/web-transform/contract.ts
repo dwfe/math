@@ -29,9 +29,3 @@ export interface IPointTransition {
   fromPoint: TPoint;
   toPoint: TPoint;
 }
-
-export interface IBasis {
-  o: TPoint;
-  ox: TPoint;
-  oy: TPoint;
-}

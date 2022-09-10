@@ -1,6 +1,7 @@
-import {IBasis, IPointTransition, ISegmentChanging, IWebMatrix, M2x2, TWebMatrix} from './contract'
+import {IPointTransition, ISegmentChanging, IWebMatrix, M2x2, TWebMatrix} from './contract'
 import {Angle, AngleType, Point, TPoint} from '../geometry'
 import {Matrix2x2} from './matrix-2x2'
+import {Basis} from './basis'
 
 const identity: TWebMatrix = [1, 0, 0, 1, 0, 0];
 
@@ -298,15 +299,11 @@ class M { // exported as WebMatrix
    * Change of Basis (Professor Dave Explains):
    *   https://youtu.be/HZa1RwFHgwU?t=496
    *
-   *   @param u - FROM basis
+   *   @param u - FROM basis. Decomposed by the standard basis.
    *   @param w - TO basis. Decomposed by the FROM basis!
    */
-  static changeOfBasisMatrix = (u: IBasis, w: IBasis): TWebMatrix => {
-    // move vectors to the center of the basis
-    const U: M2x2 = [...Point.subtract(u.ox, u.o), ...Point.subtract(u.oy, u.o)]; // change of basis matrix from u basis -> to standard basis
-    const W: M2x2 = [...Point.subtract(w.ox, w.o), ...Point.subtract(w.oy, w.o)]; // change of basis matrix from w basis -> to u basis
-
-    const m: M2x2 = [...Matrix2x2.multiply(Matrix2x2.invert(W), U)]; // change of basis matrix from u basis -> to w basis
+  static changeOfBasisMatrix = (u: Basis, w: Basis): TWebMatrix => {
+    const m: M2x2 = [...Matrix2x2.multiply(Matrix2x2.invert(w.matrix), u.matrix)]; // from u basis -> to w basis
     const shift = Point.subtract(u.o, Matrix2x2.apply(m, w.o)); // point w.o is expressed by u basis
     return [...m, ...shift]; // changeOfBasisMatrix * vu => vw
   };
