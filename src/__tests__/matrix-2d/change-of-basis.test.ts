@@ -70,6 +70,23 @@ describe('change of basis', () => {
         [[2, 1], [3, -1]],
         [[1, -2], [4, -3]],
       ]);
+
+
+    // check(
+    //   {
+    //     o: [-0.1859943405700354, 0.13556550657216876],
+    //     ox: [1.1859943405700353, 0.13556550657216876],
+    //     oy: [-0.1859943405700354, 0.8644344934278312],
+    //   },
+    //   {
+    //     o: [540.7124205178465, 127.08110020067426],
+    //     ox: [454.0589637824015, 267.9167002623907],
+    //     oy: [465.89350798505956, 81.0464513099692],
+    //   },
+    //   [
+    //     [[624.3375672974064,250.00000000000006], [0.5, 0.5]],
+    //   ]);
+
   });
 
   test('shift', () => {
@@ -105,8 +122,8 @@ function check(u: IBasis, w: IBasis, arr: [TPoint, TPoint, TPoint?, TPoint?][]) 
   for (const [vuTarget, vwTarget, shiftU, shiftW] of arr) {
     const vw = WebMatrix.apply(m, vuTarget);
     const vu = WebMatrix.apply(mInv, vwTarget);
-    // console.log(`vuTarget -> vw`, vuTarget, vw);
-    // console.log(`vwTarget -> vu`, vwTarget, vu);
+    console.log(`vuTarget -> vw`, vuTarget, vw);
+    console.log(`vwTarget -> vu`, vwTarget, vu);
     expect(Point.isEqual(vw, vwTarget)).True();
     expect(Point.isEqual(vu, vuTarget)).True();
     if (shiftU !== undefined) {

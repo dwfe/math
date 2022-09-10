@@ -1,7 +1,7 @@
 import {TPoint} from '../geometry'
 
 /*
- * Homogeneous coordinates on RP**2
+ * Homogeneous coordinates on RP^2
  * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/matrix
  *                    a c e   here is described:
  * [a,b,c,d,e,f]  =>  b d f ,   a b c d - linear transformation
