@@ -44,37 +44,37 @@ describe('change of basis', () => {
 
   test('non-standard basis', () => {
 
+    // check(
+    //   Basis.of(
+    //     [0, 0],
+    //     [1, 1],
+    //     [0, -1],
+    //   ),
+    //   Basis.of(
+    //     [0, 0],
+    //     [1, 0],
+    //     [1, -1],
+    //   ),
+    //   [
+    //     [[2, 1], [3, -1]],
+    //     [[1, -2], [4, -3]],
+    //   ]);
+
+
     check(
       Basis.of(
-        [0, 0],
-        [1, 1],
-        [0, -1],
+        [-0.18599434057003528, 0.1355655065721687],
+        [1.1859943405700353, 0.1355655065721687],
+        [-0.18599434057003528, 0.8644344934278313],
       ),
       Basis.of(
-        [0, 0],
-        [1, 0],
-        [1, -1],
+        [540.7124205178468, 127.08110020067348],
+        [454.058963782401, 267.91670026239075],
+        [465.89350798505944, 81.04645130996792],
       ),
       [
-        [[2, 1], [3, -1]],
-        [[1, -2], [4, -3]],
+        [[624.3375672974064, 250.00000000000006], [0.3190252152621864, -0.9898207239167007]],
       ]);
-
-
-    // check(
-    //   {
-    //     o: [-0.1859943405700354, 0.13556550657216876],
-    //     ox: [1.1859943405700353, 0.13556550657216876],
-    //     oy: [-0.1859943405700354, 0.8644344934278312],
-    //   },
-    //   {
-    //     o: [540.7124205178465, 127.08110020067426],
-    //     ox: [454.0589637824015, 267.9167002623907],
-    //     oy: [465.89350798505956, 81.0464513099692],
-    //   },
-    //   [
-    //     [[624.3375672974064,250.00000000000006], [0.5, 0.5]],
-    //   ]);
 
   });
 
@@ -91,8 +91,8 @@ describe('change of basis', () => {
         [
           [-1, 1],      // точка в U, в координатах U
           [2.5, -0.25], // та же точка в W, в координатах W
-          [2, -1],     // shift в U, в координатах U
-          [1.5, -0.25] // shift в W, в координатах W
+          [2, -1],     // shift в U, разложен по базису U
+          [1.5, -0.25] // shift в W, разложен по базису W
         ]
       ]);
 
@@ -108,18 +108,19 @@ function check(u: Basis, w: Basis, arr: [TPoint, TPoint, TPoint?, TPoint?][]) {
     const vw = WebMatrix.apply(m, vuTarget);
     const vu = WebMatrix.apply(mInv, vwTarget);
     // console.log(`vuTarget -> vw`, vuTarget, vw);
+    // console.log(`vuTarget -> vw''`, vuTarget, WebMatrix.apply(mInv, vuTarget));
     // console.log(`vwTarget -> vu`, vwTarget, vu);
     expect(Point.isEqual(vw, vwTarget)).True();
     expect(Point.isEqual(vu, vuTarget)).True();
-    if (shiftU !== undefined) {
-      // console.log(`shiftU`, shiftU, [mInv[4], mInv[5]])
-      expect(shiftU[0]).eq(mInv[4]);
-      expect(shiftU[1]).eq(mInv[5]);
-    }
     if (shiftW !== undefined) {
       // console.log(`shiftW`, shiftW, [m[4], m[5]])
       expect(shiftW[0]).eq(m[4]);
       expect(shiftW[1]).eq(m[5]);
+    }
+    if (shiftU !== undefined) {
+      // console.log(`shiftU`, shiftU, [mInv[4], mInv[5]])
+      expect(shiftU[0]).eq(mInv[4]);
+      expect(shiftU[1]).eq(mInv[5]);
     }
   }
 }

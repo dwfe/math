@@ -302,10 +302,18 @@ class M { // exported as WebMatrix
    *   @param u - FROM basis. Decomposed by the standard basis.
    *   @param w - TO basis. Decomposed by the FROM basis!
    */
-  static changeOfBasisMatrix = (u: Basis, w: Basis): TWebMatrix => {
-    const m: M2x2 = [...Matrix2x2.multiply(Matrix2x2.invert(w.matrix), u.matrix)]; // from u basis -> to w basis
-    const shift = Point.subtract(u.o, Matrix2x2.apply(m, w.o)); // point w.o is expressed by u basis
+  static changeOfBasisMatrix2 = (u: Basis, w: Basis): TWebMatrix => {
+    const {apply, multiply, invert} = Matrix2x2;
+    const m: M2x2 = [...multiply(invert(w.matrix), u.matrix)]; // from u basis -> to w basis
+    const shift = Point.subtract(u.o, apply(m, w.o)); // point w.o is decomposed by u basis
     return [...m, ...shift]; // changeOfBasisMatrix * vu => vw
+  };
+
+  static changeOfBasisMatrix = (from: Basis, to: Basis): TWebMatrix => {
+    const {apply, multiply, invert} = Matrix2x2;
+    const A: M2x2 = [...multiply(to.matrix, invert(from.matrix))]; // from "from"-basis -> to "to"-basis
+    const shift = Point.subtract(to.o, apply(A, from.o));
+    return M.invert([...A, ...shift]); // changeOfBasisMatrix^(-1) * fromPoint => toPoint
   };
 
 //endregion Complex transforms
