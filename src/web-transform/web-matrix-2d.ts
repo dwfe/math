@@ -279,41 +279,63 @@ class M { // exported as WebMatrix
 
 
   /**
-   * If the origin of the new coordinate system is not shifted,
+   * If the origin of the new coordinate system is not shifted or rotated,
    * then the transition to the new coordinate system is the usual scaling.
    */
-  static toNewCoordinateSystemSimple = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging): TWebMatrix =>
+  static proportionsConverterWithoutShiftAndAngle = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging): TWebMatrix =>
     M.scaleIdentity(
       onAxisX.toSegment / onAxisX.fromSegment,
       onAxisY.toSegment / onAxisY.fromSegment
     );
 
-  static toNewCoordinateSystem = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging, {fromPoint, toPoint}: IPointTransition): TWebMatrix =>
+  static proportionsConverter = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging, {fromPoint, toPoint}: IPointTransition): TWebMatrix =>
     M.multiplySequence3(
-      [1, 0, 0, 1, toPoint[0], toPoint[1]],            // (1) Translate the "World-To" such that toPoint is at the origin
-      M.toNewCoordinateSystemSimple(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
-      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],      // (3) Translate the "World-From" back such that fromPoint is at its initial location (EQUIVALENT point from "World-To" toPoint)
+      [1, 0, 0, 1, toPoint[0], toPoint[1]],                         // (1) Translate the "World-To" such that toPoint is at the origin
+      M.proportionsConverterWithoutShiftAndAngle(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
+      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],                   // (3) Translate the "World-From" back such that fromPoint is at its initial location (EQUIVALENT point from "World-To" toPoint)
     );
+
+  static proportionsAndAngleConverter = (from: Basis, to: Basis): TWebMatrix => {
+    const {apply, multiply, invert} = Matrix2x2;
+    const linearM: M2x2 = [...multiply(to.ltMatrix, invert(from.ltMatrix))]; // FROM-basis -> TO-basis
+    const shift = Point.subtract(to.o, apply(linearM, from.o));
+    return M.invert([...linearM, ...shift]); // m * fromPoint => toPoint
+  };
 
   /**
    * Change of Basis (Professor Dave Explains):
    *   https://youtu.be/HZa1RwFHgwU?t=496
    *
-   *   @param u - FROM basis. Decomposed by the standard basis.
-   *   @param w - TO basis. Decomposed by the FROM basis!
+   * @param from - FROM-basis
+   * @param to - TO-basis. Decomposed by the FROM-basis!!!
    */
-  static changeOfBasisMatrix2 = (u: Basis, w: Basis): TWebMatrix => {
-    const {apply, multiply, invert} = Matrix2x2;
-    const m: M2x2 = [...multiply(invert(w.matrix), u.matrix)]; // from u basis -> to w basis
-    const shift = Point.subtract(u.o, apply(m, w.o)); // point w.o is decomposed by u basis
-    return [...m, ...shift]; // changeOfBasisMatrix * vu => vw
-  };
-
   static changeOfBasisMatrix = (from: Basis, to: Basis): TWebMatrix => {
     const {apply, multiply, invert} = Matrix2x2;
-    const A: M2x2 = [...multiply(to.matrix, invert(from.matrix))]; // from "from"-basis -> to "to"-basis
-    const shift = Point.subtract(to.o, apply(A, from.o));
-    return M.invert([...A, ...shift]); // changeOfBasisMatrix^(-1) * fromPoint => toPoint
+    const linearM: M2x2 = [...multiply(invert(to.ltMatrix), from.ltMatrix)]; // FROM-basis -> TO-basis
+    const shift = Point.subtract(from.o, apply(linearM, to.o));
+    if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.o, [0, 0])) {
+      throw new Error(`if there is a shift, then point from.o [${from.o}] should be in the center of coordinates [0,0]`);
+    }
+    return [...linearM, ...shift]; // m * fromPoint => toPoint
+  };
+
+  /**
+   * Замена базиса (Мосин):
+   *   https://www.youtube.com/watch?v=gF1uo6X6W3M
+   *
+   * @param from - FROM-basis
+   * @param to - TO-basis. Decomposed by the FROM-basis!!!
+   */
+  static changeOfBasisMatrix2 = (from: Basis, to: Basis): TWebMatrix => {
+    const {apply, multiply, invert} = Matrix2x2;
+    const byLine: M2x2 = [...multiply(to.centeredMatrixCoef, invert(from.centeredMatrixCoef))];
+    let linearM: M2x2 = [byLine[0], byLine[2], byLine[1], byLine[3]]; // converts byLine -> by column
+    linearM = invert(linearM); // FROM-basis -> TO-basis
+    const shift = Point.subtract(from.o, apply(linearM, to.o));
+    if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.o, [0, 0])) {
+      throw new Error(`if there is a shift, then point from.o [${from.o}] should be in the center of coordinates [0,0]`);
+    }
+    return [...linearM, ...shift]; // m * fromPoint => toPoint
   };
 
 //endregion Complex transforms

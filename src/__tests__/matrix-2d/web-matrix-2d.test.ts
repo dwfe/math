@@ -115,7 +115,7 @@ describe(`web-matrix-2d`, () => {
 
   test(`toNewCoordinateSystem`, () => {
 
-    const valueToPixel = WebMatrix.toNewCoordinateSystem(
+    const valueToPixel = WebMatrix.proportionsConverter(
       {fromSegment: 2, toSegment: 28}, // x
       {fromSegment: 3, toSegment: 42}, // y
       {fromPoint: [15, 1], toPoint: [210, 14]}
