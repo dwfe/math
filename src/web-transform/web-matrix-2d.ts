@@ -298,7 +298,7 @@ class M { // exported as WebMatrix
   static proportionsAndAngleConverter = (from: Basis, to: Basis): TWebMatrix => {
     const {apply, multiply, invert} = Matrix2x2;
     const linearM: M2x2 = [...multiply(to.ltMatrix, invert(from.ltMatrix))]; // FROM-basis -> TO-basis
-    const shift = Point.subtract(to.o, apply(linearM, from.o));
+    const shift = Point.sub(to.o, apply(linearM, from.o));
     return [...linearM, ...shift]; // m * fromPoint => toPoint
   };
 
@@ -312,7 +312,7 @@ class M { // exported as WebMatrix
   static changeOfBasisMatrix = (from: Basis, to: Basis): TWebMatrix => {
     const {apply, multiply, invert} = Matrix2x2;
     const linearM: M2x2 = [...multiply(invert(to.ltMatrix), from.ltMatrix)]; // FROM-basis -> TO-basis
-    const shift = Point.subtract(from.o, apply(linearM, to.o));
+    const shift = Point.sub(from.o, apply(linearM, to.o));
     if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.o, [0, 0])) {
       throw new Error(`if there is a shift, then point from.o [${from.o}] should be in the center of coordinates [0,0]`);
     }
@@ -331,7 +331,7 @@ class M { // exported as WebMatrix
     const byLine: M2x2 = [...multiply(to.centeredMatrixCoef, invert(from.centeredMatrixCoef))];
     let linearM: M2x2 = [byLine[0], byLine[2], byLine[1], byLine[3]]; // converts byLine -> by column
     linearM = invert(linearM); // FROM-basis -> TO-basis
-    const shift = Point.subtract(from.o, apply(linearM, to.o));
+    const shift = Point.sub(from.o, apply(linearM, to.o));
     if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.o, [0, 0])) {
       throw new Error(`if there is a shift, then point from.o [${from.o}] should be in the center of coordinates [0,0]`);
     }

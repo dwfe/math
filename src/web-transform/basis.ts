@@ -25,8 +25,8 @@ export class Basis {
               public ox: TPoint,
               public oy: TPoint) {
     // coordinates of the vectors are taken relative to the center of the basis
-    this.dx = Point.subtract(ox, o);
-    this.dy = Point.subtract(oy, o);
+    this.dx = Point.sub(ox, o);
+    this.dy = Point.sub(oy, o);
 
     // the matrix of the linear transformation is filled in by columns
     this.ltMatrix = [

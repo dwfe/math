@@ -8,8 +8,8 @@ class P {
   }
 
   k = (kx: number, ky = kx): P => P.of(P.k(kx, ky)(this.p))
-  subtract = (p: TPoint): P => P.of(P.subtract(this.p, p))
   add = (p: TPoint): P => P.of(P.add(this.p, p))
+  sub = (p: TPoint): P => P.of(P.sub(this.p, p))
   middle = (p: TPoint): P => P.of(P.middle(this.p, p))
   distance = (p: TPoint): number => P.distance(this.p, p)
   equals = (p: TPoint): boolean => P.isEqual(this.p, p);
@@ -21,21 +21,21 @@ class P {
       p[1] * ky
     ])
 
-  static subtract = (p1: TPoint, p2: TPoint): TPoint => ([
-    p1[0] - p2[0],
-    p1[1] - p2[1]
-  ])
-
   static add = (p1: TPoint, p2: TPoint): TPoint => ([
     p1[0] + p2[0],
     p1[1] + p2[1]
+  ])
+
+  static sub = (p1: TPoint, p2: TPoint): TPoint => ([
+    p1[0] - p2[0],
+    p1[1] - p2[1]
   ])
 
   static middle = (p1: TPoint, p2: TPoint): TPoint =>
     P.k(0.5)(P.add(p1, p2))
 
   static distance = (p1: TPoint, p2: TPoint): number => {
-    const result = P.subtract(p1, p2)
+    const result = P.sub(p1, p2)
     return Math.sqrt(Math.pow(result[0], 2) + Math.pow(result[1], 2))
   }
 
