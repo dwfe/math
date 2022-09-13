@@ -299,7 +299,7 @@ class M { // exported as WebMatrix
     const {apply, multiply, invert} = Matrix2x2;
     const linearM: M2x2 = [...multiply(to.ltMatrix, invert(from.ltMatrix))]; // FROM-basis -> TO-basis
     const shift = Point.subtract(to.o, apply(linearM, from.o));
-    return M.invert([...linearM, ...shift]); // m * fromPoint => toPoint
+    return [...linearM, ...shift]; // m * fromPoint => toPoint
   };
 
   /**

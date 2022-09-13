@@ -1,6 +1,5 @@
 import {Throw} from '@do-while-for-each/test'
-import {Basis} from '../../web-transform/basis'
-import {WebMatrix} from '../../web-transform'
+import {Basis, WebMatrix} from '../../web-transform'
 import {Point, TPoint} from '../../geometry'
 
 describe('change of basis matrix', () => {
@@ -113,22 +112,22 @@ function check(fromBasis: Basis, toBasis: Basis, data: [TPoint, TPoint, TPoint?,
     {variant: '2#', changeOfBasisMatrix: WebMatrix.changeOfBasisMatrix2}
   ];
   for (const next of fns) {
-    const fromM = next.changeOfBasisMatrix(fromBasis, toBasis);
-    const toM = WebMatrix.invert(fromM);
+    const toTO = next.changeOfBasisMatrix(fromBasis, toBasis);
+    const toFROM = WebMatrix.invert(toTO);
     for (const [fromPointCheck, toPointCheck, shiftInsideFrom, shiftInsideTo] of data) {
-      const toPoint = WebMatrix.apply(fromM, fromPointCheck);
-      const fromPoint = WebMatrix.apply(toM, toPointCheck);
+      const toPoint = WebMatrix.apply(toTO, fromPointCheck);
+      const fromPoint = WebMatrix.apply(toFROM, toPointCheck);
       // console.log(`${next.variant} fromPointCheck -> toPoint`, fromPointCheck, toPoint);
-      // console.log(`${next.variant} fromPointCheck -> toPoint''`, fromPointCheck, WebMatrix.apply(toM, fromPointCheck));
+      // console.log(`${next.variant} fromPointCheck -> toPoint''`, fromPointCheck, WebMatrix.apply(toFROM, fromPointCheck));
       // console.log(`${next.variant} toPointCheck -> fromPoint`, toPointCheck, fromPoint);
       if (shiftInsideFrom !== undefined) {
-        const [e, f] = toM.slice(-2);
+        const [e, f] = toFROM.slice(-2);
         // console.log(`${next.variant} shiftInsideFrom`, shiftInsideFrom, [e, f])
         expect(shiftInsideFrom[0]).eq(e);
         expect(shiftInsideFrom[1]).eq(f);
       }
       if (shiftInsideTo !== undefined) {
-        const [e, f] = fromM.slice(-2);
+        const [e, f] = toTO.slice(-2);
         // console.log(`${next.variant} shiftInsideTo`, shiftInsideTo, [e, f])
         expect(shiftInsideTo[0]).eq(e);
         expect(shiftInsideTo[1]).eq(f);
