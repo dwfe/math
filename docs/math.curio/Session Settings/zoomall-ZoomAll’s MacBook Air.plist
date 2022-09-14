@@ -16,7 +16,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 0}, {1184, 684}}</string>
+		<string>{{0, 2654}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -115,6 +115,7 @@
 	<key>Expanded Ideaspaces For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<array>
 		<string>112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</string>
+		<string>FD2BC035-9E64-4E37-AA07-A637A7A9CF5A</string>
 	</array>
 	<key>Expanded Sections</key>
 	<array>
@@ -149,7 +150,7 @@
 	</dict>
 	<key>Last Viewed Ideaspaces For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<array>
-		<string>0A1A0D19-922A-4FBB-85A0-8D3EC2E77D7C</string>
+		<string>EF196DED-573F-4247-87C4-00C32740DE8B</string>
 	</array>
 	<key>Last Viewed Section</key>
 	<array>
@@ -162,7 +163,7 @@
 	<key>Organizer Width</key>
 	<integer>181</integer>
 	<key>Primary Asset UUID Last Viewed</key>
-	<string>0A1A0D19-922A-4FBB-85A0-8D3EC2E77D7C</string>
+	<string>EF196DED-573F-4247-87C4-00C32740DE8B</string>
 	<key>Scroll Position For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<string>{0, 0}</string>
 	<key>Secondary View Vertical</key>
