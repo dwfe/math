@@ -118,7 +118,7 @@ describe(`web-matrix-2d`, () => {
     const valueToPixel = WebMatrix.proportionsConverter(
       {fromSegment: 2, toSegment: 28}, // x
       {fromSegment: 3, toSegment: 42}, // y
-      {fromPoint: [15, 1], toPoint: [210, 14]}
+      [[15, 1], [210, 14]]
     );
     const pixelToValue = WebMatrix.invert(valueToPixel)
 

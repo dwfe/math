@@ -1,5 +1,3 @@
-import {TPoint} from '../geometry'
-
 /*
  * Homogeneous coordinates on RP^2
  * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/matrix
@@ -23,9 +21,4 @@ export interface IWebMatrix {
 export interface ISegmentChanging {
   fromSegment: number;
   toSegment: number;
-}
-
-export interface IPointTransition {
-  fromPoint: TPoint;
-  toPoint: TPoint;
 }

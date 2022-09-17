@@ -1,4 +1,4 @@
-import {IPointTransition, ISegmentChanging, IWebMatrix, M2x2, TWebMatrix} from './contract'
+import {ISegmentChanging, IWebMatrix, M2x2, TWebMatrix} from './contract'
 import {Angle, AngleType, Point, TPoint} from '../geometry'
 import {Matrix2x2} from './matrix-2x2'
 import {Basis} from './basis'
@@ -288,7 +288,7 @@ class M { // exported as WebMatrix
       onAxisY.toSegment / onAxisY.fromSegment
     );
 
-  static proportionsConverter = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging, {fromPoint, toPoint}: IPointTransition): TWebMatrix =>
+  static proportionsConverter = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging, [fromPoint, toPoint]: [TPoint, TPoint]): TWebMatrix =>
     M.multiplySequence3(
       [1, 0, 0, 1, toPoint[0], toPoint[1]],                         // (1) Translate the "World-To" such that toPoint is at the origin
       M.proportionsConverterWithoutShiftAndAngle(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
