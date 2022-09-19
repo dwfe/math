@@ -113,30 +113,30 @@ describe(`web-matrix-2d`, () => {
     )).toBeTruthy()
   })
 
-  test(`toNewCoordinateSystem`, () => {
+  test(`proportionsConverter #1`, () => {
 
-    const valueToPixel = WebMatrix.proportionsConverter(
+    const pixelToValue = WebMatrix.proportionsConverter(
       {fromSegment: 2, toSegment: 28}, // x
       {fromSegment: 3, toSegment: 42}, // y
       [[15, 1], [210, 14]]
     );
-    const pixelToValue = WebMatrix.invert(valueToPixel)
-
-    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [0, 0]), [0, 0]))
-    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [2, 3]), [28, 42]))
-    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [6, 14]), [84, 196]))
-    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [10, 5]), [140, 70]))
-    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [15, 1]), [210, 14]))
-    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [21, 7]), [294, 98]))
-    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [27, 9]), [378, 126]))
+    const valueToPixel = WebMatrix.invert(pixelToValue)
 
     expect(Point.isEqual(WebMatrix.apply(pixelToValue, [0, 0]), [0, 0]))
-    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [28, 42]), [2, 3]))
-    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [84, 196]), [6, 14]))
-    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [140, 70]), [10, 5]))
-    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [210, 14]), [15, 1]))
-    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [294, 98]), [21, 7]))
-    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [378, 126]), [27, 9]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [2, 3]), [28, 42]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [6, 14]), [84, 196]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [10, 5]), [140, 70]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [15, 1]), [210, 14]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [21, 7]), [294, 98]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [27, 9]), [378, 126]))
+
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [0, 0]), [0, 0]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [28, 42]), [2, 3]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [84, 196]), [6, 14]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [140, 70]), [10, 5]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [210, 14]), [15, 1]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [294, 98]), [21, 7]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [378, 126]), [27, 9]))
 
     //
     // http://mathprofi.ru/perehod_k_novomu_bazisu.html
@@ -158,6 +158,26 @@ describe(`web-matrix-2d`, () => {
     // console.log(`old to new [2,2]`, oldToNew([2, 2], [2, 2]))
     // console.log(`old to new [3, 5]`, oldToNew([3, 5], [2, 2]))
     // console.log(`old to new [3, 1]`, oldToNew([3, 1], [2, 2]))
+  })
+
+  test(`proportionsConverter #2`, () => {
+
+    const block = {
+      topLeftY: 15,
+      height: 175,
+      topIndent: 10,
+      bottomIndent: 15,
+    };
+
+    const fromTo = WebMatrix.proportionsConverter(
+      {fromSegment: 30, toSegment: 30 * 14}, // x
+      {fromSegment: 15, toSegment: block.height - (block.topIndent + block.bottomIndent)}, // y
+      [[0, 0], [0, block.bottomIndent]]
+    );
+    //  const valueToPixel = WebMatrix.invert(fromTo)
+
+    expect(Point.isEqual(WebMatrix.apply(fromTo, [0, 0]), [0, block.bottomIndent]))
+    expect(Point.isEqual(WebMatrix.apply(fromTo, [30, 15]), [0, block.bottomIndent]))
   })
 
 })

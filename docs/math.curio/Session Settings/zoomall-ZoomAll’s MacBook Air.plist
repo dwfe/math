@@ -16,7 +16,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 2654}, {1184, 684}}</string>
+		<string>{{0, 793}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -34,7 +34,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 0}, {1184, 684}}</string>
+		<string>{{0, 2363}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -43,7 +43,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 0}, {863, 684}}</string>
+		<string>{{0, 0}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -108,19 +108,30 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 0}, {1184, 684}}</string>
+		<string>{{0, 1}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
 	<key>Expanded Ideaspaces For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<array>
 		<string>112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</string>
+		<string>84B6D9A1-9F48-4AF9-95C2-6D13989E4CC1</string>
 		<string>FD2BC035-9E64-4E37-AA07-A637A7A9CF5A</string>
+		<string>F6391505-F572-42BD-A5BA-237D271A81D9</string>
 	</array>
 	<key>Expanded Sections</key>
 	<array>
 		<string>00000000-0000-0000-0000-000000000000</string>
 	</array>
+	<key>F6391505-F572-42BD-A5BA-237D271A81D9</key>
+	<dict>
+		<key>Active Layer</key>
+		<string>Default</string>
+		<key>Visible Rect</key>
+		<string>{{0, 2435}, {1184, 684}}</string>
+		<key>Zoom Factor</key>
+		<real>1</real>
+	</dict>
 	<key>F65ACB1C-81C1-46A1-9836-00BB0CD7B1E9</key>
 	<dict>
 		<key>Active Layer</key>
@@ -135,7 +146,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 0}, {1184, 684}}</string>
+		<string>{{442, 389}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -150,7 +161,7 @@
 	</dict>
 	<key>Last Viewed Ideaspaces For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<array>
-		<string>EF196DED-573F-4247-87C4-00C32740DE8B</string>
+		<string>F6391505-F572-42BD-A5BA-237D271A81D9</string>
 	</array>
 	<key>Last Viewed Section</key>
 	<array>
@@ -163,9 +174,9 @@
 	<key>Organizer Width</key>
 	<integer>181</integer>
 	<key>Primary Asset UUID Last Viewed</key>
-	<string>EF196DED-573F-4247-87C4-00C32740DE8B</string>
+	<string>F6391505-F572-42BD-A5BA-237D271A81D9</string>
 	<key>Scroll Position For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
-	<string>{0, 0}</string>
+	<string>{0, 86}</string>
 	<key>Secondary View Vertical</key>
 	<true/>
 	<key>Secondary View Visible</key>
