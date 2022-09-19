@@ -290,9 +290,9 @@ class M { // exported as WebMatrix
 
   static proportionsConverter = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging, [fromPoint, toPoint]: [TPoint, TPoint]): TWebMatrix =>
     M.multiplySequence3(
-      [1, 0, 0, 1, toPoint[0], toPoint[1]],                         // (1) Translate the "World-To" such that toPoint is at the origin
+      [1, 0, 0, 1, toPoint[0], toPoint[1]],                         // (1) Move the point from the "World-To" origin to point toPoint
       M.proportionsConverterWithoutShiftAndAngle(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
-      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],                   // (3) Translate the "World-From" back such that fromPoint is at its initial location (EQUIVALENT point from "World-To" toPoint)
+      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],                   // (3) Move the point fromPoint to origin "World-From"
     );
 
   static proportionsAndAngleConverter = (from: Basis, to: Basis): TWebMatrix => {

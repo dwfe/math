@@ -30,16 +30,14 @@ export class Basis {
 
     // the matrix of the linear transformation is filled in by columns
     this.ltMatrix = [
-      ...this.dx, // a, b
+      ...this.dx, // a, b,
       ...this.dy, // c, d
     ];
 
     // the matrix of the linear equation coefficients is filled in by rows
     this.centeredMatrixCoef = [
-      this.dx[0], // a
-      this.dy[0], // c
-      this.dx[1], // b
-      this.dy[1], // d
+      this.dx[0], this.dy[0], // a, c,
+      this.dx[1], this.dy[1]  // b, d
     ];
   }
 
