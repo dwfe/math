@@ -16,7 +16,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 793}, {1184, 684}}</string>
+		<string>{{0, 384}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -34,7 +34,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 2363}, {1184, 684}}</string>
+		<string>{{0, 1927}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -83,6 +83,15 @@
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
+	<key>955A935F-33CD-411D-AD6B-AAFC6D2196DF</key>
+	<dict>
+		<key>Active Layer</key>
+		<string>Default</string>
+		<key>Visible Rect</key>
+		<string>{{0, 0}, {1184, 684}}</string>
+		<key>Zoom Factor</key>
+		<real>1</real>
+	</dict>
 	<key>9C2AE034-1A94-4269-B77D-D0AFC10FB4B9</key>
 	<dict>
 		<key>Active Layer</key>
@@ -108,7 +117,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 0}, {1184, 684}}</string>
+		<string>{{0, 1914}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -117,7 +126,6 @@
 		<string>112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</string>
 		<string>84B6D9A1-9F48-4AF9-95C2-6D13989E4CC1</string>
 		<string>FD2BC035-9E64-4E37-AA07-A637A7A9CF5A</string>
-		<string>F6391505-F572-42BD-A5BA-237D271A81D9</string>
 	</array>
 	<key>Expanded Sections</key>
 	<array>
@@ -146,7 +154,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{442, 389}, {1184, 684}}</string>
+		<string>{{6, 389}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -161,7 +169,7 @@
 	</dict>
 	<key>Last Viewed Ideaspaces For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<array>
-		<string>F6391505-F572-42BD-A5BA-237D271A81D9</string>
+		<string>955A935F-33CD-411D-AD6B-AAFC6D2196DF</string>
 	</array>
 	<key>Last Viewed Section</key>
 	<array>
@@ -174,7 +182,7 @@
 	<key>Organizer Width</key>
 	<integer>181</integer>
 	<key>Primary Asset UUID Last Viewed</key>
-	<string>F6391505-F572-42BD-A5BA-237D271A81D9</string>
+	<string>955A935F-33CD-411D-AD6B-AAFC6D2196DF</string>
 	<key>Scroll Position For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<string>{0, 86}</string>
 	<key>Secondary View Vertical</key>
