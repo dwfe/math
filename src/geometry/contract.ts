@@ -19,3 +19,10 @@ export enum AngleType {
   GRADIANS = 'grad',
   TURNS = 'turn',
 }
+
+export interface IRect {
+  readonly top: number;
+  readonly left: number;
+  readonly right: number;
+  readonly bottom: number;
+}
