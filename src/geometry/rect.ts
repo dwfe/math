@@ -2,7 +2,7 @@ import {IRect, TPoint} from './contract'
 
 class R {
 
-  static atCenter(center: TPoint, width: number, height: number): IRect {
+  static fromCenter(center: TPoint, width: number, height: number): IRect {
     const halfWidth = width / 2;
     const halfHeight = height / 2;
     return {
