@@ -3,13 +3,13 @@ import {IRect, TPoint} from './contract'
 class R {
 
   static fromCenter(center: TPoint, width: number, height: number): IRect {
-    const halfWidth = width / 2;
-    const halfHeight = height / 2;
+    const widthHalf = width / 2;
+    const heightHalf = height / 2;
     return {
-      left: center[0] - halfWidth,
-      top: center[1] - halfHeight,
-      right: center[0] + halfWidth,
-      bottom: center[1] + halfHeight,
+      left: center[0] - widthHalf,
+      top: center[1] - heightHalf,
+      right: center[0] + widthHalf,
+      bottom: center[1] + heightHalf,
     };
   }
 
