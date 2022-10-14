@@ -7,6 +7,7 @@ class R implements IRect {
   right: number;
   bottom: number;
   aspectRatio: number;
+  center: TPoint;
 
   constructor(public width: number,
               public height: number,
@@ -19,6 +20,7 @@ class R implements IRect {
     this.right = rect.right;
     this.bottom = rect.bottom;
     this.aspectRatio = rect.aspectRatio;
+    this.center = rect.center;
   }
 
   static fromOrigin(width: number, height: number): IRect {
@@ -30,6 +32,7 @@ class R implements IRect {
       width,
       height,
       aspectRatio: width / height,
+      center: [width / 2, height / 2]
     };
   }
 
@@ -47,6 +50,7 @@ class R implements IRect {
       width,
       height,
       aspectRatio: width / height,
+      center,
     };
   }
 

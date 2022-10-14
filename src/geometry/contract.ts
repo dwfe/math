@@ -29,4 +29,6 @@ export interface IRect {
   width: number;
   height: number;
   aspectRatio: number;
+
+  center: TPoint;
 }
