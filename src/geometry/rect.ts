@@ -10,6 +10,9 @@ class R {
       top: center[1] - heightHalf,
       right: center[0] + widthHalf,
       bottom: center[1] + heightHalf,
+      width,
+      height,
+      aspectRatio: width / height,
     };
   }
 

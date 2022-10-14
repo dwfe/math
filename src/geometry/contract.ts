@@ -25,4 +25,8 @@ export interface IRect {
   readonly left: number;
   readonly right: number;
   readonly bottom: number;
+
+  readonly width: number;
+  readonly height: number;
+  readonly aspectRatio: number;
 }

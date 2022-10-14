@@ -19,11 +19,12 @@ describe('rect', () => {
     expect(Point.isEqual(Rect.rightBottom(rect), [1, 1])).True();
   });
 
-  test('center, width, height', () => {
+  test('center, width, height, aspectRatio', () => {
     const rect = Rect.fromCenter([0.5, 0.5], 2, 5);
     expect(Point.isEqual(Rect.center(rect), [0.5, 0.5])).True();
-    expect(Rect.width(rect)).eq(2);
-    expect(Rect.height(rect)).eq(5);
+    expect(Rect.width(rect)).eq(rect.width);
+    expect(Rect.height(rect)).eq(rect.height);
+    expect(2 / 5).eq(rect.aspectRatio);
   });
 
 });
