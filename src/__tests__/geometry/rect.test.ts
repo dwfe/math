@@ -3,8 +3,8 @@ import {Point, Rect} from '../../geometry'
 
 describe('rect', () => {
 
-  test('atCenter', () => {
-    const rect = Rect.fromCenter([0, 0], 1, 1);
+  test('fromCenter', () => {
+    const rect = Rect.fromCenter(1, 1, [0, 0]);
     expect(rect.left).eq(-0.5);
     expect(rect.top).eq(-0.5);
     expect(rect.right).eq(0.5);
@@ -12,7 +12,7 @@ describe('rect', () => {
   });
 
   test('4 points', () => {
-    const rect = Rect.fromCenter([0, 0], 2, 2);
+    const rect = Rect.fromCenter(2, 2, [0, 0]);
     expect(Point.isEqual(Rect.leftTop(rect), [-1, -1])).True();
     expect(Point.isEqual(Rect.leftBottom(rect), [-1, 1])).True();
     expect(Point.isEqual(Rect.rightTop(rect), [1, -1])).True();
@@ -20,7 +20,7 @@ describe('rect', () => {
   });
 
   test('center, width, height, aspectRatio', () => {
-    const rect = Rect.fromCenter([0.5, 0.5], 2, 5);
+    const rect = Rect.fromCenter(2, 5, [0.5, 0.5]);
     expect(Point.isEqual(Rect.center(rect), [0.5, 0.5])).True();
     expect(Rect.width(rect)).eq(rect.width);
     expect(Rect.height(rect)).eq(rect.height);

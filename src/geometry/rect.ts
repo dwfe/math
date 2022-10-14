@@ -1,8 +1,42 @@
 import {IRect, TPoint} from './contract'
 
-class R {
+class R implements IRect {
 
-  static fromCenter(center: TPoint, width: number, height: number): IRect {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  aspectRatio: number;
+
+  constructor(public width: number,
+              public height: number,
+              creationType: 'fromOrigin' | 'fromCenter' = 'fromOrigin') {
+    const rect = creationType === 'fromOrigin'
+      ? R.fromOrigin(width, height)
+      : R.fromCenter(width, height);
+    this.left = rect.left;
+    this.top = rect.top;
+    this.right = rect.right;
+    this.bottom = rect.bottom;
+    this.aspectRatio = rect.aspectRatio;
+  }
+
+  static fromOrigin(width: number, height: number): IRect {
+    return {
+      left: 0,
+      top: 0,
+      right: width,
+      bottom: height,
+      width,
+      height,
+      aspectRatio: width / height,
+    };
+  }
+
+  static fromCenter(width: number, height: number, center?: TPoint): IRect {
+    if (!center) {
+      center = [width / 2, height / 2]; // если точка центра не задана, то она будет на пересечении диагоналей
+    }
     const widthHalf = width / 2;
     const heightHalf = height / 2;
     return {

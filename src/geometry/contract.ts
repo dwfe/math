@@ -21,12 +21,12 @@ export enum AngleType {
 }
 
 export interface IRect {
-  readonly top: number;
-  readonly left: number;
-  readonly right: number;
-  readonly bottom: number;
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
 
-  readonly width: number;
-  readonly height: number;
-  readonly aspectRatio: number;
+  width: number;
+  height: number;
+  aspectRatio: number;
 }
