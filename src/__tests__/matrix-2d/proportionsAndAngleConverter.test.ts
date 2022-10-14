@@ -46,7 +46,7 @@ describe('proportions and angle converter', () => {
 
 //                                     [fromPointTarget, toPointTarget, shiftInsideFrom, shiftInsideTo]
 function check(fromBasis: Basis, toBasis: Basis, data: [TPoint, TPoint, TPoint?, TPoint?][]) {
-  const toTO = LinearOperator.proportionsAndAngleConverter(fromBasis, toBasis);
+  const toTO = LinearOperator.proportionsWithRotationConverter(fromBasis, toBasis);
   const toFROM = WebMatrix.invert(toTO);
   for (const [fromPointCheck, toPointCheck, shiftInsideFrom, shiftInsideTo] of data) {
     const toPoint = WebMatrix.apply(toTO, fromPointCheck);

@@ -29,20 +29,26 @@ export class LinearOperator {
    * If the origin of the new coordinate system is not shifted or rotated,
    * then the transition to the new coordinate system is the usual scaling.
    */
-  static proportionsConverterWithoutShiftAndAngle = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging): TWebMatrix =>
+  static proportionsWithoutShiftAndRotationConverter = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging): TWebMatrix =>
     WebMatrix.scaleIdentity(
       onAxisX.toSegment / onAxisX.fromSegment,
       onAxisY.toSegment / onAxisY.fromSegment
     );
 
+  /**
+   * Proportion converter when no rotation occurs between coordinate systems
+   */
   static proportionsConverter = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging, [fromPoint, toPoint]: [TPoint, TPoint]): TWebMatrix =>
     WebMatrix.multiplySequence3(
-      [1, 0, 0, 1, toPoint[0], toPoint[1]],                                      // (3) Move the point from the "World-To" origin to point toPoint
-      LinearOperator.proportionsConverterWithoutShiftAndAngle(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
-      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],                                // (1) Move the point fromPoint to origin "World-From"
+      [1, 0, 0, 1, toPoint[0], toPoint[1]],                                         // (3) Move the point from the "World-To" origin to point toPoint
+      LinearOperator.proportionsWithoutShiftAndRotationConverter(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
+      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],                                   // (1) Move the point fromPoint to origin "World-From"
     );
 
-  static proportionsAndAngleConverter = (from: Basis, to: Basis): TWebMatrix => {
+  /**
+   * Proportion converter when rotation is possible between coordinate systems
+   */
+  static proportionsWithRotationConverter = (from: Basis, to: Basis): TWebMatrix => {
     const {apply, multiply, invert} = Matrix2x2;
     const linearM: M2x2 = [...multiply(to.ltMatrix, invert(from.ltMatrix))]; // FROM-basis -> TO-basis
     const shift = Point.sub(to.o, apply(linearM, from.o));
