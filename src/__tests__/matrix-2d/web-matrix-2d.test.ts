@@ -1,5 +1,5 @@
 import {describe, expect} from '@jest/globals'
-import {TWebMatrix, WebMatrix} from '../../web-transform'
+import {LinearOperator, TWebMatrix, WebMatrix} from '../../web-transform'
 import {AngleType, Point} from '../../geometry'
 
 describe(`web-matrix-2d`, () => {
@@ -76,7 +76,7 @@ describe(`web-matrix-2d`, () => {
   })
 
   test(`scaleAtPoint`, () => {
-    const scaledAtPoint = WebMatrix.scaleAtPoint([40, 40], 1.25)
+    const scaledAtPoint = LinearOperator.scaleAtPoint([40, 40], 1.25)
     const correctResult: TWebMatrix = [1.25, 0, 0, 1.25, -10, -10];
     expect(WebMatrix.isEqual(scaledAtPoint, correctResult)).toBeTruthy()
     expect(WebMatrix.isEqual(scaledAtPoint, [1.25, 0, 0, 1.25, -10, 0])).toBeFalsy()
@@ -95,7 +95,7 @@ describe(`web-matrix-2d`, () => {
   })
 
   test(`rotateAtPoint`, () => {
-    const rotateAtPoint = WebMatrix.rotateAtPoint([50, 45], 45, AngleType.DEGREES)
+    const rotateAtPoint = LinearOperator.rotateAtPoint([50, 45], 45, AngleType.DEGREES)
     const correctResult: TWebMatrix = [0.707107, 0.707107, -0.707107, 0.707107, 46.4645, -22.1751];
     expect(WebMatrix.isEqual(rotateAtPoint, correctResult)).toBeTruthy()
     expect(WebMatrix.isEqual(rotateAtPoint, [0.717107, 0.707107, -0.707107, 0.707107, 46.4645, -22.1751])).toBeFalsy()
@@ -115,7 +115,7 @@ describe(`web-matrix-2d`, () => {
 
   test(`proportionsConverter #1`, () => {
 
-    const pixelToValue = WebMatrix.proportionsConverter(
+    const pixelToValue = LinearOperator.proportionsConverter(
       {fromSegment: 2, toSegment: 28}, // x
       {fromSegment: 3, toSegment: 42}, // y
       [[15, 1], [210, 14]]
@@ -169,7 +169,7 @@ describe(`web-matrix-2d`, () => {
       bottomIndent: 15,
     };
 
-    const fromTo = WebMatrix.proportionsConverter(
+    const fromTo = LinearOperator.proportionsConverter(
       {fromSegment: 30, toSegment: 30 * 14}, // x
       {fromSegment: 15, toSegment: block.height - (block.topIndent + block.bottomIndent)}, // y
       [[0, 0], [0, block.bottomIndent]]

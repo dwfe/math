@@ -1,5 +1,5 @@
 import {Throw} from '@do-while-for-each/test'
-import {Basis, WebMatrix} from '../../web-transform'
+import {Basis, LinearOperator, WebMatrix} from '../../web-transform'
 import {Point, TPoint} from '../../geometry'
 
 describe('change of basis matrix', () => {
@@ -108,8 +108,8 @@ describe('change of basis matrix', () => {
 //                                     [fromPointTarget, toPointTarget, shiftInsideFrom, shiftInsideTo]
 function check(fromBasis: Basis, toBasis: Basis, data: [TPoint, TPoint, TPoint?, TPoint?][]) {
   const fns: Array<{ variant: string, changeOfBasisMatrix: any }> = [
-    {variant: '1#', changeOfBasisMatrix: WebMatrix.changeOfBasisMatrix},
-    {variant: '2#', changeOfBasisMatrix: WebMatrix.changeOfBasisMatrix2}
+    {variant: '1#', changeOfBasisMatrix: LinearOperator.changeOfBasisMatrix},
+    {variant: '2#', changeOfBasisMatrix: LinearOperator.changeOfBasisMatrix2}
   ];
   for (const next of fns) {
     const toTO = next.changeOfBasisMatrix(fromBasis, toBasis);
