@@ -41,6 +41,22 @@ export class Basis {
     ];
   }
 
+  toString() {
+    return JSON.stringify(this.toJSON());
+  }
+
+  toJSON(): TPoint[] {
+    return [this.o, this.ox, this.oy];
+  }
+
+  static fromString(data: string): Basis {
+    return Basis.fromJSON(JSON.parse(data));
+  }
+
+  static fromJSON(data: TPoint[]): Basis {
+    return Basis.of(data[0], data[1], data[2]);
+  }
+
   static of(o: TPoint, ox: TPoint, oy: TPoint): Basis {
     return new Basis(o, ox, oy);
   }
