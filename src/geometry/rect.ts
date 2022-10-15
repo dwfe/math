@@ -42,6 +42,10 @@ class R {
   static width = (r: IRect): number => (r.right - r.left);
   static height = (r: IRect): number => (r.bottom - r.top);
 
+  static isAspectRatioEqual = (a: IRect, b: IRect): boolean => (
+    Math.abs(a.aspectRatio - b.aspectRatio) < 0.0001
+  );
+
 }
 
 export {
