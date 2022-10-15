@@ -1,27 +1,6 @@
 import {IRect, TPoint} from './contract'
 
-class R implements IRect {
-
-  left: number;
-  top: number;
-  right: number;
-  bottom: number;
-  aspectRatio: number;
-  center: TPoint;
-
-  constructor(public width: number,
-              public height: number,
-              creationType: 'fromOrigin' | 'fromCenter' = 'fromOrigin') {
-    const rect = creationType === 'fromOrigin'
-      ? R.fromOrigin(width, height)
-      : R.fromCenter(width, height);
-    this.left = rect.left;
-    this.top = rect.top;
-    this.right = rect.right;
-    this.bottom = rect.bottom;
-    this.aspectRatio = rect.aspectRatio;
-    this.center = rect.center;
-  }
+class R {
 
   static fromOrigin(width: number, height: number): IRect {
     return {
