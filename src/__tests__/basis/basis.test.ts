@@ -8,8 +8,23 @@ const projectionToGeo = geoToProjection.invert as (point: TPoint) => TPoint;
 
 describe('basis', () => {
 
+  test('aspectRatio', () => {
+    expect(Basis.standard().aspectRatio).eq(1);
+    expect(Basis.of([[0, 0], [2, 0], [0, 1]]).aspectRatio).eq(2);
+    expect(Basis.of([
+      [384.87736210053623, 325.674784307791],
+      [403.5516764210449, 143.91252507266364],
+      [566.6396213356633, 344.3490986282995],
+    ]).aspectRatio).eq(1.000000000000002);
+    expect(Basis.of([
+      [377.01674005943624, 316.86520988968135],
+      [394.0639787249101, 150.9397274127133],
+      [576.1273190317979, 337.32189628824995],
+    ]).aspectRatio).eq(0.8333333333333333);
+  });
+
   test('de/serialize', () => {
-    const basis = Basis.of([[0, 0], [1, 0], [0, 1]]);
+    const basis = Basis.standard();
     const str = basis.toString();
     const fromStr = Basis.fromString(str);
     expect(str).eq('[[0,0],[1,0],[0,1]]');
@@ -26,7 +41,7 @@ describe('basis', () => {
       )
     );
 
-    expect(Basis.of([[0, 0], [1, 0], [0, 1]]).isOrthogonal).True();
+    expect(Basis.standard().isOrthogonal).True();
     expect(Basis.of([[0, 0], [1, 1], [0, 1]]).isOrthogonal).False();
     expect(Basis.of([[0, 0], [1, -2], [2, 1]]).isOrthogonal).True();
 

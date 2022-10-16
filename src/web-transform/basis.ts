@@ -21,6 +21,7 @@ export class Basis {
   origin: TPoint; // origin point of the basis
   oxEnd: TPoint; // end point of the basis vector ox
   oyEnd: TPoint; // end point of the basis vector oy
+  aspectRatio: number;
 
   ox: TPoint; // basis vector ox with origin at [0,0]
   oy: TPoint; // basis vector oy with origin at [0,0]
@@ -30,6 +31,7 @@ export class Basis {
     this.origin = origin;
     this.oxEnd = oxEnd;
     this.oyEnd = oyEnd;
+    this.aspectRatio = Point.distance(oxEnd, origin) / Point.distance(oyEnd, origin);
     this.ox = Point.sub(oxEnd, origin);
     this.oy = Point.sub(oyEnd, origin);
     this.isOrthogonal = Math.abs(Point.scalarProduct(this.ox, this.oy)) <= 0.000001;
