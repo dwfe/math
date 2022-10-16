@@ -34,6 +34,15 @@ class P {
   static middle = (p1: TPoint, p2: TPoint): TPoint =>
     P.k(0.5)(P.add(p1, p2))
 
+  /**
+   *  a   c
+   *    *   = a*c + b*d
+   *  b   d
+   */
+  static scalarProduct(p1: TPoint, p2: TPoint): number {
+    return p1[0] * p2[0] + p1[1] * p2[1];
+  }
+
   static distance = (p1: TPoint, p2: TPoint): number => {
     const result = P.sub(p1, p2)
     return Math.sqrt(Math.pow(result[0], 2) + Math.pow(result[1], 2))

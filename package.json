@@ -29,7 +29,9 @@
   "dependencies": {},
   "devDependencies": {
     "@do-while-for-each/tsconfig": "1.x.x",
-    "@do-while-for-each/test": "1.x.x"
+    "@do-while-for-each/test": "1.x.x",
+    "@types/d3-geo": "^1.12.3",
+    "d3-geo": "^1.12.1"
   },
   "scripts": {
     "clean": "dwfeFs cleanDir . --fileNames=\"dist;node_modules;package-lock.json\"",

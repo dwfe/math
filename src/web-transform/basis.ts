@@ -18,26 +18,32 @@ export class Basis {
    */
   centeredMatrixCoef: M2x2;
 
-  dx: TPoint;
-  dy: TPoint;
+  origin: TPoint; // origin point of the basis
+  oxEnd: TPoint; // end point of the basis vector ox
+  oyEnd: TPoint; // end point of the basis vector oy
 
-  constructor(public o: TPoint,
-              public ox: TPoint,
-              public oy: TPoint) {
-    // coordinates of the vectors are taken relative to the center of the basis
-    this.dx = Point.sub(ox, o);
-    this.dy = Point.sub(oy, o);
+  ox: TPoint; // basis vector ox with origin at [0,0]
+  oy: TPoint; // basis vector oy with origin at [0,0]
+  isOrthogonal: boolean;
+
+  constructor([origin, oxEnd, oyEnd]: TPoint[]) {
+    this.origin = origin;
+    this.oxEnd = oxEnd;
+    this.oyEnd = oyEnd;
+    this.ox = Point.sub(oxEnd, origin);
+    this.oy = Point.sub(oyEnd, origin);
+    this.isOrthogonal = Math.abs(Point.scalarProduct(this.ox, this.oy)) <= 0.000001;
 
     // the matrix of the linear transformation is filled in by columns
     this.ltMatrix = [
-      ...this.dx, // a, b,
-      ...this.dy, // c, d
+      ...this.ox, // a, b,
+      ...this.oy, // c, d
     ];
 
     // the matrix of the linear equation coefficients is filled in by rows
     this.centeredMatrixCoef = [
-      this.dx[0], this.dy[0], // a, c,
-      this.dx[1], this.dy[1]  // b, d
+      this.ox[0], this.oy[0], // a, c,
+      this.ox[1], this.oy[1]  // b, d
     ];
   }
 
@@ -46,23 +52,43 @@ export class Basis {
   }
 
   toJSON(): TPoint[] {
-    return [this.o, this.ox, this.oy];
+    return [this.origin, this.oxEnd, this.oyEnd];
   }
 
-  static fromString(data: string): Basis {
-    return Basis.fromJSON(JSON.parse(data));
+  static fromString(str: string): Basis {
+    return Basis.of(JSON.parse(str));
   }
 
-  static fromJSON(data: TPoint[]): Basis {
-    return Basis.of(data[0], data[1], data[2]);
-  }
-
-  static of(o: TPoint, ox: TPoint, oy: TPoint): Basis {
-    return new Basis(o, ox, oy);
+  static of(dto: TPoint[]): Basis {
+    return new Basis(dto);
   }
 
   static standard(): Basis {
-    return new Basis([0, 0], [1, 0], [0, 1]);
+    return new Basis([[0, 0], [1, 0], [0, 1]]);
+  }
+
+  /**
+   * Gram–Schmidt process:
+   *   https://youtu.be/SKfrbnuPeMc?list=PLwwk4BHih4fg6dz8m2K3R3uvDPC2bwUIR&t=374
+   *   https://youtu.be/jRCuSl1pfOA?t=538
+   *   https://youtu.be/LABz6sEE8LI?list=PLjjYXM9g4hhxHbx8ir096htbckks9ujxI&t=1379
+   */
+  static orthogonalize(dto: TPoint[]): TPoint[] {
+    const basis = Basis.of(dto);
+    if (basis.isOrthogonal) {
+      return basis.toJSON();
+    }
+    const {add, k, scalarProduct, sub} = Point;
+    const e1 = basis.ox;
+    const e2 = sub(
+      basis.oy,
+      k(scalarProduct(basis.oy, e1) / scalarProduct(e1, e1))(e1)
+    );
+    return [
+      basis.origin,
+      add(e1, basis.origin),
+      add(e2, basis.origin),
+    ];
   }
 
 }
