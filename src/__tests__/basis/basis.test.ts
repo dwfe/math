@@ -44,6 +44,7 @@ describe('basis', () => {
     expect(Basis.standard().isOrthogonal).True();
     expect(Basis.of([[0, 0], [1, 1], [0, 1]]).isOrthogonal).False();
     expect(Basis.of([[0, 0], [1, -2], [2, 1]]).isOrthogonal).True();
+    expect(Basis.of([[0, 0], [2, 1], [-1, 2]]).isOrthogonal).True(); // [a,b,-b,a]
 
     expect(projectionBasis(
       [0, 90],
@@ -72,8 +73,11 @@ describe('basis', () => {
 
   test('orthogonalize', () => {
     const checkSimple = (basisJson: TPoint[]) => {
-      expect(Basis.of(basisJson).isOrthogonal).False();
-      expect(Basis.of(Basis.orthogonalize(basisJson)).isOrthogonal).True();
+      const bad = Basis.of(basisJson);
+      const good = Basis.of(Basis.orthogonalize(basisJson));
+      // console.log(``,bad.aspectRatio === good.aspectRatio, bad.aspectRatio, good.aspectRatio, good.toJSON())
+      expect(bad.isOrthogonal).False();
+      expect(good.isOrthogonal).True();
     }
     const checkAlreadyOrthogonal = (basisJson: [TPoint, TPoint, TPoint]) => {
       expect(Basis.of(basisJson).isOrthogonal).True();
