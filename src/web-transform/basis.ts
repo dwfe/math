@@ -101,4 +101,26 @@ export class Basis {
     ];
   }
 
+  /**
+   * In addition to orthogonalization,
+   * the aspectRatio of the new basis becomes equal to 1.
+   * Process essence:
+   *   ox = [a, b]
+   *   oy = [-b,a]
+   *
+   * @param dto - [origin, oxEnd, oyEnd]
+   */
+  static orthogonalizeAR1(dto: TPoint[]): TPoint[] {
+    const basis = Basis.of(dto);
+    if (basis.isOrthogonal) {
+      return dto;
+    }
+    const e1 = basis.ox;
+    return [
+      basis.origin,
+      Point.add(e1, basis.origin), // oxEnd
+      Point.add([(-1) * e1[1], e1[0]], basis.origin), // oyEnd
+    ];
+  }
+
 }
