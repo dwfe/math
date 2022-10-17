@@ -61,6 +61,9 @@ export class Basis {
     return Basis.of(JSON.parse(str));
   }
 
+  /**
+   * @param dto - [origin, oxEnd, oyEnd]
+   */
   static of(dto: TPoint[]): Basis {
     return new Basis(dto);
   }
@@ -74,6 +77,8 @@ export class Basis {
    *   https://youtu.be/SKfrbnuPeMc?list=PLwwk4BHih4fg6dz8m2K3R3uvDPC2bwUIR&t=374
    *   https://youtu.be/jRCuSl1pfOA?t=538
    *   https://youtu.be/LABz6sEE8LI?list=PLjjYXM9g4hhxHbx8ir096htbckks9ujxI&t=1379
+   *
+   * @param dto - [origin, oxEnd, oyEnd]
    */
   static orthogonalize(dto: TPoint[]): TPoint[] {
     const basis = Basis.of(dto);
