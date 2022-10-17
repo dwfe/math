@@ -40,7 +40,6 @@
     "types": "tsc -b config/tsconfig.types.json",
     "test": "jest --config=src/__tests__/jest.config.js",
     "version": "npm run build && npm run types && npm run test",
-    "postversion": "git push",
     "deploy": "npm version patch && npm publish"
   },
   "publishConfig": {
