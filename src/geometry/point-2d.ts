@@ -7,19 +7,14 @@ class P {
   constructor(public readonly p: TPoint) {
   }
 
-  k = (kx: number, ky = kx): P => P.of(P.k(kx, ky)(this.p))
   add = (p: TPoint): P => P.of(P.add(this.p, p))
   sub = (p: TPoint): P => P.of(P.sub(this.p, p))
+  multiplyByScalar = (scalar: number): P => P.of(P.multiplyByScalar(this.p, scalar))
+  k = (kx: number, ky = kx): P => P.of(P.k(kx, ky)(this.p))
   middle = (p: TPoint): P => P.of(P.middle(this.p, p))
   distance = (p: TPoint): number => P.distance(this.p, p)
   equals = (p: TPoint): boolean => P.isEqual(this.p, p);
 
-
-  static k = (kx: number, ky = kx) =>
-    (p: TPoint): TPoint => ([
-      p[0] * kx,
-      p[1] * ky
-    ])
 
   static add = (p1: TPoint, p2: TPoint): TPoint => ([
     p1[0] + p2[0],
@@ -31,15 +26,31 @@ class P {
     p1[1] - p2[1]
   ])
 
+  static multiplyByScalar = (p: TPoint, scalar: number): TPoint => [
+    p[0] * scalar,
+    p[1] * scalar,
+  ];
+
+  static k = (kx: number, ky = kx) =>
+    (p: TPoint): TPoint => ([
+      p[0] * kx,
+      p[1] * ky
+    ])
+
   static middle = (p1: TPoint, p2: TPoint): TPoint =>
-    P.k(0.5)(P.add(p1, p2))
+    P.multiplyByScalar(
+      P.add(p1, p2),
+      0.5
+    )
 
   /**
-   *  a   c
-   *    *   = a*c + b*d
-   *  b   d
+   * Dot product or Scalar product:
+   *   a   c
+   *     *   = a*c+b*d
+   *   b   d
+   * https://en.wikipedia.org/wiki/Dot_product
    */
-  static scalarProduct(p1: TPoint, p2: TPoint): number {
+  static dotProduct(p1: TPoint, p2: TPoint): number {
     return p1[0] * p2[0] + p1[1] * p2[1];
   }
 

@@ -34,7 +34,7 @@ export class Basis {
     this.aspectRatio = Point.distance(oxEnd, origin) / Point.distance(oyEnd, origin);
     this.ox = Point.sub(oxEnd, origin);
     this.oy = Point.sub(oyEnd, origin);
-    this.isOrthogonal = Math.abs(Point.scalarProduct(this.ox, this.oy)) <= 0.000001;
+    this.isOrthogonal = Math.abs(Point.dotProduct(this.ox, this.oy)) <= 0.000001;
 
     // the matrix of the linear transformation is filled in by columns
     this.ltMatrix = [
@@ -83,18 +83,21 @@ export class Basis {
   static orthogonalize(dto: TPoint[]): TPoint[] {
     const basis = Basis.of(dto);
     if (basis.isOrthogonal) {
-      return basis.toJSON();
+      return dto;
     }
-    const {add, k, scalarProduct, sub} = Point;
+    const {add, multiplyByScalar, dotProduct, sub} = Point;
     const e1 = basis.ox;
     const e2 = sub(
       basis.oy,
-      k(scalarProduct(basis.oy, e1) / scalarProduct(e1, e1))(e1)
+      multiplyByScalar(
+        e1,
+        dotProduct(basis.oy, e1) / dotProduct(e1, e1)
+      )
     );
     return [
       basis.origin,
-      add(e1, basis.origin),
-      add(e2, basis.origin),
+      add(e1, basis.origin), // oxEnd
+      add(e2, basis.origin), // oyEnd
     ];
   }
 
