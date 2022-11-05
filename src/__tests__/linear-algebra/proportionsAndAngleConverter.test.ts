@@ -1,6 +1,6 @@
 import '@do-while-for-each/test'
-import {Basis, LinearOperator, WebMatrix} from '../../web-transform'
-import {Point, TPoint} from '../../geometry'
+import {Basis, LinearOperator, Matrix} from '../../linear-algebra'
+import {IPoint, Point} from '../../geometry'
 
 describe('proportions and angle converter', () => {
 
@@ -45,12 +45,12 @@ describe('proportions and angle converter', () => {
 });
 
 //                                     [fromPointTarget, toPointTarget, shiftInsideFrom, shiftInsideTo]
-function check(fromBasis: Basis, toBasis: Basis, data: [TPoint, TPoint, TPoint?, TPoint?][]) {
+function check(fromBasis: Basis, toBasis: Basis, data: [IPoint, IPoint, IPoint?, IPoint?][]) {
   const toTO = LinearOperator.proportionsWithRotationConverter(fromBasis, toBasis);
-  const toFROM = WebMatrix.invert(toTO);
+  const toFROM = Matrix.invert(toTO);
   for (const [fromPointCheck, toPointCheck, shiftInsideFrom, shiftInsideTo] of data) {
-    const toPoint = WebMatrix.apply(toTO, fromPointCheck);
-    const fromPoint = WebMatrix.apply(toFROM, toPointCheck);
+    const toPoint = Matrix.apply(toTO, fromPointCheck);
+    const fromPoint = Matrix.apply(toFROM, toPointCheck);
     // console.log(`fromPointCheck -> toPoint`, fromPointCheck, toPoint);
     // console.log(`fromPointCheck -> toPoint''`, fromPointCheck, WebMatrix.apply(toFROM, fromPointCheck));
     // console.log(`toPointCheck -> fromPoint`, toPointCheck, fromPoint);

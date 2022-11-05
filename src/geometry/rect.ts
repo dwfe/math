@@ -1,4 +1,5 @@
-import {IRect, TPoint} from './contract'
+import {IPoint, IRect} from './contract'
+import {Tuple2} from '../contract'
 
 class R {
 
@@ -15,7 +16,7 @@ class R {
     };
   }
 
-  static fromCenter(width: number, height: number, center?: TPoint): IRect {
+  static fromCenter(width: number, height: number, center?: IPoint): IRect {
     if (!center) {
       center = [width / 2, height / 2]; // если точка центра не задана, то она будет на пересечении диагоналей
     }
@@ -33,12 +34,12 @@ class R {
     };
   }
 
-  static leftTop = (r: IRect): TPoint => ([r.left, r.top]);
-  static leftBottom = (r: IRect): TPoint => ([r.left, r.bottom]);
-  static rightTop = (r: IRect): TPoint => ([r.right, r.top]);
-  static rightBottom = (r: IRect): TPoint => ([r.right, r.bottom]);
+  static leftTop = (r: IRect): Tuple2 => ([r.left, r.top]);
+  static leftBottom = (r: IRect): Tuple2 => ([r.left, r.bottom]);
+  static rightTop = (r: IRect): Tuple2 => ([r.right, r.top]);
+  static rightBottom = (r: IRect): Tuple2 => ([r.right, r.bottom]);
 
-  static center = (r: IRect): TPoint => ([(r.left + r.right) / 2, (r.top + r.bottom) / 2]);
+  static center = (r: IRect): Tuple2 => ([(r.left + r.right) / 2, (r.top + r.bottom) / 2]);
   static width = (r: IRect): number => (r.right - r.left);
   static height = (r: IRect): number => (r.bottom - r.top);
 

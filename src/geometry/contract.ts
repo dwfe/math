@@ -1,24 +1,17 @@
-export type TPoint = [number, number]
+import {Tuple2} from '../contract'
 
-export interface IPoint {
+export type IPoint = number[]
+
+export interface IPoint2D {
   x: number;
   y: number;
 }
 
-export interface IDiff {
-  dX: number;
-  dY: number;
+export interface IPoint3D extends IPoint2D {
+  z: number;
 }
 
-export type TVector = [TPoint, TPoint] // 2D vector: [startPoint, endPoint]
-
-// https://developer.mozilla.org/en-US/docs/Web/CSS/angle
-export enum AngleType {
-  DEGREES = 'deg',
-  RADIANS = 'rad',
-  GRADIANS = 'grad',
-  TURNS = 'turn',
-}
+export type IVector = Tuple2<IPoint> // 2D vector: [startPoint, endPoint]
 
 export interface IRect {
   left: number;
@@ -30,5 +23,8 @@ export interface IRect {
   height: number;
   aspectRatio: number;
 
-  center: TPoint;
+  center: IPoint;
 }
+
+export type IPolygon = IPoint[];
+export type IMultiPolygon = IPolygon[];

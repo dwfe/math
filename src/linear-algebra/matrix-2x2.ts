@@ -1,9 +1,10 @@
-import {M2x2} from './contract';
-import {TPoint} from '../geometry';
+import {Tuple2, Tuple4} from '../contract'
+import {IMatrix} from './contract'
+import {IPoint} from '../geometry'
 
 export class Matrix2x2 {
 
-  static invert(m: M2x2): M2x2 {
+  static invert(m: IMatrix): Tuple4 {
     const det = m[0] * m[3] - m[1] * m[2];
     if (det === 0) // matrix is not invertible
       throw new Error(`can't invert matrix ${m} because determinant is 0`)
@@ -24,7 +25,7 @@ export class Matrix2x2 {
  * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function#Transformation_functions
  * https://en.wikipedia.org/wiki/Matrix_multiplication
  */
-  static multiply = (m1: M2x2, m2: M2x2): M2x2 => [
+  static multiply = (m1: IMatrix, m2: IMatrix): Tuple4 => [
     m1[0] * m2[0] + m1[2] * m2[1], // a
     m1[1] * m2[0] + m1[3] * m2[1], // b
     m1[0] * m2[2] + m1[2] * m2[3], // c
@@ -39,12 +40,12 @@ export class Matrix2x2 {
  *   b d     y     b*x+d*y
  *
  */
-  static apply = (m: M2x2, p: TPoint): TPoint => [
+  static apply = (m: IMatrix, p: IPoint): Tuple2 => [
     m[0] * p[0] + m[2] * p[1],
     m[1] * p[0] + m[3] * p[1]
   ];
 
-  static isEqual = (m1: M2x2, m2: M2x2): boolean =>
+  static isEqual = (m1: IMatrix, m2: IMatrix): boolean =>
     Math.abs(m1[0] - m2[0]) < ACCURACY &&
     Math.abs(m1[1] - m2[1]) < ACCURACY &&
     Math.abs(m1[2] - m2[2]) < ACCURACY &&

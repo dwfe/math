@@ -1,6 +1,6 @@
 import {Throw} from '@do-while-for-each/test'
-import {Basis, LinearOperator, WebMatrix} from '../../web-transform'
-import {Point, TPoint} from '../../geometry'
+import {Basis, LinearOperator, Matrix} from '../../linear-algebra'
+import {IPoint, Point} from '../../geometry'
 
 describe('change of basis matrix', () => {
 
@@ -106,17 +106,17 @@ describe('change of basis matrix', () => {
 });
 
 //                                     [fromPointTarget, toPointTarget, shiftInsideFrom, shiftInsideTo]
-function check(fromBasis: Basis, toBasis: Basis, data: [TPoint, TPoint, TPoint?, TPoint?][]) {
+function check(fromBasis: Basis, toBasis: Basis, data: [IPoint, IPoint, IPoint?, IPoint?][]) {
   const fns: Array<{ variant: string, changeOfBasisMatrix: any }> = [
     {variant: '1#', changeOfBasisMatrix: LinearOperator.changeOfBasisMatrix},
     {variant: '2#', changeOfBasisMatrix: LinearOperator.changeOfBasisMatrix2}
   ];
   for (const next of fns) {
     const toTO = next.changeOfBasisMatrix(fromBasis, toBasis);
-    const toFROM = WebMatrix.invert(toTO);
+    const toFROM = Matrix.invert(toTO);
     for (const [fromPointCheck, toPointCheck, shiftInsideFrom, shiftInsideTo] of data) {
-      const toPoint = WebMatrix.apply(toTO, fromPointCheck);
-      const fromPoint = WebMatrix.apply(toFROM, toPointCheck);
+      const toPoint = Matrix.apply(toTO, fromPointCheck);
+      const fromPoint = Matrix.apply(toFROM, toPointCheck);
       // console.log(`${next.variant} fromPointCheck -> toPoint`, fromPointCheck, toPoint);
       // console.log(`${next.variant} fromPointCheck -> toPoint''`, fromPointCheck, WebMatrix.apply(toFROM, fromPointCheck));
       // console.log(`${next.variant} toPointCheck -> fromPoint`, toPointCheck, fromPoint);

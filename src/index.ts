@@ -1,2 +1,4 @@
+export * from './angle';
 export * from './geometry';
-export * from './web-transform';
+export * from './linear-algebra';
+export * from './contract';

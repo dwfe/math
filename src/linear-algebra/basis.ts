@@ -1,5 +1,5 @@
-import {Point, TPoint} from '../geometry'
-import {M2x2} from './contract'
+import {IPoint, Point} from '../geometry'
+import {Tuple4} from '../contract'
 
 export class Basis {
 
@@ -8,7 +8,7 @@ export class Basis {
    *   a c
    *   b d
    */
-  ltMatrix: M2x2;
+  ltMatrix: Tuple4;
 
   /**
    * Matrix of Linear equation coefficients:
@@ -16,18 +16,18 @@ export class Basis {
    *   a b
    *   c d
    */
-  centeredMatrixCoef: M2x2;
+  centeredMatrixCoef: Tuple4;
 
-  origin: TPoint; // origin point of the basis
-  oxEnd: TPoint; // end point of the basis vector ox
-  oyEnd: TPoint; // end point of the basis vector oy
+  origin: IPoint; // origin point of the basis
+  oxEnd: IPoint; // end point of the basis vector ox
+  oyEnd: IPoint; // end point of the basis vector oy
   aspectRatio: number;
 
-  ox: TPoint; // basis vector ox with origin at [0,0]
-  oy: TPoint; // basis vector oy with origin at [0,0]
+  ox: IPoint; // basis vector ox with origin at [0,0]
+  oy: IPoint; // basis vector oy with origin at [0,0]
   isOrthogonal: boolean;
 
-  constructor([origin, oxEnd, oyEnd]: TPoint[]) {
+  constructor([origin, oxEnd, oyEnd]: IPoint[]) {
     this.origin = origin;
     this.oxEnd = oxEnd;
     this.oyEnd = oyEnd;
@@ -37,15 +37,15 @@ export class Basis {
     this.isOrthogonal = Math.abs(Point.dotProduct(this.ox, this.oy)) <= 0.000001;
 
     // the matrix of the linear transformation is filled in by columns
-    this.ltMatrix = [
-      ...this.ox, // a, b,
-      ...this.oy, // c, d
+    this.ltMatrix = [ // a, b, c, d
+      this.ox[0], this.ox[1],
+      this.oy[0], this.oy[1]
     ];
 
     // the matrix of the linear equation coefficients is filled in by rows
-    this.centeredMatrixCoef = [
-      this.ox[0], this.oy[0], // a, c,
-      this.ox[1], this.oy[1]  // b, d
+    this.centeredMatrixCoef = [ // a, c, b, d
+      this.ox[0], this.oy[0],
+      this.ox[1], this.oy[1]
     ];
   }
 
@@ -53,7 +53,7 @@ export class Basis {
     return JSON.stringify(this.toJSON());
   }
 
-  toJSON(): TPoint[] {
+  toJSON(): IPoint[] {
     return [this.origin, this.oxEnd, this.oyEnd];
   }
 
@@ -64,7 +64,7 @@ export class Basis {
   /**
    * @param dto - [origin, oxEnd, oyEnd]
    */
-  static of(dto: TPoint[]): Basis {
+  static of(dto: IPoint[]): Basis {
     return new Basis(dto);
   }
 
@@ -80,7 +80,7 @@ export class Basis {
    *
    * @param dto - [origin, oxEnd, oyEnd]
    */
-  static orthogonalize(dto: TPoint[]): TPoint[] {
+  static orthogonalize(dto: IPoint[]): IPoint[] {
     const basis = Basis.of(dto);
     if (basis.isOrthogonal) {
       return dto;
@@ -110,7 +110,7 @@ export class Basis {
    *
    * @param dto - [origin, oxEnd, oyEnd]
    */
-  static orthogonalizeAR1(dto: TPoint[]): TPoint[] {
+  static orthogonalizeAR1(dto: IPoint[]): IPoint[] {
     const basis = Basis.of(dto);
     if (basis.isOrthogonal) {
       return dto;

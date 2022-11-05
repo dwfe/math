@@ -1,10 +1,11 @@
 import {geoStereographic} from 'd3-geo'
 import '@do-while-for-each/test'
-import {Point, TPoint} from '../../geometry'
-import {Basis} from '../../web-transform'
+import {IPoint, Point} from '../../geometry'
+import {Basis} from '../../linear-algebra'
+import {Tuple2} from '../../contract'
 
 const geoToProjection = geoStereographic().rotate([0, -90, 0]);
-const projectionToGeo = geoToProjection.invert as (point: TPoint) => TPoint;
+const projectionToGeo = geoToProjection.invert as (point: Tuple2) => IPoint;
 
 describe('basis', () => {
 
@@ -34,10 +35,10 @@ describe('basis', () => {
   });
 
   test('isOrthogonal', () => {
-    const projectionBasis = (origin: TPoint, oxEnd: TPoint, oyEnd: TPoint) => (
+    const projectionBasis = (origin: IPoint, oxEnd: IPoint, oyEnd: IPoint) => (
       Basis.of(
         [origin, oxEnd, oyEnd]
-          .map(geoPoint => geoToProjection(geoPoint) as TPoint)
+          .map(geoPoint => geoToProjection(geoPoint as Tuple2) as IPoint)
       )
     );
 
@@ -72,27 +73,27 @@ describe('basis', () => {
   });
 
   test('orthogonalize', () => {
-    const checkSimple = (basisJson: TPoint[]) => {
+    const checkSimple = (basisJson: IPoint[]) => {
       const bad = Basis.of(basisJson);
       const good = Basis.of(Basis.orthogonalize(basisJson));
-      console.log(`checkSimple`, bad.aspectRatio === good.aspectRatio, bad.aspectRatio, good.aspectRatio, good.toJSON())
+      //console.log(`checkSimple`, bad.aspectRatio === good.aspectRatio, bad.aspectRatio, good.aspectRatio, good.toJSON())
       expect(bad.isOrthogonal).False();
       expect(good.isOrthogonal).True();
     }
-    const checkSimpleAR1 = (basisJson: TPoint[]) => {
+    const checkSimpleAR1 = (basisJson: IPoint[]) => {
       const bad = Basis.of(basisJson);
       const good = Basis.of(Basis.orthogonalizeAR1(basisJson));
-      console.log(`checkSimpleAR1`, bad.aspectRatio === good.aspectRatio, bad.aspectRatio, good.aspectRatio, good.toJSON())
+      //console.log(`checkSimpleAR1`, bad.aspectRatio === good.aspectRatio, bad.aspectRatio, good.aspectRatio, good.toJSON())
       expect(bad.isOrthogonal).False();
       expect(good.isOrthogonal).True();
     }
-    const checkAlreadyOrthogonal = (basisJson: [TPoint, TPoint, TPoint]) => {
+    const checkAlreadyOrthogonal = (basisJson: [IPoint, IPoint, IPoint]) => {
       expect(Basis.of(basisJson).isOrthogonal).True();
       expect(Basis.of(Basis.orthogonalize(basisJson)).isOrthogonal).True();
     }
-    const checkGeobasis = (basisJson: [TPoint, TPoint, TPoint]) => {
+    const checkGeobasis = (basisJson: [IPoint, IPoint, IPoint]) => {
       const projectionBasis = Basis.of(
-        basisJson.map(geoPoint => geoToProjection(geoPoint) as TPoint)
+        basisJson.map(geoPoint => geoToProjection(geoPoint as Tuple2) as IPoint)
       );
       expect(projectionBasis.isOrthogonal).False();
       const orthoProjectionBasis = Basis.of(Basis.orthogonalize(projectionBasis.toJSON()));
