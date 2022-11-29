@@ -9,6 +9,29 @@ const projectionToGeo = geoToProjection.invert as (point: Tuple2) => IPoint;
 
 describe('basis', () => {
 
+  test('toJSON()', () => {
+    const basis = Basis.of([
+      [1, 2],
+      [3, 4],
+      [5, 6]
+    ]);
+    const check = (points: IPoint[]) => {
+      expect(Point.isEqual(points[0], [1, 2])).True();
+      expect(Point.isEqual(points[1], [3, 4])).True();
+      expect(Point.isEqual(points[2], [5, 6])).True();
+    }
+    const json = basis.toJSON();
+    check(json);
+    check([basis.origin, basis.oxEnd, basis.oyEnd]);
+    basis.origin = [0, 1];
+    basis.oxEnd = [1, 2];
+    basis.oyEnd = [2, 3];
+    expect(Point.isEqual(basis.origin, [0, 1])).True();
+    expect(Point.isEqual(basis.oxEnd, [1, 2])).True();
+    expect(Point.isEqual(basis.oyEnd, [2, 3])).True();
+    check(json);
+  });
+
   test('aspectRatio', () => {
     expect(Basis.standard().aspectRatio).eq(1);
     expect(Basis.of([[0, 0], [2, 0], [0, 1]]).aspectRatio).eq(2);

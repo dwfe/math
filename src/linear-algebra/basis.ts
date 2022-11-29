@@ -54,7 +54,15 @@ export class Basis {
   }
 
   toJSON(): IPoint[] {
-    return [this.origin, this.oxEnd, this.oyEnd];
+    return [
+      [this.origin[0], this.origin[1]],
+      [this.oxEnd[0], this.oxEnd[1]],
+      [this.oyEnd[0], this.oyEnd[1]]
+    ];
+  }
+
+  informIfNotOrthogonal(description?: string): void {
+    Basis.informIfNotOrthogonal(this, description);
   }
 
   static fromString(str: string): Basis {
@@ -121,6 +129,17 @@ export class Basis {
       Point.add(e1, basis.origin), // oxEnd
       Point.add([(-1) * e1[1], e1[0]], basis.origin), // oyEnd
     ];
+  }
+
+  /**
+   * @param basis
+   * @param description - additional information about this basis
+   */
+  static informIfNotOrthogonal(basis: Basis, description?: string): void {
+    if (!basis.isOrthogonal) {
+      const prefix = description ? `${description} -> ` : '';
+      console.error(`${prefix}basis is not orthogonal`, basis.toJSON());
+    }
   }
 
 }
