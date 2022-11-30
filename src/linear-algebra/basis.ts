@@ -61,12 +61,16 @@ export class Basis {
     ];
   }
 
+  clone(): Basis {
+    return new Basis(this.toJSON());
+  }
+
   informIfNotOrthogonal(description?: string): void {
     Basis.informIfNotOrthogonal(this, description);
   }
 
   static fromString(str: string): Basis {
-    return Basis.of(JSON.parse(str));
+    return new Basis(JSON.parse(str));
   }
 
   /**
@@ -85,13 +89,10 @@ export class Basis {
    *   https://youtu.be/SKfrbnuPeMc?list=PLwwk4BHih4fg6dz8m2K3R3uvDPC2bwUIR&t=374
    *   https://youtu.be/jRCuSl1pfOA?t=538
    *   https://youtu.be/LABz6sEE8LI?list=PLjjYXM9g4hhxHbx8ir096htbckks9ujxI&t=1379
-   *
-   * @param dto - [origin, oxEnd, oyEnd]
    */
-  static orthogonalize(dto: IPoint[]): IPoint[] {
-    const basis = Basis.of(dto);
+  static orthogonalize(basis: Basis): Basis {
     if (basis.isOrthogonal) {
-      return dto;
+      return basis.clone();
     }
     const {add, multiplyByScalar, dotProduct, sub} = Point;
     const e1 = basis.ox;
@@ -102,11 +103,15 @@ export class Basis {
         dotProduct(basis.oy, e1) / dotProduct(e1, e1)
       )
     );
-    return [
+    const orthogonalBasis = new Basis([
       basis.origin,
       add(e1, basis.origin), // oxEnd
       add(e2, basis.origin), // oyEnd
-    ];
+    ]);
+    if (!orthogonalBasis.isOrthogonal) {
+      throw new Error('failed to orthogonalize the basis by Gram–Schmidt');
+    }
+    return orthogonalBasis;
   }
 
   /**
@@ -115,30 +120,32 @@ export class Basis {
    * Process essence:
    *   ox = [a, b]
    *   oy = [-b,a]
-   *
-   * @param dto - [origin, oxEnd, oyEnd]
    */
-  static orthogonalizeAR1(dto: IPoint[]): IPoint[] {
-    const basis = Basis.of(dto);
+  static orthogonalizeAR1(basis: Basis): Basis {
     if (basis.isOrthogonal) {
-      return dto;
+      return basis.clone();
     }
     const e1 = basis.ox;
-    return [
+    const orthogonalBasis = new Basis([
       basis.origin,
       Point.add(e1, basis.origin), // oxEnd
       Point.add([(-1) * e1[1], e1[0]], basis.origin), // oyEnd
-    ];
+    ]);
+    if (!orthogonalBasis.isOrthogonal) {
+      throw new Error('failed to orthogonalize the basis by aspectRatio1');
+    }
+    return orthogonalBasis;
   }
 
   /**
    * @param basis
    * @param description - additional information about this basis
+   * @param rest - some other optional parameters
    */
-  static informIfNotOrthogonal(basis: Basis, description?: string): void {
+  static informIfNotOrthogonal(basis: Basis, description = '', ...rest: any[]): void {
     if (!basis.isOrthogonal) {
       const prefix = description ? `${description} -> ` : '';
-      console.error(`${prefix}basis is not orthogonal`, basis.toJSON());
+      console.error(`${prefix}basis is not orthogonal`, basis.toJSON(), ...rest);
     }
   }
 

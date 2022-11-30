@@ -96,54 +96,52 @@ describe('basis', () => {
   });
 
   test('orthogonalize', () => {
-    const checkSimple = (basisJson: IPoint[]) => {
-      const bad = Basis.of(basisJson);
-      const good = Basis.of(Basis.orthogonalize(basisJson));
+    const checkSimple = (basis: Basis) => {
+      const good = Basis.orthogonalize(basis);
       //console.log(`checkSimple`, bad.aspectRatio === good.aspectRatio, bad.aspectRatio, good.aspectRatio, good.toJSON())
-      expect(bad.isOrthogonal).False();
+      expect(basis.isOrthogonal).False();
       expect(good.isOrthogonal).True();
     }
-    const checkSimpleAR1 = (basisJson: IPoint[]) => {
-      const bad = Basis.of(basisJson);
-      const good = Basis.of(Basis.orthogonalizeAR1(basisJson));
+    const checkSimpleAR1 = (basis: Basis) => {
+      const good = Basis.orthogonalizeAR1(basis);
       //console.log(`checkSimpleAR1`, bad.aspectRatio === good.aspectRatio, bad.aspectRatio, good.aspectRatio, good.toJSON())
-      expect(bad.isOrthogonal).False();
+      expect(basis.isOrthogonal).False();
       expect(good.isOrthogonal).True();
     }
-    const checkAlreadyOrthogonal = (basisJson: [IPoint, IPoint, IPoint]) => {
-      expect(Basis.of(basisJson).isOrthogonal).True();
-      expect(Basis.of(Basis.orthogonalize(basisJson)).isOrthogonal).True();
+    const checkAlreadyOrthogonal = (basis: Basis) => {
+      expect(basis.isOrthogonal).True();
+      expect(Basis.orthogonalize(basis).isOrthogonal).True();
     }
-    const checkGeobasis = (basisJson: [IPoint, IPoint, IPoint]) => {
+    const checkGeobasis = (basis: Basis) => {
       const projectionBasis = Basis.of(
-        basisJson.map(geoPoint => geoToProjection(geoPoint as Tuple2) as IPoint)
+        basis.toJSON().map(geoPoint => geoToProjection(geoPoint as Tuple2) as IPoint)
       );
       expect(projectionBasis.isOrthogonal).False();
-      const orthoProjectionBasis = Basis.of(Basis.orthogonalize(projectionBasis.toJSON()));
+      const orthoProjectionBasis = Basis.orthogonalize(projectionBasis);
       expect(orthoProjectionBasis.isOrthogonal).True();
       // console.log(``, orthoProjectionBasis.toJSON().map(point => projectionToGeo(point)))
     }
 
-    checkSimple([[0, 0], [1, 1], [0, 1]]);
-    checkSimpleAR1([[0, 0], [1, 1], [0, 1]]);
-    checkSimple([[1, 2], [0, 1], [1, 0]]);
-    checkSimpleAR1([[1, 2], [0, 1], [1, 0]]);
-    checkSimple([[0, 0], [2, 1], [0.5, 1.5]]);
-    checkSimpleAR1([[0, 0], [2, 1], [0.5, 1.5]]);
-    checkAlreadyOrthogonal([[0, 0], [1, 0], [0, 1]]);
-    checkAlreadyOrthogonal([[1, 1], [1, 0], [0, 1]]);
+    checkSimple(Basis.of([[0, 0], [1, 1], [0, 1]]));
+    checkSimpleAR1(Basis.of([[0, 0], [1, 1], [0, 1]]));
+    checkSimple(Basis.of([[1, 2], [0, 1], [1, 0]]));
+    checkSimpleAR1(Basis.of([[1, 2], [0, 1], [1, 0]]));
+    checkSimple(Basis.of([[0, 0], [2, 1], [0.5, 1.5]]));
+    checkSimpleAR1(Basis.of([[0, 0], [2, 1], [0.5, 1.5]]));
+    checkAlreadyOrthogonal(Basis.of([[0, 0], [1, 0], [0, 1]]));
+    checkAlreadyOrthogonal(Basis.of([[1, 1], [1, 0], [0, 1]]));
 
-    checkGeobasis([
+    checkGeobasis(Basis.of([
       [65, 73],
       [85, 73],
       [65, 65],
-    ]);
+    ]));
 
-    checkGeobasis([
+    checkGeobasis(Basis.of([
       [540.7124205178468, 127.08110020067348],
       [454.058963782401, 267.91670026239075],
       [465.89350798505944, 81.04645130996792],
-    ])
+    ]))
   });
 
 });
