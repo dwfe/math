@@ -65,8 +65,8 @@ export class Basis {
     return new Basis(this.toJSON());
   }
 
-  informIfNotOrthogonal(description?: string): void {
-    Basis.informIfNotOrthogonal(this, description);
+  informIfNotOrthogonal(description = '', ...rest: any[]): void {
+    Basis.informIfNotOrthogonal(this, description, ...rest);
   }
 
   static fromString(str: string): Basis {
