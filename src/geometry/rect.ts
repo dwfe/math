@@ -11,7 +11,7 @@ class R {
       bottom: height,
       width,
       height,
-      aspectRatio: width / height,
+      aspectRatio: height === 0 ? 0 : width / height,
       center: [width / 2, height / 2]
     };
   }
@@ -29,7 +29,7 @@ class R {
       bottom: center[1] + heightHalf,
       width,
       height,
-      aspectRatio: width / height,
+      aspectRatio: height === 0 ? 0 : width / height,
       center,
     };
   }

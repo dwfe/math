@@ -1,4 +1,4 @@
-import '@do-while-for-each/test'
+import {noThrow} from '@do-while-for-each/test'
 import {Point, Rect} from '../../geometry'
 
 describe('rect', () => {
@@ -26,6 +26,26 @@ describe('rect', () => {
     expect(Rect.height(rect)).eq(rect.height);
     expect(2 / 5).eq(rect.aspectRatio);
     expect(Point.isEqual([0.5, 0.5], rect.center)).True();
+  });
+
+  test('height === 0', () => {
+    noThrow(() => {
+      const rect = Rect.fromOrigin(0, 0);
+      expect(rect.aspectRatio).eq(0);
+    });
+    noThrow(() => {
+      const rect = Rect.fromOrigin(1, 0);
+      expect(rect.aspectRatio).eq(0);
+    });
+
+    noThrow(() => {
+      const rect = Rect.fromCenter(0, 0);
+      expect(rect.aspectRatio).eq(0);
+    });
+    noThrow(() => {
+      const rect = Rect.fromCenter(1, 0);
+      expect(rect.aspectRatio).eq(0);
+    });
   });
 
 });
