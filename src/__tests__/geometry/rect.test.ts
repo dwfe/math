@@ -48,4 +48,24 @@ describe('rect', () => {
     });
   });
 
+  test('fromDOMRect', () => {
+    const rect = Rect.fromDOMRect({
+      left: 0,
+      top: 0,
+      right: 200,
+      bottom: 100,
+
+      width: 200,
+      height: 100,
+    });
+    expect(rect.left).eq(0);
+    expect(rect.top).eq(0);
+    expect(rect.right).eq(200);
+    expect(rect.bottom).eq(100);
+    expect(rect.width).eq(200);
+    expect(rect.height).eq(100);
+    expect(rect.aspectRatio).eq(2);
+    expect(Point.isEqual(rect.center, [100, 50])).True();
+  });
+
 });

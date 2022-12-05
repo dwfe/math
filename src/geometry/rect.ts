@@ -34,6 +34,19 @@ class R {
     };
   }
 
+  static fromDOMRect(rect: IDOMRect): IRect {
+    return {
+      left: rect.left,
+      top: rect.top,
+      right: rect.right,
+      bottom: rect.bottom,
+      width: rect.width,
+      height: rect.height,
+      aspectRatio: rect.height === 0 ? 0 : rect.width / rect.height,
+      center: [rect.width / 2, rect.height / 2],
+    };
+  }
+
   static leftTop = (r: IRect): Tuple2 => ([r.left, r.top]);
   static leftBottom = (r: IRect): Tuple2 => ([r.left, r.bottom]);
   static rightTop = (r: IRect): Tuple2 => ([r.right, r.top]);
@@ -51,4 +64,15 @@ class R {
 
 export {
   R as Rect
+}
+
+
+interface IDOMRect {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+
+  width: number;
+  height: number;
 }

@@ -6,10 +6,14 @@ export function fitRectIntoRect(outer: IOuter, innerAspectRatio: number) {
   let top = 0;
   let width = outer.width;
   let height = outer.height;
-  if (outer.aspectRatio > innerAspectRatio) {
+  let outerAspectRatio = outer.aspectRatio;
+  if (outerAspectRatio === undefined) {
+    outerAspectRatio = height === 0 ? 0 : width / height;
+  }
+  if (outerAspectRatio > innerAspectRatio) {
     width = height * innerAspectRatio;
     left = (outer.width - width) / 2;
-  } else if (outer.aspectRatio < innerAspectRatio) {
+  } else if (outerAspectRatio < innerAspectRatio) {
     height = width / innerAspectRatio;
     top = (outer.height - height) / 2;
   }
@@ -24,5 +28,5 @@ export function fitRectIntoRect(outer: IOuter, innerAspectRatio: number) {
 interface IOuter {
   width: number;
   height: number;
-  aspectRatio: number;
+  aspectRatio?: number;
 }

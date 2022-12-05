@@ -1,5 +1,5 @@
 import '@do-while-for-each/test';
-import {fitRectIntoRect} from '../../algorithm/fitRectIntoRect'
+import {fitRectIntoRect} from '../../algorithm'
 import {Rect} from '../../geometry'
 
 describe('fitRectIntoRect', () => {
@@ -42,6 +42,26 @@ describe('fitRectIntoRect', () => {
       expect(height).eq(1);
       expect(left).eq(0);
       expect(top).eq(0);
+    }
+  });
+
+  test('calc aspectRatio', () => {
+    {
+      const outer = Rect.fromOrigin(140, 100);
+      const inner = Rect.fromOrigin(100, 200);
+      const {width, height, left, top} = fitRectIntoRect({width: outer.width, height: outer.height}, inner.aspectRatio);
+      expect(width).eq(50);
+      expect(height).eq(100);
+      expect(left).eq(45);
+      expect(top).eq(0);
+    }
+    {
+      const inner = Rect.fromOrigin(200, 100);
+      const {width, height, left, top} = fitRectIntoRect({width: 1, height: 0}, inner.aspectRatio);
+      expect(width).eq(1);
+      expect(height).eq(0.5);
+      expect(left).eq(0);
+      expect(top).eq(-0.25);
     }
   });
 
