@@ -56,7 +56,7 @@ class R {
   static width = (r: IRect): number => (r.right - r.left);
   static height = (r: IRect): number => (r.bottom - r.top);
 
-  static isEqual = (a: IRect, b: IRect): boolean => (
+  static isEqual = (a: IWidthHeight, b: IWidthHeight): boolean => (
     a.width === b.width &&
     a.height === b.height
   );
@@ -78,6 +78,11 @@ interface IDOMRect {
   right: number;
   bottom: number;
 
+  width: number;
+  height: number;
+}
+
+interface IWidthHeight {
   width: number;
   height: number;
 }
