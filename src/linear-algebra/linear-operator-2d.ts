@@ -44,7 +44,7 @@ export class LinearOperator {
     );
 
   /**
-   * Proportion converter when no rotation occurs between coordinate systems
+   * Proportion converter when no rotation occurs
    */
   static proportionsConverter = (
     onAxisX: ISegmentChanging,
@@ -58,7 +58,7 @@ export class LinearOperator {
     );
 
   /**
-   * Proportion converter when rotation is possible between coordinate systems
+   * Proportion converter when rotation is possible
    */
   static proportionsWithRotationConverter = (from: Basis, to: Basis): Tuple6 => {
     const linearM = multiply(to.ltMatrix, invert(from.ltMatrix)); // FROM-basis -> TO-basis

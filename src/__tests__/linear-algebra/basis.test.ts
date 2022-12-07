@@ -144,4 +144,27 @@ describe('basis', () => {
     ]))
   });
 
+  test('fourth point', () => {
+    expect(Point.isEqual(
+      Basis.of([[1, 2], [2, 2], [1, 3]]).fourth,
+      [2, 3]
+    )).True();
+    expect(Point.isEqual(
+      Basis.of([[2, -1], [1, 0], [4, 1]]).fourth,
+      [3, 2]
+    )).True();
+    expect(Point.isEqual(
+      Basis.of([[0, 0], [1, 0], [1, -1]]).fourth,
+      [2, -1]
+    )).True();
+    expect(Point.isEqual(
+      Basis.of([[0, 0], [2, 1], [0.5, 1.5]]).fourth,
+      [2.5, 2.5]
+    )).True();
+    expect(Point.isEqual(
+      Basis.of([[-3, -40], [3, 10], [-4, -10]]).fourth,
+      [2, 40]
+    )).True();
+  });
+
 });

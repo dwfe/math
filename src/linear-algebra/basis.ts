@@ -8,7 +8,7 @@ export class Basis {
    *   a c
    *   b d
    */
-  ltMatrix: Tuple4;
+  ltMatrix: Tuple4; // [a, b, c, d]
 
   /**
    * Matrix of Linear equation coefficients:
@@ -16,11 +16,15 @@ export class Basis {
    *   a b
    *   c d
    */
-  centeredMatrixCoef: Tuple4;
+  centeredMatrixCoef: Tuple4; // [a, c, b, d]
 
-  origin: IPoint; // origin point of the basis
-  oxEnd: IPoint; // end point of the basis vector ox
-  oyEnd: IPoint; // end point of the basis vector oy
+  origin: IPoint; // origin point of the pseudoBasis
+  oxEnd: IPoint; // end point of the pseudoBasis vector ox
+  oyEnd: IPoint; // end point of the pseudoBasis vector oy
+  fourth: IPoint; // end point of (vector oxEnd + vector oyEnd)
+
+  width: number;
+  height: number;
   aspectRatio: number;
 
   ox: IPoint; // basis vector ox with origin at [0,0]
@@ -31,7 +35,12 @@ export class Basis {
     this.origin = origin;
     this.oxEnd = oxEnd;
     this.oyEnd = oyEnd;
-    this.aspectRatio = Point.distance(oxEnd, origin) / Point.distance(oyEnd, origin);
+    this.fourth = Point.sub(Point.add(oxEnd, oyEnd), origin);
+
+    this.width = Point.distance(oxEnd, origin);
+    this.height = Point.distance(oyEnd, origin);
+    this.aspectRatio = this.height === 0 ? 0 : this.width / this.height;
+
     this.ox = Point.sub(oxEnd, origin);
     this.oy = Point.sub(oyEnd, origin);
     this.isOrthogonal = Math.abs(Point.dotProduct(this.ox, this.oy)) <= 0.000001;
