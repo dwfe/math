@@ -77,4 +77,27 @@ describe('rect', () => {
     expect(Rect.isEqual(Rect.fromOrigin(100, 200), Rect.fromCenter(100, 100, [70, 90]))).False();
   });
 
+  test('toPoints', () => {
+    const rect = Rect.fromOrigin(1, 1);
+    const arr = Rect.toPoints(rect);
+    expect(arr.length).eq(4);
+    const [leftTop, rightTop, rightBottom, leftBottom] = arr;
+    expect(Point.isEqual(leftTop, [0, 0])).True();
+    expect(Point.isEqual(rightTop, [1, 0])).True();
+    expect(Point.isEqual(rightBottom, [1, 1])).True();
+    expect(Point.isEqual(leftBottom, [0, 1])).True();
+  });
+
+  test('toPolygon', () => {
+    const rect = Rect.fromOrigin(1, 1);
+    const arr = Rect.toPolygon(rect);
+    expect(arr.length).eq(5);
+    const [leftTop, rightTop, rightBottom, leftBottom, leftTop2] = arr;
+    expect(Point.isEqual(leftTop, [0, 0])).True();
+    expect(Point.isEqual(rightTop, [1, 0])).True();
+    expect(Point.isEqual(rightBottom, [1, 1])).True();
+    expect(Point.isEqual(leftBottom, [0, 1])).True();
+    expect(Point.isEqual(leftTop2, [0, 0])).True();
+  });
+
 });

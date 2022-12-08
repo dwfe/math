@@ -1,5 +1,5 @@
+import {Tuple2, Tuple4, Tuple5} from '../contract'
 import {IPoint, IRect} from './contract'
-import {Tuple2} from '../contract'
 
 class R {
 
@@ -47,14 +47,29 @@ class R {
     };
   }
 
-  static leftTop = (r: IRect): Tuple2 => ([r.left, r.top]);
-  static leftBottom = (r: IRect): Tuple2 => ([r.left, r.bottom]);
-  static rightTop = (r: IRect): Tuple2 => ([r.right, r.top]);
-  static rightBottom = (r: IRect): Tuple2 => ([r.right, r.bottom]);
+  static toPoints = (r: IRect): Tuple4<IPoint> => [
+    R.leftTop(r),
+    R.rightTop(r),
+    R.rightBottom(r),
+    R.leftBottom(r),
+  ];
 
-  static center = (r: IRect): Tuple2 => ([(r.left + r.right) / 2, (r.top + r.bottom) / 2]);
-  static width = (r: IRect): number => (r.right - r.left);
-  static height = (r: IRect): number => (r.bottom - r.top);
+  static toPolygon = (r: IRect): Tuple5<IPoint> => [
+    R.leftTop(r),
+    R.rightTop(r),
+    R.rightBottom(r),
+    R.leftBottom(r),
+    R.leftTop(r),
+  ];
+
+  static leftTop = (r: IRect): Tuple2 => [r.left, r.top];
+  static leftBottom = (r: IRect): Tuple2 => [r.left, r.bottom];
+  static rightTop = (r: IRect): Tuple2 => [r.right, r.top];
+  static rightBottom = (r: IRect): Tuple2 => [r.right, r.bottom];
+
+  static center = (r: IRect): Tuple2 => [(r.left + r.right) / 2, (r.top + r.bottom) / 2];
+  static width = (r: IRect): number => r.right - r.left;
+  static height = (r: IRect): number => r.bottom - r.top;
 
   static isEqual = (a: IWidthHeight, b: IWidthHeight): boolean => (
     a.width === b.width &&

@@ -201,14 +201,15 @@ class M { // exported as Matrix
   static skewIdentity = (ax: number, ay: number, unit?: IAngleUnit): Tuple6 => M.skew(identityMatrix, ax, ay, unit);
 
 
-  static isEqual = (m1: IMatrix, m2: IMatrix): boolean =>
-    Math.abs(m1[0] - m2[0]) < ACCURACY &&
-    Math.abs(m1[1] - m2[1]) < ACCURACY &&
-    Math.abs(m1[2] - m2[2]) < ACCURACY &&
-    Math.abs(m1[3] - m2[3]) < ACCURACY &&
-    Math.abs(m1[4] - m2[4]) < ACCURACY &&
-    Math.abs(m1[5] - m2[5]) < ACCURACY
-  ;
+  static isEqual = (m1: IMatrix, m2: IMatrix, accuracy = 0.0001): boolean => (
+    Math.abs(m1[0] - m2[0]) < accuracy &&
+    Math.abs(m1[1] - m2[1]) < accuracy &&
+    Math.abs(m1[2] - m2[2]) < accuracy &&
+    Math.abs(m1[3] - m2[3]) < accuracy &&
+    Math.abs(m1[4] - m2[4]) < accuracy &&
+    Math.abs(m1[5] - m2[5]) < accuracy
+  );
+
   static toString = (m: IMatrix): string => m.join(', ');
   static toStyleValue = (m: IMatrix): string => `matrix(${M.toString(m)})`;
   static toObject = (m: IMatrix): IMatrix2D => ({
@@ -255,12 +256,17 @@ class M { // exported as Matrix
     return M.multiply(M.multiply(m1, m2), m3); // by (1.1)
   }
 
+  static multiplySequence4(m1: IMatrix, m2: IMatrix, m3: IMatrix, m4: IMatrix): Tuple6 {
+    return M.multiply(M.multiply(M.multiply(m1, m2), m3), m4);
+  }
+
+  static multiplySequence5(m1: IMatrix, m2: IMatrix, m3: IMatrix, m4: IMatrix, m5: IMatrix): Tuple6 {
+    return M.multiply(M.multiply(M.multiply(M.multiply(m1, m2), m3), m4), m5);
+  }
+
 //endregion Multiplication of a sequence of matrices
 
 }
-
-const ACCURACY = 0.0001;
-
 
 export {
   M as Matrix
