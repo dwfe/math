@@ -1,3 +1,4 @@
+export * from './extent'
 export * from './basis'
 export * from './contract'
 export * from './linear-operator-2d'

@@ -1,7 +1,10 @@
 import {IPoint, Point} from '../geometry'
 import {Tuple4} from '../contract'
+import {Extent} from './extent'
 
 export class Basis {
+
+  extent: Extent;
 
   /**
    * Matrix of Linear transformation <=> 2x2 change of basis matrix:
@@ -18,28 +21,14 @@ export class Basis {
    */
   centeredMatrixCoef: Tuple4; // [a, c, b, d]
 
-  origin: IPoint; // origin point of the pseudoBasis
-  oxEnd: IPoint; // end point of the pseudoBasis vector ox
-  oyEnd: IPoint; // end point of the pseudoBasis vector oy
-  fourth: IPoint; // end point of (vector oxEnd + vector oyEnd)
-
-  width: number;
-  height: number;
-  aspectRatio: number;
-
   ox: IPoint; // basis vector ox with origin at [0,0]
   oy: IPoint; // basis vector oy with origin at [0,0]
   isOrthogonal: boolean;
 
-  constructor([origin, oxEnd, oyEnd]: IPoint[]) {
-    this.origin = origin;
-    this.oxEnd = oxEnd;
-    this.oyEnd = oyEnd;
-    this.fourth = Point.sub(Point.add(oxEnd, oyEnd), origin);
-
-    this.width = Point.distance(oxEnd, origin);
-    this.height = Point.distance(oyEnd, origin);
-    this.aspectRatio = this.height === 0 ? 0 : this.width / this.height;
+  constructor(origin: IPoint,
+              oxEnd: IPoint,
+              oyEnd: IPoint) {
+    this.extent = new Extent(origin, oxEnd, oyEnd);
 
     this.ox = Point.sub(oxEnd, origin);
     this.oy = Point.sub(oyEnd, origin);
@@ -62,35 +51,32 @@ export class Basis {
     return JSON.stringify(this.toJSON());
   }
 
+  static fromString(str: string): Basis {
+    return Basis.fromJSON(JSON.parse(str));
+  }
+
   toJSON(): IPoint[] {
-    return [
-      [this.origin[0], this.origin[1]],
-      [this.oxEnd[0], this.oxEnd[1]],
-      [this.oyEnd[0], this.oyEnd[1]]
-    ];
+    return this.extent.toJSON();
+  }
+
+  static fromJSON([origin, oxEnd, oyEnd]: IPoint[]): Basis {
+    return new Basis(origin, oxEnd, oyEnd);
   }
 
   clone(): Basis {
-    return new Basis(this.toJSON());
+    return Basis.fromJSON(this.toJSON());
   }
 
   informIfNotOrthogonal(description = '', ...rest: any[]): void {
     Basis.informIfNotOrthogonal(this, description, ...rest);
   }
 
-  static fromString(str: string): Basis {
-    return new Basis(JSON.parse(str));
-  }
-
-  /**
-   * @param dto - [origin, oxEnd, oyEnd]
-   */
-  static of(dto: IPoint[]): Basis {
-    return new Basis(dto);
+  static of(origin: IPoint, oxEnd: IPoint, oyEnd: IPoint): Basis {
+    return new Basis(origin, oxEnd, oyEnd);
   }
 
   static standard(): Basis {
-    return new Basis([[0, 0], [1, 0], [0, 1]]);
+    return new Basis([0, 0], [1, 0], [0, 1]);
   }
 
   /**
@@ -112,11 +98,12 @@ export class Basis {
         dotProduct(basis.oy, e1) / dotProduct(e1, e1)
       )
     );
-    const orthogonalBasis = new Basis([
-      basis.origin,
-      add(e1, basis.origin), // oxEnd
-      add(e2, basis.origin), // oyEnd
-    ]);
+    const extentOrigin = basis.extent.origin;
+    const orthogonalBasis = new Basis(
+      extentOrigin,
+      add(e1, extentOrigin), // oxEnd
+      add(e2, extentOrigin), // oyEnd
+    );
     if (!orthogonalBasis.isOrthogonal) {
       throw new Error('failed to orthogonalize the basis by Gram–Schmidt');
     }
@@ -135,11 +122,12 @@ export class Basis {
       return basis.clone();
     }
     const e1 = basis.ox;
-    const orthogonalBasis = new Basis([
-      basis.origin,
-      Point.add(e1, basis.origin), // oxEnd
-      Point.add([(-1) * e1[1], e1[0]], basis.origin), // oyEnd
-    ]);
+    const extentOrigin = basis.extent.origin;
+    const orthogonalBasis = new Basis(
+      extentOrigin,
+      Point.add(e1, extentOrigin), // oxEnd
+      Point.add([(-1) * e1[1], e1[0]], extentOrigin), // oyEnd
+    );
     if (!orthogonalBasis.isOrthogonal) {
       throw new Error('failed to orthogonalize the basis by aspectRatio1');
     }

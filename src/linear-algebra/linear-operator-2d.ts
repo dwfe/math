@@ -62,7 +62,7 @@ export class LinearOperator {
    */
   static proportionsWithRotationConverter = (from: Basis, to: Basis): Tuple6 => {
     const linearM = multiply(to.ltMatrix, invert(from.ltMatrix)); // FROM-basis -> TO-basis
-    const shift = Point.sub(to.origin, apply(linearM, from.origin));
+    const shift = Point.sub(to.extent.origin, apply(linearM, from.extent.origin));
     return [...linearM, ...shift]; // m * fromPoint => toPoint
   };
 
@@ -75,9 +75,9 @@ export class LinearOperator {
    */
   static changeOfBasisMatrix = (from: Basis, to: Basis): Tuple6 => {
     const linearM = multiply(invert(to.ltMatrix), from.ltMatrix); // FROM-basis -> TO-basis
-    const shift = Point.sub(from.origin, apply(linearM, to.origin));
-    if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.origin, [0, 0])) {
-      throw new Error(`if there is a shift, then point from.o [${from.origin}] should be in the center of coordinates [0,0]`);
+    const shift = Point.sub(from.extent.origin, apply(linearM, to.extent.origin));
+    if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.extent.origin, [0, 0])) {
+      throw new Error(`if there is a shift, then point from.o [${from.extent.origin}] should be in the center of coordinates [0,0]`);
     }
     return [...linearM, ...shift]; // m * fromPoint => toPoint
   };
@@ -93,9 +93,9 @@ export class LinearOperator {
     const byLine = multiply(to.centeredMatrixCoef, invert(from.centeredMatrixCoef));
     let linearM: Tuple4 = [byLine[0], byLine[2], byLine[1], byLine[3]]; // converts byLine -> to byColumn
     linearM = invert(linearM); // FROM-basis -> TO-basis
-    const shift = Point.sub(from.origin, apply(linearM, to.origin));
-    if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.origin, [0, 0])) {
-      throw new Error(`if there is a shift, then point from.o [${from.origin}] should be in the center of coordinates [0,0]`);
+    const shift = Point.sub(from.extent.origin, apply(linearM, to.extent.origin));
+    if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.extent.origin, [0, 0])) {
+      throw new Error(`if there is a shift, then point from.o [${from.extent.origin}] should be in the center of coordinates [0,0]`);
     }
     return [...linearM, ...shift]; // m * fromPoint => toPoint
   };

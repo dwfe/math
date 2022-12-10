@@ -8,33 +8,33 @@ describe('change of basis matrix', () => {
 
     check( // из книги Мосина, стр.43 Пример 27
       Basis.standard(),
-      Basis.of([
+      Basis.of(
         [0, 0],
         [1, 1],
         [-1, 0]
-      ]),
+      ),
       [
         [[-1, 1], [1, 2]]
       ]);
 
     check( // базис u1-u2 из https://www.youtube.com/watch?v=HZa1RwFHgwU
       Basis.standard(),
-      Basis.of([
+      Basis.of(
         [0, 0],
         [1, 2],
         [3, 3]
-      ]),
+      ),
       [
         [[3, 2], [-1, 1.333333333333333]]
       ]);
 
     check( // базис w1-w2 из https://www.youtube.com/watch?v=HZa1RwFHgwU
       Basis.standard(),
-      Basis.of([
+      Basis.of(
         [0, 0],
         [-1, -1],
         [3, 0]
-      ]),
+      ),
       [
         [[3, 2], [-2, 0.333333333333333]]
       ]);
@@ -45,8 +45,8 @@ describe('change of basis matrix', () => {
 
     Throw(() =>
         check(
-          Basis.of([[1, 2], [2, 2], [1, 3]]),
-          Basis.of([[1, -3], [0, -2], [3, -1]]),
+          Basis.of([1, 2], [2, 2], [1, 3]),
+          Basis.of([1, -3], [0, -2], [3, -1]),
           [
             [[-2, -1], [3, -1]],
           ]),
@@ -54,16 +54,16 @@ describe('change of basis matrix', () => {
     );
 
     check(
-      Basis.of([
+      Basis.of(
         [0, 0],
         [1, 1],
         [0, -1],
-      ]),
-      Basis.of([
+      ),
+      Basis.of(
         [0, 0],
         [1, 0],
         [1, -1],
-      ]),
+      ),
       [
         [[2, 1], [3, -1]],
         [[1, -2], [4, -3]],
@@ -75,11 +75,11 @@ describe('change of basis matrix', () => {
 
     check(
       Basis.standard(),
-      Basis.of([
+      Basis.of(
         [2, -1], // точка в TO, выраженная через базис FROM
         [1, 0],  // точка в TO, выраженная через базис FROM
         [4, 1],  // точка в TO, выраженная через базис FROM
-      ]),
+      ),
       [
         [
           [-1, 1],      // точка в FROM, выраженная через базис FROM
@@ -91,11 +91,11 @@ describe('change of basis matrix', () => {
 
     check( // Конвертер пропорций и углов, где красный вектор идет из [-3,-40] в [-0.5, 0]
       Basis.standard(),
-      Basis.of([
+      Basis.of(
         [-3, -4],
         [3, 1],
         [-4, -1],
-      ]),
+      ),
       [
         [[-0.5, 0], [0.5, 0.5], [-3, -4]]
       ]
