@@ -1,6 +1,10 @@
-import {Tuple2, Tuple4, Tuple5} from '../contract'
+import {IMatrix, Matrix} from '../linear-algebra'
+import {Tuple2, Tuple4} from '../contract'
 import {IPoint, IRect} from './contract'
 
+/**
+ * Ортогональный прямоугольник
+ */
 class R {
 
   static fromOrigin(width: number, height: number): IRect {
@@ -54,14 +58,6 @@ class R {
     R.leftBottom(r),
   ];
 
-  static toPolygon = (r: IRect): Tuple5<IPoint> => [
-    R.leftTop(r),
-    R.rightTop(r),
-    R.rightBottom(r),
-    R.leftBottom(r),
-    R.leftTop(r),
-  ];
-
   static leftTop = (r: IRect): Tuple2 => [r.left, r.top];
   static leftBottom = (r: IRect): Tuple2 => [r.left, r.bottom];
   static rightTop = (r: IRect): Tuple2 => [r.right, r.top];
@@ -79,6 +75,13 @@ class R {
   static isAspectRatioEqual = (a: IRect, b: IRect, accuracy = 0.0001): boolean => (
     Math.abs(a.aspectRatio - b.aspectRatio) < accuracy
   );
+
+  static applyTransform(r: IRect, m: IMatrix): IPoint[] {
+    if (!r.points) {
+      r.points = R.toPoints(r);
+    }
+    return r.points.map(point => Matrix.apply(m, point));
+  }
 
 }
 

@@ -1,5 +1,6 @@
 import '@do-while-for-each/test'
 import {polygonArea, polygonPointsClockwise} from '../../algorithm'
+import {Rect} from '../../geometry'
 
 describe('polygonArea', () => {
 
@@ -18,6 +19,7 @@ describe('polygonArea', () => {
     expect(polygonPointsClockwise([[1, 6], [3, 1], [7, 2], [4, 4], [8, 5]])).False();
     expect(polygonPointsClockwise([[-6, 0], [-2, 5], [0, 1], [4, 4], [5, -2], [-1, -4]])).True();
     expect(polygonPointsClockwise([[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]])).False();
+    expect(polygonPointsClockwise(Rect.toPoints(Rect.fromOrigin(1, 1)))).False();
   });
 
 });

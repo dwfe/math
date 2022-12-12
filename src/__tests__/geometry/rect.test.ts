@@ -88,16 +88,4 @@ describe('rect', () => {
     expect(Point.isEqual(leftBottom, [0, 1])).True();
   });
 
-  test('toPolygon', () => {
-    const rect = Rect.fromOrigin(1, 1);
-    const arr = Rect.toPolygon(rect);
-    expect(arr.length).eq(5);
-    const [leftTop, rightTop, rightBottom, leftBottom, leftTop2] = arr;
-    expect(Point.isEqual(leftTop, [0, 0])).True();
-    expect(Point.isEqual(rightTop, [1, 0])).True();
-    expect(Point.isEqual(rightBottom, [1, 1])).True();
-    expect(Point.isEqual(leftBottom, [0, 1])).True();
-    expect(Point.isEqual(leftTop2, [0, 0])).True();
-  });
-
 });

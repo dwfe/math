@@ -16,6 +16,9 @@ export function polygonArea(polygon: IPolygon): number {
   return doubleArea / 2;
 }
 
+/**
+ * Assuming that the OY axis is directed upwards
+ */
 export function polygonPointsClockwise(polygon: IPolygon): boolean {
   const area = polygonArea(polygon);
   if (area === 0) {

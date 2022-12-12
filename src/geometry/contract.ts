@@ -1,4 +1,4 @@
-import {Tuple2} from '../contract'
+import {Tuple2, Tuple4} from '../contract'
 
 export type IPoint = number[]
 
@@ -24,6 +24,8 @@ export interface IRect {
   aspectRatio: number;
 
   center: IPoint;
+
+  points?: Tuple4<IPoint>;
 }
 
 export type IPolygon = IPoint[];
