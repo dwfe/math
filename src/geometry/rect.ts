@@ -76,12 +76,10 @@ class R {
     Math.abs(a.aspectRatio - b.aspectRatio) < accuracy
   );
 
-  static applyTransform(r: IRect, m: IMatrix): IPoint[] {
-    if (!r.points) {
-      r.points = R.toPoints(r);
-    }
-    return r.points.map(point => Matrix.apply(m, point));
-  }
+  static applyTransform = (r: IRect, m: IMatrix): IPoint[] => (R
+      .toPoints(r)
+      .map(point => Matrix.apply(m, point))
+  );
 
 }
 
