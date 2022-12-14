@@ -1,6 +1,6 @@
-import {describe, expect} from '@jest/globals'
+import '@do-while-for-each/test';
 import {IMatrix, LinearOperator, Matrix} from '../../linear-algebra'
-import {Point} from '../../geometry'
+import {Point} from '../../geometry';
 
 describe(`web-matrix-2d`, () => {
 
@@ -179,5 +179,12 @@ describe(`web-matrix-2d`, () => {
     expect(Point.isEqual(Matrix.apply(fromTo, [0, 0]), [0, block.bottomIndent]))
     expect(Point.isEqual(Matrix.apply(fromTo, [30, 15]), [0, block.bottomIndent]))
   })
+
+  test('isEqual', () => {
+    expect(Matrix.isEqual(undefined as any, [1, 0, 0, 1, 0, 0])).False();
+    expect(Matrix.isEqual([1, 0, 0, 1, 0, 0], undefined as any)).False();
+    expect(Matrix.isEqual(undefined as any, null as any)).False();
+    expect(Matrix.isEqual([1, 0, 0, 1, 0, 0], [1, 0, 0, 1, 0, 0])).True();
+  });
 
 })

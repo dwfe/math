@@ -201,14 +201,19 @@ class M { // exported as Matrix
   static skewIdentity = (ax: number, ay: number, unit?: IAngleUnit): Tuple6 => M.skew(identityMatrix, ax, ay, unit);
 
 
-  static isEqual = (m1: IMatrix, m2: IMatrix, accuracy = 0.0001): boolean => (
-    Math.abs(m1[0] - m2[0]) < accuracy &&
-    Math.abs(m1[1] - m2[1]) < accuracy &&
-    Math.abs(m1[2] - m2[2]) < accuracy &&
-    Math.abs(m1[3] - m2[3]) < accuracy &&
-    Math.abs(m1[4] - m2[4]) < accuracy &&
-    Math.abs(m1[5] - m2[5]) < accuracy
-  );
+  static isEqual = (a: IMatrix, b: IMatrix, accuracy = 0.0001): boolean => {
+    if (!a || !b) {
+      return false;
+    }
+    return (
+      Math.abs(a[0] - b[0]) < accuracy &&
+      Math.abs(a[1] - b[1]) < accuracy &&
+      Math.abs(a[2] - b[2]) < accuracy &&
+      Math.abs(a[3] - b[3]) < accuracy &&
+      Math.abs(a[4] - b[4]) < accuracy &&
+      Math.abs(a[5] - b[5]) < accuracy
+    )
+  };
 
   static toString = (m: IMatrix): string => m.join(', ');
   static toStyleValue = (m: IMatrix): string => `matrix(${M.toString(m)})`;

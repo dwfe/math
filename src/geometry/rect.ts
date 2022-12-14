@@ -67,10 +67,15 @@ class R {
   static width = (r: IRect): number => r.right - r.left;
   static height = (r: IRect): number => r.bottom - r.top;
 
-  static isEqual = (a: IWidthHeight, b: IWidthHeight): boolean => (
-    a.width === b.width &&
-    a.height === b.height
-  );
+  static isEqual = (a: IWidthHeight, b: IWidthHeight): boolean => {
+    if (!a || !b) {
+      return false;
+    }
+    return (
+      a.width === b.width &&
+      a.height === b.height
+    );
+  };
 
   static isAspectRatioEqual = (a: IRect, b: IRect, accuracy = 0.0001): boolean => (
     Math.abs(a.aspectRatio - b.aspectRatio) < accuracy
