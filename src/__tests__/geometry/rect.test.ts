@@ -74,7 +74,7 @@ describe('rect', () => {
     expect(Rect.isEqual(Rect.fromOrigin(100, 200), Rect.fromCenter(100, 200, [70, 90]))).True();
 
     expect(Rect.isEqual(Rect.fromOrigin(100, 200), Rect.fromOrigin(100, 201))).False();
-    expect(Rect.isEqual(Rect.fromOrigin(100, 200), Rect.fromCenter(100, 200, [70, 90]))).False();
+    expect(Rect.isEqual(Rect.fromOrigin(100, 200), Rect.fromCenter(100, 100, [70, 90]))).False();
 
     expect(Rect.isEqual(undefined as any, Rect.fromOrigin(100, 201))).False();
     expect(Rect.isEqual(Rect.fromOrigin(100, 200), undefined as any)).False();
