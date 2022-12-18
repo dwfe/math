@@ -6,12 +6,12 @@ describe('proportions and angle converter', () => {
 
   test('article', () => {
     check(
-      Basis.byExtent(
+      Basis.fromExtent(
         [-3, -40],
         [3, 10],
         [-4, -10],
       ),
-      Basis.byExtent(
+      Basis.fromExtent(
         [-0.25, 0.25],
         [-1, 0.25],
         [-0.25, 1],
@@ -27,12 +27,12 @@ describe('proportions and angle converter', () => {
 
   test('mm', () => {
     check(
-      Basis.byExtent(
+      Basis.fromExtent(
         [-0.18599434057003528, 0.1355655065721687],
         [1.1859943405700353, 0.1355655065721687],
         [-0.18599434057003528, 0.8644344934278313],
       ),
-      Basis.byExtent(
+      Basis.fromExtent(
         [540.7124205178468, 127.08110020067348],
         [454.058963782401, 267.91670026239075],
         [465.89350798505944, 81.04645130996792],

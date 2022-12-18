@@ -65,7 +65,7 @@ export class Basis {
     Basis.informIfNotOrthogonal(this, description, ...rest);
   }
 
-  static byExtent(origin: IPoint, oxEnd: IPoint, oyEnd: IPoint): Basis {
+  static fromExtent(origin: IPoint, oxEnd: IPoint, oyEnd: IPoint): Basis {
     return new Basis(new Extent(origin, oxEnd, oyEnd));
   }
 
@@ -93,7 +93,7 @@ export class Basis {
       )
     );
     const extentOrigin = basis.extent.origin;
-    const orthogonalBasis = Basis.byExtent(
+    const orthogonalBasis = Basis.fromExtent(
       extentOrigin,
       add(e1, extentOrigin), // oxEnd
       add(e2, extentOrigin), // oyEnd
@@ -117,7 +117,7 @@ export class Basis {
     }
     const e1 = basis.ox;
     const extentOrigin = basis.extent.origin;
-    const orthogonalBasis = Basis.byExtent(
+    const orthogonalBasis = Basis.fromExtent(
       extentOrigin,
       Point.add(e1, extentOrigin), // oxEnd
       Point.add([(-1) * e1[1], e1[0]], extentOrigin), // oyEnd

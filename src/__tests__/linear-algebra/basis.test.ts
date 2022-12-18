@@ -10,7 +10,7 @@ const projectionToGeo = geoToProjection.invert as (point: Tuple2) => IPoint;
 describe('basis', () => {
 
   test('toJSON()', () => {
-    const basis = Basis.byExtent(
+    const basis = Basis.fromExtent(
       [1, 2],
       [3, 4],
       [5, 6]
@@ -34,13 +34,13 @@ describe('basis', () => {
 
   test('aspectRatio', () => {
     expect(Basis.standard().extent.aspectRatio).eq(1);
-    expect(Basis.byExtent([0, 0], [2, 0], [0, 1]).extent.aspectRatio).eq(2);
-    expect(Basis.byExtent(
+    expect(Basis.fromExtent([0, 0], [2, 0], [0, 1]).extent.aspectRatio).eq(2);
+    expect(Basis.fromExtent(
       [384.87736210053623, 325.674784307791],
       [403.5516764210449, 143.91252507266364],
       [566.6396213356633, 344.3490986282995],
     ).extent.aspectRatio).eq(1.000000000000002);
-    expect(Basis.byExtent(
+    expect(Basis.fromExtent(
       [377.01674005943624, 316.86520988968135],
       [394.0639787249101, 150.9397274127133],
       [576.1273190317979, 337.32189628824995],
@@ -66,9 +66,9 @@ describe('basis', () => {
     );
 
     expect(Basis.standard().isOrthogonal).True();
-    expect(Basis.byExtent([0, 0], [1, 1], [0, 1]).isOrthogonal).False();
-    expect(Basis.byExtent([0, 0], [1, -2], [2, 1]).isOrthogonal).True();
-    expect(Basis.byExtent([0, 0], [2, 1], [-1, 2]).isOrthogonal).True(); // [a,b,-b,a]
+    expect(Basis.fromExtent([0, 0], [1, 1], [0, 1]).isOrthogonal).False();
+    expect(Basis.fromExtent([0, 0], [1, -2], [2, 1]).isOrthogonal).True();
+    expect(Basis.fromExtent([0, 0], [2, 1], [-1, 2]).isOrthogonal).True(); // [a,b,-b,a]
 
     expect(projectionBasis(
       [0, 90],
@@ -122,22 +122,22 @@ describe('basis', () => {
       // console.log(``, orthoProjectionBasis.toJSON().map(point => projectionToGeo(point)))
     }
 
-    checkSimple(Basis.byExtent([0, 0], [1, 1], [0, 1]));
-    checkSimpleAR1(Basis.byExtent([0, 0], [1, 1], [0, 1]));
-    checkSimple(Basis.byExtent([1, 2], [0, 1], [1, 0]));
-    checkSimpleAR1(Basis.byExtent([1, 2], [0, 1], [1, 0]));
-    checkSimple(Basis.byExtent([0, 0], [2, 1], [0.5, 1.5]));
-    checkSimpleAR1(Basis.byExtent([0, 0], [2, 1], [0.5, 1.5]));
-    checkAlreadyOrthogonal(Basis.byExtent([0, 0], [1, 0], [0, 1]));
-    checkAlreadyOrthogonal(Basis.byExtent([1, 1], [1, 0], [0, 1]));
+    checkSimple(Basis.fromExtent([0, 0], [1, 1], [0, 1]));
+    checkSimpleAR1(Basis.fromExtent([0, 0], [1, 1], [0, 1]));
+    checkSimple(Basis.fromExtent([1, 2], [0, 1], [1, 0]));
+    checkSimpleAR1(Basis.fromExtent([1, 2], [0, 1], [1, 0]));
+    checkSimple(Basis.fromExtent([0, 0], [2, 1], [0.5, 1.5]));
+    checkSimpleAR1(Basis.fromExtent([0, 0], [2, 1], [0.5, 1.5]));
+    checkAlreadyOrthogonal(Basis.fromExtent([0, 0], [1, 0], [0, 1]));
+    checkAlreadyOrthogonal(Basis.fromExtent([1, 1], [1, 0], [0, 1]));
 
-    checkGeobasis(Basis.byExtent(
+    checkGeobasis(Basis.fromExtent(
       [65, 73],
       [85, 73],
       [65, 65],
     ));
 
-    checkGeobasis(Basis.byExtent(
+    checkGeobasis(Basis.fromExtent(
       [540.7124205178468, 127.08110020067348],
       [454.058963782401, 267.91670026239075],
       [465.89350798505944, 81.04645130996792],
@@ -146,23 +146,23 @@ describe('basis', () => {
 
   test('fourth point', () => {
     expect(Point.isEqual(
-      Basis.byExtent([1, 2], [2, 2], [1, 3]).extent.fourthPoint,
+      Basis.fromExtent([1, 2], [2, 2], [1, 3]).extent.fourthPoint,
       [2, 3]
     )).True();
     expect(Point.isEqual(
-      Basis.byExtent([2, -1], [1, 0], [4, 1]).extent.fourthPoint,
+      Basis.fromExtent([2, -1], [1, 0], [4, 1]).extent.fourthPoint,
       [3, 2]
     )).True();
     expect(Point.isEqual(
-      Basis.byExtent([0, 0], [1, 0], [1, -1]).extent.fourthPoint,
+      Basis.fromExtent([0, 0], [1, 0], [1, -1]).extent.fourthPoint,
       [2, -1]
     )).True();
     expect(Point.isEqual(
-      Basis.byExtent([0, 0], [2, 1], [0.5, 1.5]).extent.fourthPoint,
+      Basis.fromExtent([0, 0], [2, 1], [0.5, 1.5]).extent.fourthPoint,
       [2.5, 2.5]
     )).True();
     expect(Point.isEqual(
-      Basis.byExtent([-3, -40], [3, 10], [-4, -10]).extent.fourthPoint,
+      Basis.fromExtent([-3, -40], [3, 10], [-4, -10]).extent.fourthPoint,
       [2, 40]
     )).True();
   });
