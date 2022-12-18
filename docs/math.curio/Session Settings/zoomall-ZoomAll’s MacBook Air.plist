@@ -16,7 +16,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 0}, {1184, 684}}</string>
+		<string>{{0, 2654}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -25,7 +25,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 310}, {1184, 684}}</string>
+		<string>{{13, 358}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -34,7 +34,7 @@
 		<key>Active Layer</key>
 		<string>Default</string>
 		<key>Visible Rect</key>
-		<string>{{0, 2363}, {863, 684}}</string>
+		<string>{{0, 2363}, {1184, 684}}</string>
 		<key>Zoom Factor</key>
 		<real>1</real>
 	</dict>
@@ -186,7 +186,7 @@
 	</dict>
 	<key>Last Viewed Ideaspaces For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<array>
-		<string>EF196DED-573F-4247-87C4-00C32740DE8B</string>
+		<string>1627FB03-C236-4CB9-929E-96B4EFC0F95C</string>
 	</array>
 	<key>Last Viewed Section</key>
 	<array>
@@ -199,7 +199,7 @@
 	<key>Organizer Width</key>
 	<integer>181</integer>
 	<key>Primary Asset UUID Last Viewed</key>
-	<string>EF196DED-573F-4247-87C4-00C32740DE8B</string>
+	<string>1627FB03-C236-4CB9-929E-96B4EFC0F95C</string>
 	<key>Scroll Position For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
 	<string>{0, 0}</string>
 	<key>Secondary View Vertical</key>

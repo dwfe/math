@@ -15,6 +15,8 @@ export class Extent {
   height: number;
   aspectRatio: number;
 
+  center: IPoint;
+
   constructor(origin: IPoint,
               oxEnd: IPoint,
               oyEnd: IPoint) {
@@ -26,6 +28,8 @@ export class Extent {
     this.width = Point.distance(oxEnd, origin);
     this.height = Point.distance(oyEnd, origin);
     this.aspectRatio = this.height === 0 ? 0 : this.width / this.height;
+
+    this.center = Point.middle(oxEnd, oyEnd);
   }
 
   toJSON(): Tuple3<IPoint> {
@@ -36,8 +40,8 @@ export class Extent {
     ];
   }
 
-  static fromJSON([origin, oxEnd, oyEnd]: IPoint[]): Extent {
-    return new Extent(origin, oxEnd, oyEnd);
+  static fromJSON(dto: IPoint[]): Extent {
+    return new Extent(dto[0], dto[1], dto[2]);
   }
 
   toPoints(): Tuple4<IPoint> {

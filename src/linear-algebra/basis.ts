@@ -4,8 +4,6 @@ import {Extent} from './extent'
 
 export class Basis {
 
-  extent: Extent;
-
   /**
    * Matrix of Linear transformation <=> 2x2 change of basis matrix:
    *   a c
@@ -25,13 +23,9 @@ export class Basis {
   oy: IPoint; // basis vector oy with origin at [0,0]
   isOrthogonal: boolean;
 
-  constructor(origin: IPoint,
-              oxEnd: IPoint,
-              oyEnd: IPoint) {
-    this.extent = new Extent(origin, oxEnd, oyEnd);
-
-    this.ox = Point.sub(oxEnd, origin);
-    this.oy = Point.sub(oyEnd, origin);
+  constructor(public extent: Extent) {
+    this.ox = Point.sub(extent.oxEnd, extent.origin);
+    this.oy = Point.sub(extent.oyEnd, extent.origin);
     this.isOrthogonal = Math.abs(Point.dotProduct(this.ox, this.oy)) <= 0.000001;
 
     // the matrix of the linear transformation is filled in by columns
@@ -59,8 +53,8 @@ export class Basis {
     return this.extent.toJSON();
   }
 
-  static fromJSON([origin, oxEnd, oyEnd]: IPoint[]): Basis {
-    return new Basis(origin, oxEnd, oyEnd);
+  static fromJSON(extentDto: IPoint[]): Basis {
+    return new Basis(Extent.fromJSON(extentDto));
   }
 
   clone(): Basis {
@@ -71,12 +65,12 @@ export class Basis {
     Basis.informIfNotOrthogonal(this, description, ...rest);
   }
 
-  static of(origin: IPoint, oxEnd: IPoint, oyEnd: IPoint): Basis {
-    return new Basis(origin, oxEnd, oyEnd);
+  static byExtent(origin: IPoint, oxEnd: IPoint, oyEnd: IPoint): Basis {
+    return new Basis(new Extent(origin, oxEnd, oyEnd));
   }
 
   static standard(): Basis {
-    return new Basis([0, 0], [1, 0], [0, 1]);
+    return new Basis(new Extent([0, 0], [1, 0], [0, 1]));
   }
 
   /**
@@ -99,7 +93,7 @@ export class Basis {
       )
     );
     const extentOrigin = basis.extent.origin;
-    const orthogonalBasis = new Basis(
+    const orthogonalBasis = Basis.byExtent(
       extentOrigin,
       add(e1, extentOrigin), // oxEnd
       add(e2, extentOrigin), // oyEnd
@@ -123,7 +117,7 @@ export class Basis {
     }
     const e1 = basis.ox;
     const extentOrigin = basis.extent.origin;
-    const orthogonalBasis = new Basis(
+    const orthogonalBasis = Basis.byExtent(
       extentOrigin,
       Point.add(e1, extentOrigin), // oxEnd
       Point.add([(-1) * e1[1], e1[0]], extentOrigin), // oyEnd

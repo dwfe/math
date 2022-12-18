@@ -8,7 +8,7 @@ describe('change of basis matrix', () => {
 
     check( // из книги Мосина, стр.43 Пример 27
       Basis.standard(),
-      Basis.of(
+      Basis.byExtent(
         [0, 0],
         [1, 1],
         [-1, 0]
@@ -19,7 +19,7 @@ describe('change of basis matrix', () => {
 
     check( // базис u1-u2 из https://www.youtube.com/watch?v=HZa1RwFHgwU
       Basis.standard(),
-      Basis.of(
+      Basis.byExtent(
         [0, 0],
         [1, 2],
         [3, 3]
@@ -30,7 +30,7 @@ describe('change of basis matrix', () => {
 
     check( // базис w1-w2 из https://www.youtube.com/watch?v=HZa1RwFHgwU
       Basis.standard(),
-      Basis.of(
+      Basis.byExtent(
         [0, 0],
         [-1, -1],
         [3, 0]
@@ -45,8 +45,8 @@ describe('change of basis matrix', () => {
 
     Throw(() =>
         check(
-          Basis.of([1, 2], [2, 2], [1, 3]),
-          Basis.of([1, -3], [0, -2], [3, -1]),
+          Basis.byExtent([1, 2], [2, 2], [1, 3]),
+          Basis.byExtent([1, -3], [0, -2], [3, -1]),
           [
             [[-2, -1], [3, -1]],
           ]),
@@ -54,12 +54,12 @@ describe('change of basis matrix', () => {
     );
 
     check(
-      Basis.of(
+      Basis.byExtent(
         [0, 0],
         [1, 1],
         [0, -1],
       ),
-      Basis.of(
+      Basis.byExtent(
         [0, 0],
         [1, 0],
         [1, -1],
@@ -75,7 +75,7 @@ describe('change of basis matrix', () => {
 
     check(
       Basis.standard(),
-      Basis.of(
+      Basis.byExtent(
         [2, -1], // точка в TO, выраженная через базис FROM
         [1, 0],  // точка в TO, выраженная через базис FROM
         [4, 1],  // точка в TO, выраженная через базис FROM
@@ -91,7 +91,7 @@ describe('change of basis matrix', () => {
 
     check( // Конвертер пропорций и углов, где красный вектор идет из [-3,-40] в [-0.5, 0]
       Basis.standard(),
-      Basis.of(
+      Basis.byExtent(
         [-3, -4],
         [3, 1],
         [-4, -1],

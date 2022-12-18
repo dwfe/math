@@ -200,8 +200,18 @@ class M { // exported as Matrix
   static skewY = (m: IMatrix, angle: number, unit?: IAngleUnit): Tuple6 => M.skew(m, 0, angle, unit);
   static skewIdentity = (ax: number, ay: number, unit?: IAngleUnit): Tuple6 => M.skew(identityMatrix, ax, ay, unit);
 
+  static toString = (m: IMatrix): string => m.join(', ');
+  static toStyleValue = (m: IMatrix): string => `matrix(${M.toString(m)})`;
+  static toObject = (m: IMatrix): IMatrix2D => ({
+    a: m[0],
+    b: m[1],
+    c: m[2],
+    d: m[3],
+    e: m[4],
+    f: m[5],
+  });
 
-  static isEqual = (a: IMatrix, b: IMatrix, accuracy = 0.0001): boolean => {
+  static isEqual(a: IMatrix, b: IMatrix, accuracy = 0.0001): boolean {
     if (!a || !b) {
       return false;
     }
@@ -213,18 +223,24 @@ class M { // exported as Matrix
       Math.abs(a[4] - b[4]) < accuracy &&
       Math.abs(a[5] - b[5]) < accuracy
     )
-  };
+  }
 
-  static toString = (m: IMatrix): string => m.join(', ');
-  static toStyleValue = (m: IMatrix): string => `matrix(${M.toString(m)})`;
-  static toObject = (m: IMatrix): IMatrix2D => ({
-    a: m[0],
-    b: m[1],
-    c: m[2],
-    d: m[3],
-    e: m[4],
-    f: m[5],
-  });
+  static areObjectsWithMatricesEqual(a: any, b: any, accuracy?: number): boolean {
+    if (!a || !b) {
+      return false;
+    }
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+    if (aKeys.length !== bKeys.length)
+      return false;
+    for (const aKey of aKeys) {
+      if (!bKeys.includes(aKey))
+        return false;
+      if (!M.isEqual(a[aKey], b[aKey], accuracy))
+        return false;
+    }
+    return true;
+  }
 
 
 //region Multiplication of a sequence of matrices
@@ -257,17 +273,17 @@ class M { // exported as Matrix
     return m;
   }
 
-  static multiplySequence3(m1: IMatrix, m2: IMatrix, m3: IMatrix): Tuple6 {
-    return M.multiply(M.multiply(m1, m2), m3); // by (1.1)
-  }
+  static multiplySequence3 = (m1: IMatrix, m2: IMatrix, m3: IMatrix): Tuple6 =>
+    M.multiply(M.multiply(m1, m2), m3); // by (1.1)
 
-  static multiplySequence4(m1: IMatrix, m2: IMatrix, m3: IMatrix, m4: IMatrix): Tuple6 {
-    return M.multiply(M.multiply(M.multiply(m1, m2), m3), m4);
-  }
+  static multiplySequence4 = (m1: IMatrix, m2: IMatrix, m3: IMatrix, m4: IMatrix): Tuple6 =>
+    M.multiply(M.multiplySequence3(m1, m2, m3), m4);
 
-  static multiplySequence5(m1: IMatrix, m2: IMatrix, m3: IMatrix, m4: IMatrix, m5: IMatrix): Tuple6 {
-    return M.multiply(M.multiply(M.multiply(M.multiply(m1, m2), m3), m4), m5);
-  }
+  static multiplySequence5 = (m1: IMatrix, m2: IMatrix, m3: IMatrix, m4: IMatrix, m5: IMatrix): Tuple6 =>
+    M.multiply(M.multiplySequence4(m1, m2, m3, m4), m5);
+
+  static multiplySequence6 = (m1: IMatrix, m2: IMatrix, m3: IMatrix, m4: IMatrix, m5: IMatrix, m6: IMatrix): Tuple6 =>
+    M.multiply(M.multiplySequence5(m1, m2, m3, m4, m5), m6);
 
 //endregion Multiplication of a sequence of matrices
 
