@@ -3,7 +3,7 @@ import {Tuple2, Tuple4} from '../contract'
 import {IPoint, IRect} from './contract'
 
 /**
- * Ортогональный прямоугольник
+ * An orthogonal rectangle whose sides are perpendicular to the corresponding coordinate axes.
  */
 class R {
 
