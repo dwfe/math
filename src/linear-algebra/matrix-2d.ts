@@ -3,11 +3,19 @@ import {Angle, IAngleUnit} from '../angle'
 import {Tuple2, Tuple6} from '../contract'
 import {IPoint} from '../geometry'
 
-const identityMatrix: Tuple6 = [1, 0, 0, 1, 0, 0];
+/*
+ * Identity matrix:
+ *                    1 0 0
+ * [1,0,0,1,0,0]  =>  0 1 0
+ *                    0 0 1
+ * https://en.wikipedia.org/wiki/Identity_matrix
+ */
+export const identityMatrix: Tuple6 = Object.freeze([1, 0, 0, 1, 0, 0]) as Tuple6;
+
 
 class M { // exported as Matrix
 
-  static of = (m: IMatrix = M.identity()): M => new M(m);
+  static of = (m: IMatrix = identityMatrix): M => new M(m);
 
   constructor(public readonly m: IMatrix) {
   }
@@ -51,16 +59,6 @@ class M { // exported as Matrix
   toString = (): string => M.toString(this.m);
   toStyleValue = (): string => M.toStyleValue(this.m);
   equals = (anotherM: M): boolean => M.isEqual(this.m, anotherM.m);
-
-
-  /*
-   * Identity matrix:
-   *                    1 0 0
-   * [1,0,0,1,0,0]  =>  0 1 0
-   *                    0 0 1
-   * https://en.wikipedia.org/wiki/Identity_matrix
-   */
-  static identity = (): Tuple6 => [...identityMatrix];
 
   /*
    * The Determinant of a matrix by the Laplace expansion:
@@ -225,6 +223,20 @@ class M { // exported as Matrix
     )
   }
 
+  static isEqualToIdentity(m: IMatrix): boolean {
+    if (!m) {
+      return false;
+    }
+    return (
+      m[0] === 1 &&
+      m[1] === 0 &&
+      m[2] === 0 &&
+      m[3] === 1 &&
+      m[4] === 0 &&
+      m[5] === 0
+    );
+  }
+
   static areObjectsWithMatricesEqual(a: any, b: any, accuracy?: number): boolean {
     if (!a || !b) {
       return false;
@@ -290,5 +302,5 @@ class M { // exported as Matrix
 }
 
 export {
-  M as Matrix
+  M as Matrix,
 }

@@ -187,6 +187,13 @@ describe(`web-matrix-2d`, () => {
     expect(Matrix.isEqual([1, 0, 0, 1, 0, 0], [1, 0, 0, 1, 0, 0])).True();
   });
 
+  test('isEqualIdentity', () => {
+    expect(Matrix.isEqualToIdentity(undefined as any)).False();
+    expect(Matrix.isEqualToIdentity([1, 0, 0, 1, 0, 0])).True();
+    expect(Matrix.isEqualToIdentity([1.1, 0, 0, 1, 0, 0])).False();
+    expect(Matrix.isEqualToIdentity([1, 0, 0, 1, 0, 1])).False();
+  });
+
   test('objectWithMatricesEquals', () => {
     const a = {
       first: [1, 0, 0, 1, 0, 0]

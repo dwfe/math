@@ -45,13 +45,11 @@ export class Matrix2x2 {
     m[1] * p[0] + m[3] * p[1]
   ];
 
-  static isEqual = (m1: IMatrix, m2: IMatrix): boolean =>
-    Math.abs(m1[0] - m2[0]) < ACCURACY &&
-    Math.abs(m1[1] - m2[1]) < ACCURACY &&
-    Math.abs(m1[2] - m2[2]) < ACCURACY &&
-    Math.abs(m1[3] - m2[3]) < ACCURACY
+  static isEqual = (m1: IMatrix, m2: IMatrix, accuracy = 0.0001): boolean =>
+    Math.abs(m1[0] - m2[0]) < accuracy &&
+    Math.abs(m1[1] - m2[1]) < accuracy &&
+    Math.abs(m1[2] - m2[2]) < accuracy &&
+    Math.abs(m1[3] - m2[3]) < accuracy
   ;
 
 }
-
-const ACCURACY = 0.0001;
