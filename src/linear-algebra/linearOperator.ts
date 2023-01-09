@@ -1,9 +1,9 @@
 import {Tuple2, Tuple4, Tuple6} from '../contract'
 import {ISegmentChanging} from './contract'
 import {IPoint, Point} from '../geometry'
-import {Matrix2x2} from './matrix-2x2'
+import {Matrix2x2} from './matrix2x2'
 import {IAngleUnit} from '../angle'
-import {Matrix} from './matrix-2d'
+import {Matrix} from './matrix'
 import {Basis} from './basis'
 
 const {apply, multiply, invert} = Matrix2x2;

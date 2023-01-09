@@ -1,6 +1,6 @@
 import {IVector} from './contract'
 import {Tuple2} from '../contract'
-import {Point} from './point-2d'
+import {Point} from './point'
 
 class V {
 
