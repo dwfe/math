@@ -4,7 +4,7 @@ import {IPoint} from '../geometry'
  *
  * @return [extremeX, extremeY]
  */
-export function getPointsExtremeValues(points: IPoint[]) {
+export function getPointsExtremeValues(points: IPoint[]): IExtreme[] {
   if (points.length === 0) {
     throw new Error(`can't calculate extreme values for zero length array`);
   }
@@ -32,4 +32,9 @@ export function getPointsExtremeValues(points: IPoint[]) {
     }
   }
   return [extremeX, extremeY];
+}
+
+export interface IExtreme {
+  min: number;
+  max: number;
 }
