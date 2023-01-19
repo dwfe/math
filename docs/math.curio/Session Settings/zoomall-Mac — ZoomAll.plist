@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1627FB03-C236-4CB9-929E-96B4EFC0F95C</key>
+	<dict>
+		<key>Active Layer</key>
+		<string>Default</string>
+		<key>Visible Rect</key>
+		<string>{{0, 0}, {1366, 1214}}</string>
+		<key>Zoom Factor</key>
+		<real>1</real>
+	</dict>
+	<key>5ADE58EE-0DD3-4395-8939-D703DAD22005</key>
+	<dict>
+		<key>Active Layer</key>
+		<string>Default</string>
+		<key>Visible Rect</key>
+		<string>{{0, 0}, {1366, 768}}</string>
+		<key>Zoom Factor</key>
+		<real>1</real>
+	</dict>
+	<key>8AE996E4-C7B3-4083-81EC-F57C83C11F27</key>
+	<dict>
+		<key>Active Layer</key>
+		<string>Default</string>
+		<key>Visible Rect</key>
+		<string>{{0, 0}, {1366, 768}}</string>
+		<key>Zoom Factor</key>
+		<real>1</real>
+	</dict>
+	<key>Bottombar Visible</key>
+	<false/>
+	<key>CE650E61-B79A-4808-A025-4708A2F19ACD</key>
+	<dict>
+		<key>Active Layer</key>
+		<string>Default</string>
+		<key>Visible Rect</key>
+		<string>{{0, 0}, {1366, 768}}</string>
+		<key>Zoom Factor</key>
+		<real>1</real>
+	</dict>
+	<key>Expanded Ideaspaces For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
+	<array>
+		<string>112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</string>
+		<string>FD2BC035-9E64-4E37-AA07-A637A7A9CF5A</string>
+	</array>
+	<key>Expanded Sections</key>
+	<array>
+		<string>00000000-0000-0000-0000-000000000000</string>
+	</array>
+	<key>Last Viewed Ideaspaces For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
+	<array>
+		<string>1627FB03-C236-4CB9-929E-96B4EFC0F95C</string>
+	</array>
+	<key>Last Viewed Section</key>
+	<array>
+		<string>112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</string>
+	</array>
+	<key>Normal Window Layout</key>
+	<string>{{0, 0}, {2558, 1298}}</string>
+	<key>Organizer Visible</key>
+	<true/>
+	<key>Organizer Width</key>
+	<integer>249</integer>
+	<key>Primary Asset UUID Last Viewed</key>
+	<string>1627FB03-C236-4CB9-929E-96B4EFC0F95C</string>
+	<key>Scroll Position For Section 112D48F7-D05C-4C8C-AA76-DC4E8DEF3602</key>
+	<string>{0, 0}</string>
+	<key>Secondary View Vertical</key>
+	<true/>
+	<key>Secondary View Visible</key>
+	<false/>
+	<key>Sections Visible</key>
+	<false/>
+	<key>Toolbar Visible</key>
+	<true/>
+</dict>
+</plist>

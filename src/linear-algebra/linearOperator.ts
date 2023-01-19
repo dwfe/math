@@ -63,7 +63,7 @@ export class LinearOperator {
   static proportionsWithRotationConverter = (from: Basis, to: Basis): Tuple6 => {
     const linearM = multiply(to.ltMatrix, invert(from.ltMatrix)); // FROM-basis -> TO-basis
     const shift = Point.sub(to.extent.origin, apply(linearM, from.extent.origin));
-    return [...linearM, ...shift]; // m * fromPoint => toPoint
+    return [linearM[0], linearM[1], linearM[2], linearM[3], shift[0], shift[1]]; // m * fromPoint => toPoint
   };
 
   /**
@@ -79,7 +79,7 @@ export class LinearOperator {
     if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.extent.origin, [0, 0])) {
       throw new Error(`if there is a shift, then point from.o [${from.extent.origin}] should be in the center of coordinates [0,0]`);
     }
-    return [...linearM, ...shift]; // m * fromPoint => toPoint
+    return [linearM[0], linearM[1], linearM[2], linearM[3], shift[0], shift[1]]; // m * fromPoint => toPoint
   };
 
   /**
@@ -97,7 +97,7 @@ export class LinearOperator {
     if (!Point.isEqual(shift, [0, 0]) && !Point.isEqual(from.extent.origin, [0, 0])) {
       throw new Error(`if there is a shift, then point from.o [${from.extent.origin}] should be in the center of coordinates [0,0]`);
     }
-    return [...linearM, ...shift]; // m * fromPoint => toPoint
+    return [linearM[0], linearM[1], linearM[2], linearM[3], shift[0], shift[1]]; // m * fromPoint => toPoint
   };
 
 }
