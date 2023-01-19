@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/math",
   "description": "Everything related to mathematics",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "exports": "./dist/cjs/index.js",
   "typesVersions": {
     "*": {
