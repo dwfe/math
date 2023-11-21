@@ -1,5 +1,5 @@
 import {Throw} from '@do-while-for-each/test'
-import {Basis, LinearOperator, Matrix} from '../../linear-algebra'
+import {Basis, Operator, Matrix} from '../../linear-algebra'
 import {IPoint, Point} from '../../geometry'
 
 describe('change of basis matrix', () => {
@@ -108,8 +108,8 @@ describe('change of basis matrix', () => {
 //                                     [fromPointTarget, toPointTarget, shiftInsideFrom, shiftInsideTo]
 function check(fromBasis: Basis, toBasis: Basis, data: [IPoint, IPoint, IPoint?, IPoint?][]) {
   const fns: Array<{ variant: string, changeOfBasisMatrix: any }> = [
-    {variant: '1#', changeOfBasisMatrix: LinearOperator.changeOfBasisMatrix},
-    {variant: '2#', changeOfBasisMatrix: LinearOperator.changeOfBasisMatrix2}
+    {variant: '1#', changeOfBasisMatrix: Operator.changeOfBasisMatrix},
+    {variant: '2#', changeOfBasisMatrix: Operator.changeOfBasisMatrix2}
   ];
   for (const next of fns) {
     const toTO = next.changeOfBasisMatrix(fromBasis, toBasis);
@@ -132,8 +132,8 @@ function check(fromBasis: Basis, toBasis: Basis, data: [IPoint, IPoint, IPoint?,
         expect(shiftInsideTo[0]).eq(e);
         expect(shiftInsideTo[1]).eq(f);
       }
-      expect(Point.isEqual(toPoint, toPointCheck)).True();
-      expect(Point.isEqual(fromPoint, fromPointCheck)).True();
+      expect(Point.isEqualAccuracy(toPoint, toPointCheck)).True();
+      expect(Point.isEqualAccuracy(fromPoint, fromPointCheck)).True();
     }
   }
 }

@@ -1,4 +1,4 @@
-import {IPoint, Point} from '../geometry'
+import {IPoint, IRectPoints, Point} from '../geometry'
 import {Tuple4} from '../contract'
 import {Extent} from './extent'
 
@@ -68,6 +68,13 @@ export class Basis {
   static fromExtent(origin: IPoint, oxEnd: IPoint, oyEnd: IPoint): Basis {
     return new Basis(new Extent(origin, oxEnd, oyEnd));
   }
+
+  static fromRect = (rect: IRectPoints): Basis =>
+    Basis.fromExtent(
+      rect.leftTop,
+      rect.rightTop,
+      rect.leftBottom
+    );
 
   static standard(): Basis {
     return new Basis(new Extent([0, 0], [1, 0], [0, 1]));

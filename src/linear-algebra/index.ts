@@ -1,6 +1,6 @@
 export * from './extent'
 export * from './basis'
 export * from './contract'
-export * from './linearOperator'
+export * from './operator'
 export * from './matrix'
 export * from './matrix2x2'

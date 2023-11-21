@@ -1,4 +1,4 @@
-import {Tuple2} from '../contract'
+import {Tuple2, Tuple4, Tuple5} from '../contract'
 
 export type IPoint = number[]
 
@@ -19,6 +19,14 @@ export interface IRect {
   right: number;
   bottom: number;
 
+  leftTop: IPoint,
+  rightTop: IPoint,
+  rightBottom: IPoint,
+  leftBottom: IPoint,
+
+  points: Tuple4<IPoint>;
+  polygon: Tuple5<IPoint>;
+
   width: number;
   height: number;
   aspectRatio: number;
@@ -26,5 +34,18 @@ export interface IRect {
   center: IPoint;
 }
 
+export interface IRectPoints {
+  leftTop: IPoint;
+  rightTop: IPoint;
+  rightBottom: IPoint;
+  leftBottom: IPoint;
+}
+
+
 export type IPolygon = IPoint[];
 export type IMultiPolygon = IPolygon[];
+
+
+export type ISidePosition = 'top' | 'left' | 'right' | 'bottom';
+
+export type ICornerPointPosition = 'leftTop' | 'rightTop' | 'leftBottom' | 'rightBottom';

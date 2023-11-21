@@ -63,6 +63,12 @@ export class Extent {
     return Extent.fromJSON(this.toJSON());
   }
 
+  equals = (extent: Extent) => (
+    Point.isEqual(this.origin, extent.origin) &&
+    Point.isEqual(this.oxEnd, extent.oxEnd) &&
+    Point.isEqual(this.oyEnd, extent.oyEnd)
+  );
+
   static of(origin: IPoint, oxEnd: IPoint, oyEnd: IPoint): Extent {
     return new Extent(origin, oxEnd, oyEnd);
   }

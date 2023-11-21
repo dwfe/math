@@ -9,7 +9,7 @@ import {Basis} from './basis'
 const {apply, multiply, invert} = Matrix2x2;
 const {multiplySequence3, scaleIdentity, rotateIdentity} = Matrix;
 
-export class LinearOperator {
+export class Operator {
 
   /**
    * The Algorithm is based on:
@@ -52,9 +52,9 @@ export class LinearOperator {
     [fromPoint, toPoint]: Tuple2<IPoint>
   ): Tuple6 =>
     multiplySequence3(
-      [1, 0, 0, 1, toPoint[0], toPoint[1]],                                         // (3) Move the point from the "World-To" origin to point toPoint
-      LinearOperator.proportionsWithoutShiftAndRotationConverter(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
-      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],                                   // (1) Move the point fromPoint to origin "World-From"
+      [1, 0, 0, 1, toPoint[0], toPoint[1]],                                   // (3) Move the point from the "World-To" origin to point toPoint
+      Operator.proportionsWithoutShiftAndRotationConverter(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
+      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],                             // (1) Move the point fromPoint to origin "World-From"
     );
 
   /**
@@ -62,8 +62,8 @@ export class LinearOperator {
    */
   static proportionsWithRotationConverter = (from: Basis, to: Basis): Tuple6 => {
     const linearM = multiply(to.ltMatrix, invert(from.ltMatrix)); // FROM-basis -> TO-basis
-    const shift = Point.sub(to.extent.origin, apply(linearM, from.extent.origin));
-    return [linearM[0], linearM[1], linearM[2], linearM[3], shift[0], shift[1]]; // m * fromPoint => toPoint
+    const offset = Point.sub(to.extent.origin, apply(linearM, from.extent.origin));
+    return [linearM[0], linearM[1], linearM[2], linearM[3], offset[0], offset[1]]; // m * fromPoint => toPoint
   };
 
   /**

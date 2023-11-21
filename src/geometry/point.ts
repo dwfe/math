@@ -44,6 +44,12 @@ class P {
       0.5
     )
 
+  static distance = (p1: IPoint, p2: IPoint): number => {
+    const result = P.sub(p1, p2);
+    return Math.sqrt(Math.pow(result[0], 2) + Math.pow(result[1], 2));
+  }
+
+
   /**
    * Dot product or Scalar product:
    *   a   c
@@ -55,18 +61,32 @@ class P {
     return p1[0] * p2[0] + p1[1] * p2[1];
   }
 
-  static distance = (p1: IPoint, p2: IPoint): number => {
-    const result = P.sub(p1, p2)
-    return Math.sqrt(Math.pow(result[0], 2) + Math.pow(result[1], 2))
+
+  /**
+   * Vector normalization is the transformation of a given vector into:
+   *   - a vector in the same direction,
+   *   - but with unit length!
+   * https://en.wikipedia.org/wiki/Unit_vector
+   */
+  static normalize(p: IPoint) {
+    if (p[0] === 0 && p[1] === 0) {
+      return p;
+    }
+    const length = P.distance([0, 0], p);
+    return [p[0] / length, p[1] / length];
   }
 
+
   static isEqual = (p1: IPoint, p2: IPoint): boolean =>
-    Math.abs(p1[0] - p2[0]) < ACCURACY &&
-    Math.abs(p1[1] - p2[1]) < ACCURACY
+    p1[0] === p2[0] &&
+    p1[1] === p2[1]
+  ;
+
+  static isEqualAccuracy = (p1: IPoint, p2: IPoint, accuracy = 0.00001): boolean =>
+    Math.abs(p1[0] - p2[0]) < accuracy &&
+    Math.abs(p1[1] - p2[1]) < accuracy
   ;
 }
-
-const ACCURACY = 0.0001;
 
 
 export {

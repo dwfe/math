@@ -1,5 +1,5 @@
 import '@do-while-for-each/test';
-import {IMatrix, LinearOperator, Matrix} from '../../linear-algebra'
+import {IMatrix, Operator, Matrix} from '../../linear-algebra'
 import {Point} from '../../geometry';
 
 describe(`web-matrix-2d`, () => {
@@ -76,7 +76,7 @@ describe(`web-matrix-2d`, () => {
   })
 
   test(`scaleAtPoint`, () => {
-    const scaledAtPoint = LinearOperator.scaleAtPoint([40, 40], 1.25)
+    const scaledAtPoint = Operator.scaleAtPoint([40, 40], 1.25)
     const correctResult: IMatrix = [1.25, 0, 0, 1.25, -10, -10];
     expect(Matrix.isEqual(scaledAtPoint, correctResult)).toBeTruthy()
     expect(Matrix.isEqual(scaledAtPoint, [1.25, 0, 0, 1.25, -10, 0])).toBeFalsy()
@@ -95,7 +95,7 @@ describe(`web-matrix-2d`, () => {
   })
 
   test(`rotateAtPoint`, () => {
-    const rotateAtPoint = LinearOperator.rotateAtPoint([50, 45], 45, 'deg')
+    const rotateAtPoint = Operator.rotateAtPoint([50, 45], 45, 'deg')
     const correctResult: IMatrix = [0.707107, 0.707107, -0.707107, 0.707107, 46.4645, -22.1751];
     expect(Matrix.isEqual(rotateAtPoint, correctResult)).toBeTruthy()
     expect(Matrix.isEqual(rotateAtPoint, [0.717107, 0.707107, -0.707107, 0.707107, 46.4645, -22.1751])).toBeFalsy()
@@ -115,7 +115,7 @@ describe(`web-matrix-2d`, () => {
 
   test(`proportionsConverter #1`, () => {
 
-    const pixelToValue = LinearOperator.proportionsConverter(
+    const pixelToValue = Operator.proportionsConverter(
       {fromSegment: 2, toSegment: 28}, // x
       {fromSegment: 3, toSegment: 42}, // y
       [[15, 1], [210, 14]]
@@ -169,7 +169,7 @@ describe(`web-matrix-2d`, () => {
       bottomIndent: 15,
     };
 
-    const fromTo = LinearOperator.proportionsConverter(
+    const fromTo = Operator.proportionsConverter(
       {fromSegment: 30, toSegment: 30 * 14}, // x
       {fromSegment: 15, toSegment: block.height - (block.topIndent + block.bottomIndent)}, // y
       [[0, 0], [0, block.bottomIndent]]
