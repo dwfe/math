@@ -1,5 +1,5 @@
+import {IPoint, ISegmentsIntersection, IStraightLineOpt, IStraightLinesIntersection} from './contract';
 import {toFixed, truncToDecimals} from '../util';
-import {IPoint} from './contract';
 import {Point} from './point';
 
 /**
@@ -29,7 +29,7 @@ export class StraightLine {
 
 
   /**
-   * Коэффициенты общего уровнения прямой: A*x + B*y = C.
+   * Коэффициенты общего уравнения прямой: A*x + B*y = C.
    *
    *     -A           C
    * y = --- * x  +  ---
@@ -43,7 +43,8 @@ export class StraightLine {
    *
    * поэтому: A = y1 - y2
    *          B = x2 - x1
-   *          C = x2*y1 - x1*y2
+   *          и, соответственно,
+   *          C = -(A * x1 + B * y1)
    */
   A: number; // A === 0, то эта линия параллельна оси x.
   B: number; // B === 0, то эта линия параллельна оси y.
@@ -75,7 +76,7 @@ export class StraightLine {
     }
     this.A = (-1) * dy;
     this.B = dx;
-    this.C = this.p2[0] * this.p1[1] - this.p1[0] * this.p2[1];
+    this.C = (-1) * (this.A * this.p1[0] + this.B * this.p1[1]);
   }
 
   /**
@@ -204,41 +205,49 @@ export class StraightLine {
 
 
   /**
-   * Принадлежность точки отрезку.
-   * Под отрезком имеется ввиду две точки, по которым построена эта бесконечная линия.
-   *   - https://stackoverflow.com/questions/11907947/how-to-check-if-a-point-lies-on-a-line-between-2-other-points#answer-11908012
+   * Проверить принадлежит ли точка ОТРЕЗКУ: this.p1 - this.p2
    */
-  pointLiesOnSegment(p3?: IPoint): boolean {
-    if (!p3) {
-      return false;
-    }
-    const v1 = Point.sub(this.p2, this.p1); // p2 - p1
-    const v2 = Point.sub(p3, this.p1);      // p3 - p1
-    const v3 = Point.sub(p3, this.p2);      // p3 - p2
+  pointBelongsToSegment(p?: IPoint): boolean {
+    return StraightLine.pointBelongsToSegment(this.p1, this.p2, p);
+  }
+
+  /**
+   * Проверить принадлежит ли точка этой линии.
+   */
+  pointBelongsToLine(point: IPoint, accuracy = 0.0000000001) {
+    const x = point[0];
+    const y = point[1];
     return (
-      Point.dotProduct(v2, v1) >= 0 &&
-      Point.dotProduct(v3, v1) <= 0
+      Math.abs(x - this.getX(y)) < accuracy &&
+      Math.abs(y - this.getY(x)) < accuracy
     );
+  }
+
+  /**
+   * Проверить в каком положении находится точка относительно линии.
+   */
+  pointPositionRelativeToLine(p: IPoint): number {
+    return StraightLine.pointPositionRelativeToLine(this.p1, this.p2, p);
   }
 
 
   /**
    * Пересечение(ия) двух отрезков:
-   *   - отрезка, задающего эту прямую линию
-   *   - с отрезком, задающего другую линию
+   *   - отрезок, задающий эту прямую линию
+   *   - отрезок, задающий другую линию
    */
   segmentIntersectsSegment(line: StraightLine): ISegmentsIntersection {
     const {isSameLine, dontIntersect, intersectionPoint} = this.intersectsLine(line);
     if (dontIntersect) return {dontIntersect};
     if (isSameLine) {
-      return this.pointLiesOnSegment(line.p1) || this.pointLiesOnSegment(line.p2)
+      return this.pointBelongsToSegment(line.p1) || this.pointBelongsToSegment(line.p2)
         ? {onSameLineAndIntersect: true} // если хотя бы один конец любого из отрезков лежит на другом отрезке
         : {dontIntersect: true};
     }
     if (
       intersectionPoint &&
-      this.pointLiesOnSegment(intersectionPoint) &&
-      line.pointLiesOnSegment(intersectionPoint)
+      this.pointBelongsToSegment(intersectionPoint) &&
+      line.pointBelongsToSegment(intersectionPoint)
     ) {
       return {intersectionPoint};
     }
@@ -254,46 +263,105 @@ export class StraightLine {
     const intersections: IPoint[] = [];
     const points = this.intersectsCircle(center, radius);
     for (const point of points) {
-      if (this.pointLiesOnSegment(point))
+      if (this.pointBelongsToSegment(point))
         intersections.push(point);
     }
     return intersections;
   }
 
-}
 
+  normalPointData(p: IPoint) {
+    return StraightLine.normalPointData(this.p1, this.p2, p);
+  }
 
-export interface IStraightLineOpt {
-
-  /**
-   * Количество чисел после запятой, которое должно быть во всех координатах точки.
-   * Например, в пиксельном пространстве после применения всевозможных трансформаций:
-   *  - координата x для точки p1 = 748.523645172341
-   *  - координата x для точки p2 = 748.5236451723413
-   * линия, созданная по таким точкам, не будет считаться параллельной оси y. И в некоторых кейсах это плохо.
-   * Поэтому можно взять и обрезать десятичную часть, например, до трех знаков.
-   */
-  maxDecimalsInPointCoords?: number;
+  normalLength(p: IPoint) {
+    return StraightLine.normalLength(this.p1, this.p2, p);
+  }
 
   /**
-   * Нечеткость строго горизонтальных и строго вертикальных линий - это особенность отрисовки на канвасе для экранов с обычной плотностью пикселей.
-   * Чтобы такие линии были четкими надо соответствующую их координату делать с половиной пикселя:
-   *   - координата x - для вертикальных линий;
-   *   - координата y - для горизонтальных линий.
+   * Вычислить точку n на прямой a-b, которая также принадлежит прямой p-n, перпендикулярной a-b.
+   * Таким образом точка n является точкой нормали к прямой a-b относительно внешней точки p.
+   *   https://stackoverflow.com/questions/37197987/find-point-along-line-where-normal-extends-through-another-point#answer-37201852
+   *
+   * @param a - точка a прямой a-b
+   * @param b - точка b прямой a-b
+   * @param p - точка, из которой проводится нормаль к прямой a-b
    */
-  makeCrisp?: boolean;
-}
+  static normalPointData(a: IPoint, b: IPoint, p: IPoint) {
+    const denominator = ((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2);
+    // если a и b совпадают
+    if (denominator === 0) {
+      return {normalPoint: a, isOnSegment: true};
+    }
+    const numerator = ((b[0] - a[0]) * (p[0] - a[0]) + (b[1] - a[1]) * (p[1] - a[1]));
+    const cf = numerator / denominator;
+    return {
+      normalPoint: [
+        a[0] + (b[0] - a[0]) * cf,
+        a[1] + (b[1] - a[1]) * cf
+      ],
+      isOnSegment: cf >= 0 && cf <= 1 // точка нормали лежит на отрезке a-b?
+    };
+  }
+
+  /**
+   * Вычислить длину отрезка начинающегося в точке p и перпендикулярного прямой a-b.
+   * Таким образом получим длину нормали к прямой a-b относительно внешней точки p.
+   *   https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
+   *
+   * @param a - точка a прямой a-b
+   * @param b - точка b прямой a-b
+   * @param p - точка, из которой проводится нормаль к прямой a-b
+   */
+  static normalLength(a: IPoint, b: IPoint, p: IPoint) {
+    const denominator = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    // если a и b совпадают
+    if (denominator === 0) {
+      return Point.distance(a, p);
+    }
+    const numerator = Math.abs((b[0] - a[0]) * (p[1] - a[1]) - (p[0] - a[0]) * (b[1] - a[1]));
+    return numerator / denominator;
+  }
 
 
-export interface IStraightLinesIntersection {
-  isSameLine?: boolean; // прямые линии совпадают во всех точках
-  dontIntersect?: boolean; // нет пересечений
-  intersectionPoint?: IPoint; // одна единственная точка пересечения
-}
+  /**
+   * Принадлежность точки отрезку.
+   *   https://stackoverflow.com/questions/11907947/how-to-check-if-a-point-lies-on-a-line-between-2-other-points#answer-11908012
+   */
+  static pointBelongsToSegment(a: IPoint, b: IPoint, p?: IPoint): boolean {
+    if (!p) {
+      return false;
+    }
+    const v1 = Point.sub(b, a); // b - a
+    const v2 = Point.sub(p, a); // p - a
+    const v3 = Point.sub(p, b); // p - b
+    return (
+      Point.dotProduct(v2, v1) >= 0 &&
+      Point.dotProduct(v3, v1) <= 0
+    );
+  }
 
 
-export interface ISegmentsIntersection {
-  onSameLineAndIntersect?: boolean; // отрезки лежат на одной прямой линии, и у них есть общие точки пересечения
-  dontIntersect?: boolean; // нет пересечений
-  intersectionPoint?: IPoint; // одна единственная точка пересечения
+  /**
+   * Расположение тестируемой точки относительно прямой линии, заданной точками a и b.
+   *   https://stackoverflow.com/questions/2752725/finding-whether-a-point-lies-inside-a-rectangle-or-not#answer-2752753
+   *
+   * Алгоритм относительно отрезка:
+   *   https://www.geeksforgeeks.org/direction-point-line-segment/
+   *
+   * @param a - точка прямой a-b
+   * @param b - еще одна точка прямой a-b
+   * @param p - тестируемая точка
+   * @return Справа или слева лежит тестируемая точка.
+   *         Порядок точек a-b важен.
+   *         Допустим функция выдает (+)значение для a-b, но для b-a точно будет отдавать (-)значение.
+   *         Для примера результат можно интерпретировать так:
+   *           • (result > 0) точка лежит с левой стороны отрезка;
+   *           • (result < 0) точка лежит с правой стороны отрезка;
+   *           • (result = близкое к 0 число) точка лежит на прямой.
+   */
+  static pointPositionRelativeToLine(a: IPoint, b: IPoint, p: IPoint): number {
+    return (b[0] - a[0]) * (p[1] - a[1]) - (p[0] - a[0]) * (b[1] - a[1]);
+  }
+
 }

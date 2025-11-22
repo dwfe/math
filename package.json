@@ -28,7 +28,8 @@
     "README.md"
   ],
   "dependencies": {
-    "point-in-polygon-hao": "1.1.0"
+    "point-in-polygon-hao": "1.1.0",
+    "polygon-splitter": "0.0.11"
   },
   "devDependencies": {
     "@do-while-for-each/tsconfig": "1.x.x",

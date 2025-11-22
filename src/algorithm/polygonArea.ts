@@ -1,4 +1,4 @@
-import {IPolygon} from '../geometry'
+import {IPoint} from '../geometry';
 
 /**
  * Gauss's area formula or Shoelace formula:
@@ -7,7 +7,7 @@ import {IPolygon} from '../geometry'
  *   https://stackoverflow.com/questions/14505565/detect-if-a-set-of-points-in-an-array-that-are-the-vertices-of-a-complex-polygon#answer-14506549
  *   https://github.com/mrdoob/three.js/blob/master/src/extras/ShapeUtils.js#L7
  */
-export function polygonArea(polygon: IPolygon): number {
+export function polygonArea(polygon: IPoint[]): number {
   const length = polygon.length;
   let doubleArea = 0;
   for (let p = length - 1, q = 0; q < length; p = q++) {
@@ -19,7 +19,7 @@ export function polygonArea(polygon: IPolygon): number {
 /**
  * Assuming that the OY axis is directed upwards
  */
-export function polygonPointsClockwise(polygon: IPolygon): boolean {
+export function polygonPointsClockwise(polygon: IPoint[]): boolean {
   const area = polygonArea(polygon);
   if (area === 0) {
     throw new Error(`polygon area is zero: ${polygon}`);

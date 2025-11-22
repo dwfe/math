@@ -1,10 +1,10 @@
 import '@do-while-for-each/test'
-import {IPolygon, Point} from '../../geometry';
+import {IPoint, Point} from '../../geometry';
 import {clipPolygon} from '../../algorithm';
 
 describe('clipLinePolygon', () => {
 
-  const checkPolygon: IPolygon = [];
+  const checkPolygon: IPoint[] = [];
 
   test('polygon inside bbox', () => {
     const res = clipPolygon(

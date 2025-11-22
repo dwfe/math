@@ -1,7 +1,9 @@
-import {IMatrix, IMatrix2D} from './contract'
-import {Angle, IAngleUnit} from '../angle'
-import {Tuple2, Tuple6} from '../contract'
-import {IPoint} from '../geometry'
+import {isSomethingANumber} from '@do-while-for-each/common';
+import {IMatrix, IMatrix2D} from '../contract'
+import {Angle, IAngleUnit} from '../../angle'
+import {Tuple2, Tuple6} from '../../contract'
+import {regexpCSSMatrix2D} from './utils';
+import {IPoint} from '../../geometry'
 
 /*
  * Identity matrix:
@@ -16,6 +18,31 @@ export const identityMatrix: Tuple6 = Object.freeze([1, 0, 0, 1, 0, 0]) as Tuple
 class M { // exported as Matrix
 
   static of = (m: IMatrix = identityMatrix): M => new M(m);
+
+  /**
+   * Из строки вида matrix(x1, y1, x2, y2, tx, ty);
+   * Допускается научный формат числа, ведущие нули, отсутствующие нули в числах в границах (-1, 1),
+   * ведущие знаки. Если какой-либо формат не учтён, просьбы сообщить
+   *
+   * Любой неликвид вернёт false.
+   */
+  static ofStyleValue(probablyM: string) {
+
+    // TODO Излишне?
+    if (!regexpCSSMatrix2D.test(probablyM)) return false;
+
+    let match = probablyM.match(regexpCSSMatrix2D)?.slice(1)
+    if (!match) return false;
+
+    const m: number[] = match.map(s => Number(s))
+    if (m.length !== 6) return false;
+    for (let i = 0; i < 6; i++) {
+      if (!isSomethingANumber(m[i])) return false;
+      if (!m[i]) m[i] = 0;
+    }
+
+    return m as IMatrix
+  }
 
   constructor(public readonly m: IMatrix) {
   }

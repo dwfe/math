@@ -1,11 +1,11 @@
 import {multiPolygonContainsPoint} from './multiPolygonContainsPoint';
-import {IPolygon, IRectPoints, Point} from '../../geometry';
+import {IPoint, IRectPoints, Point} from '../../geometry';
 
 /**
  * Обертка над multiPolygonContainsPoint
  * для объекта типа IRectPoints
  */
-export function polygonContainsRectPoints(polygon: IPolygon, rectPoints: IRectPoints, excludeContour = false): boolean {
+export function polygonContainsRectPoints(polygon: IPoint[], rectPoints: IRectPoints, excludeContour = false): boolean {
   if (!Point.isEqual(polygon[0], polygon[polygon.length - 1])) {
     polygon.push(polygon[0]); // должен быть замкнут явно
   }

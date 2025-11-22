@@ -1,5 +1,5 @@
 import '@do-while-for-each/test';
-import {IMatrix, Operator, Matrix} from '../../linear-algebra'
+import {IMatrix, Matrix, Operator} from '../../linear-algebra'
 import {Point} from '../../geometry';
 
 describe(`web-matrix-2d`, () => {
@@ -218,4 +218,76 @@ describe(`web-matrix-2d`, () => {
     expect(Matrix.areObjectsWithMatricesEqual(null, undefined as any)).False();
   });
 
+  test('.ofStyleValue', () => {
+    // Correct
+    let arr = [
+      {test: 'matrix(1, 0, 0, 1, 0, 0)', compare: [1, 0, 0, 1, 0, 0]},
+      {test: 'matrix(.34, -.5, 0.5, .7, 1e2, 2e-3)', compare: [0.34, -0.5, 0.5, 0.7, 100, 0.002]},
+      {test: 'matrix(1., .0, 0., 1.0, 003, -020)', compare: [1, 0, 0, 1, 3, -20]},
+      {test: 'matrix(1e0, 2e1, -3e-1, 4e+2, .5e3, 6.0e-2)', compare: [1, 20, -0.3, 400, 500, 0.06]},
+      {test: 'matrix(+.5, -0, +0, -.5, 1.2e+3, 3.4e-4)', compare: [0.5, 0, 0, -0.5, 1200, 0.00034]},
+      {test: 'matrix(.999, -.001, .001, .999, 1e-6, 1e6)', compare: [0.999, -0.001, 0.001, 0.999, 0.000001, 1000000]},
+      {test: 'matrix(0.000001, 1, -1, 0.000001, 0, 0)', compare: [1e-6, 1, -1, 1e-6, 0, 0]},
+      {test: 'matrix(1.23456789, 0, 0, 9.87654321, 0.123, 456.789)', compare: [1.23456789, 0, 0, 9.87654321, 0.123, 456.789]},
+      {test: 'matrix(1e-10, 1e+10, -1e+10, 1e-10, 0, 0)', compare: [1e-10, 1e10, -1e10, 1e-10, 0, 0]},
+      {test: 'matrix(.0, .0, .0, .0, .0, .0)', compare: [0, 0, 0, 0, 0, 0]},
+      {test: 'matrix(.1, .2, .3, .4, .5, .6)', compare: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]},
+      {test: 'matrix(1.2e3, 0, 0, 1.2e-3, 0, 0)', compare: [1200, 0, 0, 0.0012, 0, 0]},
+      {test: 'matrix(1.5e-2, 2.5e-2, -3.5e-2, 4.5e-2, 5.5e2, 6.5e2)', compare: [0.015, 0.025, -0.035, 0.045, 550, 650]},
+      {test: 'matrix(1.23e+4, -5.67e-3, 8.9e-1, 1.11e+1, 2.22e+2, 3.33e-2)', compare: [12300, -0.00567, 0.89, 11.1, 222, 0.0333]},
+      {test: 'matrix(0.0000001, 0, 0, 0.0000001, 0, 0)', compare: [1e-7, 0, 0, 1e-7, 0, 0]},
+      {test: 'matrix(-.1, -.2, -.3, -.4, -.5, -.6)', compare: [-0.1, -0.2, -0.3, -0.4, -0.5, -0.6]},
+      {test: 'matrix(-1e-6, 0, 0, -1e-6, -0, -0)', compare: [-1e-6, 0, 0, -1e-6, 0, 0]},
+      {test: 'matrix(-0, -0, -0, -0, -0, -0)', compare: [0, 0, 0, 0, 0, 0]},
+      {test: 'matrix(-1.2e3, 0, 0, -1.2e-3, 0, 0)', compare: [-1200, 0, 0, -0.0012, 0, 0]},
+      {test: 'matrix(-.34, .56, -.78, .90, -1.2, 3.4)', compare: [-0.34, 0.56, -0.78, 0.9, -1.2, 3.4]},
+      {test: 'matrix(1.2e-3, -3.4e+5, 5.6e-7, -7.8e+9, .9, -1.0)', compare: [0.0012, -340000, 5.6e-7, -7.8e9, 0.9, -1]},
+      {test: 'matrix(.1e1, .2e-1, .3e+2, .4e-2, .5e3, .6e-3)', compare: [1, 0.02, 30, 0.004, 500, 0.0006]},
+      {test: 'matrix(1.2, -3.4e-5, 5.6e+7, -7.8, 9.0e-1, -1.2e+3)', compare: [1.2, -0.000034, 56000000, -7.8, 0.9, -1200]},
+      {test: 'matrix(0, 1e-10, -1e+10, 0, 0, 0)', compare: [0, 1e-10, -1e10, 0, 0, 0]},
+      {test: 'matrix(1.0e0, 2.0e-0, 3.0e+0, 4.0e-0, 5.0e0, 6.0e-0)', compare: [1, 2, 3, 4, 5, 6]},
+      {test: 'matrix(1.7976931348623157e+308, 0, 0, 1.7976931348623157e+308, 0, 0)', compare: [1.7976931348623157e308, 0, 0, 1.7976931348623157e308, 0, 0]},
+      {test: 'matrix(5e-324, 0, 0, 5e-324, 0, 0)', compare: [5e-324, 0, 0, 5e-324, 0, 0]},
+      {test: 'matrix(1.234, -5.678, 9.012, -3.456, 7.89e1, -1.23e-1)', compare: [1.234, -5.678, 9.012, -3.456, 78.9, -0.123]},
+      {test: 'matrix(1.0, -2.0, 3.0, -4.0, 5.0e-0, -6.0e+0)', compare: [1, -2, 3, -4, 5, -6]},
+      {test: 'matrix(01.4142, -1.4142, 1.4142, 1.4142, 0, 0)', compare: [1.4142, -1.4142, 1.4142, 1.4142, 0, 0]},
+      {test: 'matrix(-0001.618, -0.618, 0.618, 1.618, 0, 0)', compare: [-1.618, -0.618, 0.618, 1.618, 0, 0]},
+      {test: 'matrix(3.14159, -2.71828, 2.71828, 3.14159, 0, 0)', compare: [3.14159, -2.71828, 2.71828, 3.14159, 0, 0]},
+      {test: 'matrix(1e2, 0, 0, 1e2, 0, 0)', compare: [100, 0, 0, 100, 0, 0]},
+      {test: 'matrix(1, 1e-6, -1e-6, 1, 0, 0)', compare: [1, 1e-6, -1e-6, 1, 0, 0]},
+      {test: 'matrix(1, 0, 0, 1, .000001, .000001)', compare: [1, 0, 0, 1, 0.000001, 0.000001]},
+      {test: 'matrix(1e-10, 1e-10, 1e-10, 1e-10, 0, 0)', compare: [1e-10, 1e-10, 1e-10, 1e-10, 0, 0]},
+      {test: 'matrix(1e+20, 0, 0, 1e+20, 0, 0)', compare: [1e20, 0, 0, 1e20, 0, 0]},
+      {test: 'matrix(0.707, -0.707, 0.707, 0.707, 100, 100)', compare: [0.707, -0.707, 0.707, 0.707, 100, 100]},
+      {test: 'matrix(0.866, -0.5, 0.5, 0.866, 0, 0)', compare: [0.866, -0.5, 0.5, 0.866, 0, 0]},
+      {test: 'matrix(1, 0.5, 0, 1, 0, 0)', compare: [1, 0.5, 0, 1, 0, 0]},
+      {test: 'matrix(1, 0, 0.5, 1, 0, 0)', compare: [1, 0, 0.5, 1, 0, 0]},
+      {test: 'matrix(2, 0, 0, 0.5, 0, 0)', compare: [2, 0, 0, 0.5, 0, 0]},
+      {test: 'matrix(1.0e-5, -2.0e-5, 3.0e-5, -4.0e-5, 5.0e-5, -6.0e-5)', compare: [0.00001, -0.00002, 0.00003, -0.00004, 0.00005, -0.00006]},
+      {test: 'matrix(1.234e-10, 5.678e+10, -9.012e-10, 3.456e+10, 7.89e-10, -1.23e+10)', compare: [1.234e-10, 5.678e10, -9.012e-10, 3.456e10, 7.89e-10, -1.23e10]},
+      {test: 'matrix(.100, .200, .300, .400, .500, .600)', compare: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]},
+      {test: 'matrix(1e0, 2e0, 3e0, 4e0, 5e0, 6e0)', compare: [1, 2, 3, 4, 5, 6]},
+      {test: 'matrix(+.123, -.456, +.789, -1.234, +5.678, -9.012)', compare: [0.123, -0.456, 0.789, -1.234, 5.678, -9.012]},
+
+      // Incorrect
+      {test: 'matrix(Infinity, 0, 0, Infinity, 0, 0)', compare: false},
+      {test: 'matrix(-Infinity, 0, 0, -Infinity, 0, 0)', compare: false},
+      {test: 'matrix(NaN, 0, 0, NaN, 0, 0)', compare: false},
+      {test: 'asdf', compare: false},
+      {test: '', compare: false},
+      {test: 'matrix(', compare: false},
+      {test: 'matrix()', compare: false},
+      {test: 'matrix(1,)', compare: false},
+      {test: 'matrix(1, 2)', compare: false},
+      {test: 'matrix(1, 2, 3)', compare: false},
+      {test: 'matrix(1, 2, 3, 4)', compare: false},
+      {test: 'matrix(1, 2, 3, 4, 5)', compare: false},
+      {test: 'matrix(1, 2, 3, 4, 5 6)', compare: false},
+      {test: '(+.123, -.456, +.789, -1.234, +5.678, -9.012)', compare: false},
+    ]
+
+    for (let {test, compare} of arr) {
+      expect(Matrix.ofStyleValue(test)).toEqual(compare);
+    }
+  })
 })

@@ -1,5 +1,5 @@
 import {Throw} from '@do-while-for-each/test'
-import {Basis, Operator, Matrix} from '../../linear-algebra'
+import {Basis, Matrix, Operator} from '../../linear-algebra'
 import {IPoint, Point} from '../../geometry'
 
 describe('change of basis matrix', () => {

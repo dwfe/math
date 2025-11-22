@@ -1,6 +1,6 @@
-import {noThrow, Throw} from '@do-while-for-each/test';
 import {isSomethingANumber} from '@do-while-for-each/common';
-import {ISegmentsIntersection, IStraightLinesIntersection, Point, StraightLine} from '../../geometry';
+import {noThrow, Throw} from '@do-while-for-each/test';
+import {IPoint, IRectPoints, ISegmentsIntersection, IStraightLinesIntersection, Point, StraightLine} from '../../geometry';
 import {toFixed} from '../../util';
 
 
@@ -691,28 +691,28 @@ describe('geometry. straight-line - segmentIntersectsCircle', () => {
 
 });
 
-describe('geometry. straight-line - pointLiesOnSegment', () => {
+describe('geometry. straight-line - PointBelongsToSegment', () => {
 
   test('линия параллельна оси y', () => {
     const line = new StraightLine([2.5, 0], [2.5, 1]);
-    expect(line.pointLiesOnSegment([2.5, -10])).False();
-    expect(line.pointLiesOnSegment([2.5, -0.000000000001])).False();
-    expect(line.pointLiesOnSegment([2.5, 0.000000000001])).True();
-    expect(line.pointLiesOnSegment([2.5, 0.4])).True();
-    expect(line.pointLiesOnSegment([2.5, 0.999999999999])).True();
-    expect(line.pointLiesOnSegment([2.5, 1.000000000001])).False();
-    expect(line.pointLiesOnSegment([2.5, 4])).False();
+    expect(line.pointBelongsToSegment([2.5, -10])).False();
+    expect(line.pointBelongsToSegment([2.5, -0.000000000001])).False();
+    expect(line.pointBelongsToSegment([2.5, 0.000000000001])).True();
+    expect(line.pointBelongsToSegment([2.5, 0.4])).True();
+    expect(line.pointBelongsToSegment([2.5, 0.999999999999])).True();
+    expect(line.pointBelongsToSegment([2.5, 1.000000000001])).False();
+    expect(line.pointBelongsToSegment([2.5, 4])).False();
   });
 
   test('линия параллельна оси x', () => {
     const line = new StraightLine([0, 1], [1, 1]);
-    expect(line.pointLiesOnSegment([-10, 1])).False();
-    expect(line.pointLiesOnSegment([-0.000000000000001, 1])).False();
-    expect(line.pointLiesOnSegment([0.000000000000001, 1])).True();
-    expect(line.pointLiesOnSegment([0.3, 1])).True();
-    expect(line.pointLiesOnSegment([0.999999999999999, 1])).True();
-    expect(line.pointLiesOnSegment([1.000000000000001, 1])).False();
-    expect(line.pointLiesOnSegment([100, 1])).False();
+    expect(line.pointBelongsToSegment([-10, 1])).False();
+    expect(line.pointBelongsToSegment([-0.000000000000001, 1])).False();
+    expect(line.pointBelongsToSegment([0.000000000000001, 1])).True();
+    expect(line.pointBelongsToSegment([0.3, 1])).True();
+    expect(line.pointBelongsToSegment([0.999999999999999, 1])).True();
+    expect(line.pointBelongsToSegment([1.000000000000001, 1])).False();
+    expect(line.pointBelongsToSegment([100, 1])).False();
   });
 
   test('обычная линия', () => {
@@ -720,63 +720,255 @@ describe('geometry. straight-line - pointLiesOnSegment', () => {
     { // перед отрезком
       const x = -0.000000000000001;
       const point = [x, line.getY(x)];
-      expect(line.pointLiesOnSegment(point)).False();
+      expect(line.pointBelongsToSegment(point)).False();
     }
     { // на отрезке
       const x = 3.3152345123462346;
       const point = [x, line.getY(x)];
-      expect(line.pointLiesOnSegment(point)).True();
+      expect(line.pointBelongsToSegment(point)).True();
     }
     { // на отрезке
       const x = 7.893469523052983;
       const point = [x, line.getY(x)];
-      expect(line.pointLiesOnSegment(point)).True();
+      expect(line.pointBelongsToSegment(point)).True();
     }
     { // после отрезка
       const x = 9.000000000000001;
       const point = [x, line.getY(x)];
-      expect(line.pointLiesOnSegment(point)).False();
+      expect(line.pointBelongsToSegment(point)).False();
     }
   });
 
   test('не передана точка', () => {
     const line = new StraightLine([0, 6], [9, 0]);
-    expect(line.pointLiesOnSegment()).False();
+    expect(line.pointBelongsToSegment()).False();
   });
 
   test('концы сегмента по совпадающей линии', () => {
     { // обычная линия 1
       const line = new StraightLine([1, 1], [5, 5]);
-      expect(line.pointLiesOnSegment([0.99999999999, 0.99999999999])).False()
-      expect(line.pointLiesOnSegment([1, 1])).True()
-      expect(line.pointLiesOnSegment([1.00000000001, 1.00000000001])).True()
-      expect(line.pointLiesOnSegment([4.99999999999, 4.99999999999])).True()
-      expect(line.pointLiesOnSegment([5, 5])).True()
-      expect(line.pointLiesOnSegment([5.00000000001, 5.00000000001])).False()
+      expect(line.pointBelongsToSegment([0.99999999999, 0.99999999999])).False()
+      expect(line.pointBelongsToSegment([1, 1])).True()
+      expect(line.pointBelongsToSegment([1.00000000001, 1.00000000001])).True()
+      expect(line.pointBelongsToSegment([4.99999999999, 4.99999999999])).True()
+      expect(line.pointBelongsToSegment([5, 5])).True()
+      expect(line.pointBelongsToSegment([5.00000000001, 5.00000000001])).False()
     }
     { // обычная линия 2
       const line = new StraightLine([-4, 1], [-8, 4]);
-      expect(line.pointLiesOnSegment([-3.99999999999, line.getY(-3.99999999999)])).False()
-      expect(line.pointLiesOnSegment([-4, 1])).True()
-      expect(line.pointLiesOnSegment([-4.00000000001, line.getY(-4.00000000001)])).True()
-      expect(line.pointLiesOnSegment([-7.99999999999, line.getY(-7.99999999999)])).True()
-      expect(line.pointLiesOnSegment([-8, 4])).True()
-      expect(line.pointLiesOnSegment([-8.00000000001, line.getY(-8.00000000001)])).False()
+      expect(line.pointBelongsToSegment([-3.99999999999, line.getY(-3.99999999999)])).False()
+      expect(line.pointBelongsToSegment([-4, 1])).True()
+      expect(line.pointBelongsToSegment([-4.00000000001, line.getY(-4.00000000001)])).True()
+      expect(line.pointBelongsToSegment([-7.99999999999, line.getY(-7.99999999999)])).True()
+      expect(line.pointBelongsToSegment([-8, 4])).True()
+      expect(line.pointBelongsToSegment([-8.00000000001, line.getY(-8.00000000001)])).False()
     }
     { // линия параллельна оси y
       const line = new StraightLine([1, 0], [1, 1]);
-      expect(line.pointLiesOnSegment([1, -0.00000000001])).False()
-      expect(line.pointLiesOnSegment([1, 0])).True()
-      expect(line.pointLiesOnSegment([1, 1])).True()
-      expect(line.pointLiesOnSegment([1, 1.00000000001])).False()
+      expect(line.pointBelongsToSegment([1, -0.00000000001])).False()
+      expect(line.pointBelongsToSegment([1, 0])).True()
+      expect(line.pointBelongsToSegment([1, 1])).True()
+      expect(line.pointBelongsToSegment([1, 1.00000000001])).False()
     }
     { // линия параллельна оси x
       const line = new StraightLine([0, 1], [1, 1]);
-      expect(line.pointLiesOnSegment([-0.00000000001, 1])).False()
-      expect(line.pointLiesOnSegment([0, 1])).True()
-      expect(line.pointLiesOnSegment([1, 1])).True()
-      expect(line.pointLiesOnSegment([1.00000000001, 1])).False()
+      expect(line.pointBelongsToSegment([-0.00000000001, 1])).False()
+      expect(line.pointBelongsToSegment([0, 1])).True()
+      expect(line.pointBelongsToSegment([1, 1])).True()
+      expect(line.pointBelongsToSegment([1.00000000001, 1])).False()
     }
   });
+
+
+  describe('normal', () => {
+
+    // данные для проверки параметров нормали: точки и длины
+    const getDataV1 = () => { // окружность внутри прямоугольника(повернут)
+      const r: IRectPoints = {
+        leftTop: [-47.558, 54.032],
+        rightTop: [101.454, -0.356],
+        rightBottom: [135.741, 93.582],
+        leftBottom: [-13.272, 147.971],
+      };
+      const p = [24.093, 82.835]; // из этой точки проводится нормаль к линии
+      const topNormalPoint = [6.393, 34.340];
+      const rightNormalPoint = [119.154, 48.138];
+      const bottomNormalPoint = [40.680, 128.279];
+      const leftNormalPoint = [-29.858, 102.526];
+      return {r, p, topNormalPoint, rightNormalPoint, bottomNormalPoint, leftNormalPoint};
+    };
+
+    const getDataV2 = () => { // окружность не вся внутри прямоугольника(повернут)
+      const r: IRectPoints = {
+        leftTop: [-59.599, 5.791],
+        rightTop: [-44.466, -39.147],
+        rightBottom: [14.011, -19.455],
+        leftBottom: [-1.121, 25.483],
+      };
+      const p = [-8.631, -10.073];
+      const topNormalPoint = [-49.609, -23.873];
+      const rightNormalPoint = [-3.488, -25.348];
+      const bottomNormalPoint = [8.868, -4.181];
+      const leftNormalPoint = [-18.620, 19.590];
+      return {r, p, topNormalPoint, rightNormalPoint, bottomNormalPoint, leftNormalPoint};
+    };
+
+    const getDataV3 = () => { // окружность внутри прямоугольника(стороны параллельны осям)
+      const r: IRectPoints = {
+        leftTop: [-10, -10],
+        rightTop: [10, -10],
+        rightBottom: [10, 30],
+        leftBottom: [-10, 30],
+      };
+      const p = [3, 13];
+      const topNormalPoint = [3, -10];
+      const rightNormalPoint = [10, 13];
+      const bottomNormalPoint = [3, 30];
+      const leftNormalPoint = [-10, 13];
+      return {r, p, topNormalPoint, rightNormalPoint, bottomNormalPoint, leftNormalPoint};
+    };
+
+    // const getDataV3 = () => {
+    //   const r: IRectPoints = {
+    //     leftTop: [],
+    //     rightTop: [],
+    //     rightBottom: [],
+    //     leftBottom: [],
+    //   };
+    //   const p = [];
+    //   const topNormalPoint = [];
+    //   const rightNormalPoint = [];
+    //   const bottomNormalPoint = [];
+    //   const leftNormalPoint = [];
+    //   return {r, p, topNormalPoint, rightNormalPoint, bottomNormalPoint, leftNormalPoint};
+    // };
+
+
+    test('normal params', () => {
+      // Проверяются результат работы двух функций normalPoint и normalLength
+      // Причем еще проверяется результат между ними.
+      // Изначальные данные округлены до 3х знаков.
+      // Поэтому приходится играться с количеством знаков после запятой во время проверки.
+      let decimalsNormalPoint = 10;
+      let decimalsNormalLength = 10;
+
+      // проверка точки нормали
+      const checkNormalPoint = (a: IPoint, b: IPoint, p: IPoint, expectedNormalPoint: IPoint) => {
+        const line = new StraightLine(a, b);
+        const {normalPoint} = line.normalPointData(p);
+
+        normalPoint[0] = toFixed(normalPoint[0], decimalsNormalPoint);
+        normalPoint[1] = toFixed(normalPoint[1], decimalsNormalPoint);
+        expectedNormalPoint[0] = toFixed(expectedNormalPoint[0], decimalsNormalPoint);
+        expectedNormalPoint[1] = toFixed(expectedNormalPoint[1], decimalsNormalPoint);
+        expect(Point.isEqual(normalPoint, expectedNormalPoint)).True();
+      };
+
+      // проверка длины отрезка нормали
+      const checkNormalLength = (a: IPoint, b: IPoint, p: IPoint, expectedLen: number) => {
+        const line = new StraightLine(a, b);
+        let len = line.normalLength(p);
+        len = toFixed(len, decimalsNormalLength);
+        expectedLen = toFixed(expectedLen, decimalsNormalLength);
+        expect(expectedLen).eq(len);
+      };
+
+      // Берем прямоугольник и проверяем параметры нормали ко всем четырем сторонам
+      const check = ({r, p, topNormalPoint, rightNormalPoint, bottomNormalPoint, leftNormalPoint}: {
+        r: IRectPoints, // прямоугольник, нам от него нужны точки сторон
+        p: IPoint, // точка, из которой опускается нормаль к стороне прямоугольника -> к линии
+        // точки номалей, для проверки
+        topNormalPoint: IPoint, rightNormalPoint: IPoint, bottomNormalPoint: IPoint, leftNormalPoint: IPoint
+      }) => {
+        checkNormalPoint(r.leftTop, r.rightTop, p, topNormalPoint);
+        checkNormalLength(r.leftTop, r.rightTop, p, Point.distance(p, topNormalPoint));
+
+        checkNormalPoint(r.rightTop, r.rightBottom, p, rightNormalPoint);
+        checkNormalLength(r.rightTop, r.rightBottom, p, Point.distance(p, rightNormalPoint));
+
+        checkNormalPoint(r.rightBottom, r.leftBottom, p, bottomNormalPoint);
+        checkNormalLength(r.rightBottom, r.leftBottom, p, Point.distance(p, bottomNormalPoint));
+
+        checkNormalPoint(r.leftBottom, r.leftTop, p, leftNormalPoint);
+        checkNormalLength(r.leftBottom, r.leftTop, p, Point.distance(p, leftNormalPoint));
+      };
+
+      decimalsNormalPoint = 3;
+      decimalsNormalLength = 2;
+      check(getDataV1());
+
+      decimalsNormalPoint = 2;
+      decimalsNormalLength = 1;
+      check(getDataV2());
+
+      decimalsNormalPoint = 15;
+      decimalsNormalLength = 15;
+      check(getDataV3());
+    });
+
+    test('normalPoint, граничные значения', () => {
+      const check = (a: IPoint, b: IPoint, p: IPoint, expectedNormalPoint: IPoint) => {
+        const line = new StraightLine(a, b);
+        const {normalPoint} = line.normalPointData(p);
+        expect(Point.isEqual(normalPoint, expectedNormalPoint))
+      };
+      check([0, 0], [0, 0], [0, 10], [0, 0]);
+      check([0, 0], [0, 0], [0, 0], [0, 0]);
+      check([-1, 20], [-1, 20], [2, 7], [-1, 20]);
+    });
+
+    test('normalLength, граничные значения', () => {
+      const check = (a: IPoint, b: IPoint, p: IPoint, expectedNormalLength: number) => {
+        const line = new StraightLine(a, b);
+        const normalLen = line.normalLength(p);
+        expect(normalLen).eq(expectedNormalLength);
+      };
+      check([0, 0], [0, 0], [0, 10], 10);
+      check([-28.742, 10.744], [-28.742, 10.744], [10, 10], 38.74914321633448);
+    });
+
+    test('normalPoint, принадлежность сегменту', () => {
+      const check = (a: IPoint, b: IPoint, p: IPoint, expectedIsOnSegment: boolean) => {
+        const line = new StraightLine(a, b);
+        const {isOnSegment} = line.normalPointData(p);
+        expect(expectedIsOnSegment).eq(isOnSegment);
+      };
+
+      check([-28.742, 10.744], [-18.511, -2.339], [-24.594, 15.811], false);
+      check([-28.742, 10.744], [-18.511, -2.339], [-23.184, 14.555], true);
+      check([-10, -10], [10, -10], [10, 10], true);
+      check([-10, -10], [10, -10], [10.0000001, 10], false);
+    });
+
+    test('normal параметры, через коэффициенты прямой A,B,C', () => {
+      const check = (a: IPoint, b: IPoint, p: IPoint) => {
+        const line = new StraightLine(a, b);
+        const {A, B, C} = line;
+        const [x0, y0] = p;
+        const len = Math.abs(A * x0 + B * y0 + C) / Math.sqrt(A ** 2 + B ** 2);
+        let x = (B * (B * x0 - A * y0) - A * C) / (A ** 2 + B ** 2);
+        let y = (A * (-B * x0 + A * y0) - B * C) / (A ** 2 + B ** 2);
+
+        const decimals = 10;
+
+        // проверю длины по алгоритму по коэффициентам и тому, что в StraightLine
+        expect(toFixed(line.normalLength(p), decimals)).eq(toFixed(len, decimals));
+
+        x = toFixed(x, decimals);
+        y = toFixed(y, decimals);
+        const {normalPoint} = line.normalPointData(p);
+        normalPoint[0] = toFixed(normalPoint[0], decimals);
+        normalPoint[1] = toFixed(normalPoint[1], decimals);
+        // проверю длины по алгоритму по коэффициентам и тому, что в StraightLine
+        expect(Point.isEqual([x, y], normalPoint)).True();
+      };
+
+      check([-28.742, 10.744], [-18.511, -2.339], [-24.594, 15.811]);
+      check([-10, -10], [10, -10], [10, 10]);
+      check([-10, -10], [10, -10], [10.00001, 10]);
+    });
+
+  });
+
 
 });

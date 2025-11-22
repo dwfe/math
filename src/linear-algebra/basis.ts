@@ -41,6 +41,10 @@ export class Basis {
     ];
   }
 
+  get isCorrect(): boolean {
+    return this.isOrthogonal && this.extent.aspectRatio !== 0;
+  }
+
   toString() {
     return JSON.stringify(this.toJSON());
   }

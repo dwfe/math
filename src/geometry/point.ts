@@ -1,5 +1,5 @@
 import {Tuple2} from '../contract'
-import {IPoint} from './contract'
+import {IPoint, IRect} from './contract'
 
 class P {
 
@@ -15,7 +15,6 @@ class P {
   middle = (p: IPoint): P => P.of(P.middle(this.p, p))
   distance = (p: IPoint): number => P.distance(this.p, p)
   equals = (p: IPoint): boolean => P.isEqual(this.p, p);
-
 
   static add = (p1: IPoint, p2: IPoint): Tuple2 => ([
     p1[0] + p2[0],
@@ -49,7 +48,6 @@ class P {
     return Math.sqrt(Math.pow(result[0], 2) + Math.pow(result[1], 2));
   }
 
-
   /**
    * Dot product or Scalar product:
    *   a   c
@@ -61,6 +59,19 @@ class P {
     return p1[0] * p2[0] + p1[1] * p2[1];
   }
 
+  /**
+   * Angle between two vectors.
+   *   dot(a,b) = |a| * |b| * cos(angle)
+   *      angle = acos( dot(a,b) / (|a| * |b|) )
+   * @param a - vector а
+   * @param b - vector b
+   * @return angle in radians in range [0;π]
+   */
+  static angle(a: IPoint, b: IPoint): number {
+    const lengthA = Math.hypot(a[0], a[1]);
+    const lengthB = Math.hypot(b[0], b[1]);
+    return Math.acos(P.dotProduct(a, b) / (lengthA * lengthB));
+  }
 
   /**
    * Vector normalization is the transformation of a given vector into:
@@ -76,7 +87,6 @@ class P {
     return [p[0] / length, p[1] / length];
   }
 
-
   static isEqual = (p1: IPoint, p2: IPoint): boolean =>
     p1[0] === p2[0] &&
     p1[1] === p2[1]
@@ -86,8 +96,54 @@ class P {
     Math.abs(p1[0] - p2[0]) < accuracy &&
     Math.abs(p1[1] - p2[1]) < accuracy
   ;
-}
 
+  static toString(p: IPoint): string {
+    return `${p[0]},${p[1]}`;
+  }
+
+  static abs(p: IPoint): IPoint {
+    return [
+      Math.abs(p[0]),
+      Math.abs(p[1])
+    ];
+  }
+
+  /**
+   * Если точка выходит за прямоугольник, поместить её на гарницу.
+   * Работает только с НЕ повёрнутым прямоугольником, т.е. параллельным осям координат
+   *
+   * @deprecated Нормальная версия должна вычислять ближайшую точку к прямоугольнику. В процессе
+   *
+   * @return IPoint по ссылку не равная переданной
+   */
+  static moveIntoRectIfOutside(p: IPoint, rect: IRect): IPoint {
+    return [
+      Math.min(Math.max(p[0], rect.left), rect.right),
+      Math.min(Math.max(p[1], rect.top), rect.bottom)
+    ]
+  }
+
+  /**
+   * Если точка находится внутри прямоугольника, переместить её на границу.
+   * Перемещение происходит в сторону меньшей удалённости от границы,
+   * либо в сторону меньшей координаты при равенстве расстояний
+   * Работает только с НЕ повёрнутым прямоугольником, т.е. параллельным осям координат
+   *
+   * @deprecated Нормальная версия должна вычислять ближайшую точку к прямоугольнику. В процессе
+   *
+   * @return IPoint по ссылку не равная переданной
+   */
+  static moveOutOfRectIfInside([x, y]: IPoint, {left, right, top, bottom, center}: IRect): IPoint {
+    // если меньше чем меньшая граница, то координата,
+    // если меньше чем центр, то меньшая граница,
+    // инчае большая граница
+
+    x = x <= left ? x : x <= center[0] ? left : right;
+    y = y <= top ? y : y <= center[1] ? top : bottom;
+    return [x, y];
+  }
+
+}
 
 export {
   P as Point

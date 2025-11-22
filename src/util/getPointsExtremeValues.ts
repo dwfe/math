@@ -1,10 +1,11 @@
+import {Tuple2} from '../contract';
 import {IPoint} from '../geometry'
 
 /**
- *
+ * Вычисляет экстремальные значения координат переданных точек.
  * @return [extremeX, extremeY]
  */
-export function getPointsExtremeValues(points: IPoint[]): IExtreme[] {
+export function getPointsExtremeValues(points: IPoint[]): Tuple2<IExtreme> {
   if (points.length === 0) {
     throw new Error(`can't calculate extreme values for zero length array`);
   }

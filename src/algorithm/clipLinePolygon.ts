@@ -1,4 +1,4 @@
-import {IPoint, IPolygon} from '../geometry';
+import {IPoint} from '../geometry';
 import {Tuple4} from '../contract';
 
 /**
@@ -74,8 +74,8 @@ export function clipLine(points: IPoint[], bbox: Tuple4, result: Array<IPoint[]>
  * @param points
  * @param bbox - [xMin, yMin, xMax, yMax]
  */
-export function clipPolygon(points: IPolygon, bbox: Tuple4): IPolygon {
-  let result!: IPolygon;
+export function clipPolygon(points: IPoint[], bbox: Tuple4): IPoint[] {
+  let result!: IPoint[];
   let prev: IPoint;
   let prevInside: boolean;
 

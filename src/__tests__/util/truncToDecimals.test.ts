@@ -4,6 +4,7 @@ import {truncToDecimals} from '../../util';
 describe('truncToDecimals', () => {
 
   test('positive', () => {
+    expect(truncToDecimals(1.5)).eq(1.5);
     expect(truncToDecimals(123.456)).eq(123.5);
     expect(truncToDecimals(123.456, 0.765)).eq(123.765);
   });

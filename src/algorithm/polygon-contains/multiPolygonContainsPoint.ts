@@ -1,5 +1,5 @@
 import inside from 'point-in-polygon-hao';
-import {IMultiPolygon, IPoint} from '../../geometry';
+import {IPoint} from '../../geometry';
 
 /**
  * Принадлежит ли точка заданному мультиполигону?
@@ -10,10 +10,10 @@ import {IMultiPolygon, IPoint} from '../../geometry';
  *   https://github.com/rowanwins/point-in-polygon-hao
  *
  * @param multiPolygon   - заданный мультиполигон, где каждый полигон должен быть замкнут явно;
- * @param point           - проверяемая точка;
+ * @param point          - проверяемая точка;
  * @param excludeContour - если true, то точка на контуре не считается частью мультиполигона.
  */
-export function multiPolygonContainsPoint(multiPolygon: IMultiPolygon, point: IPoint, excludeContour = false): {
+export function multiPolygonContainsPoint(multiPolygon: Array<IPoint[]>, point: IPoint, excludeContour = false): {
   isInside: boolean;
   isOnEdge?: boolean;
 } {

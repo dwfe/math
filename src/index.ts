@@ -4,3 +4,4 @@ export * from './geometry';
 export * from './linear-algebra';
 export * from './util';
 export * from './contract';
+export * from './constants';
