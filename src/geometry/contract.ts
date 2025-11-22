@@ -1,4 +1,4 @@
-import {Tuple4, Tuple5} from '../contract'
+import {Tuple2, Tuple4, Tuple5} from '../contract'
 
 export type IYPosition = 'top' | 'bottom';
 export type IXPosition = 'left' | 'right';
@@ -42,6 +42,8 @@ export interface IRectPoints {
   rightBottom: IPoint;
   leftBottom: IPoint;
 }
+
+export type IPointConverter = (point: IPoint | Tuple2) => IPoint;
 
 export interface IStraightLineOpt {
 
